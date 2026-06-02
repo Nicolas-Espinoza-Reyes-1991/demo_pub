@@ -1,0 +1,302 @@
+/* After Office — experiencia móvil */
+
+@media (max-width: 767px) {
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-padding-top: calc(var(--switcher-h, 4rem) + 3.5rem);
+  }
+
+  body.has-mobile-cta {
+    padding-bottom: calc(5.25rem + env(safe-area-inset-bottom, 0px));
+  }
+
+  /* Switcher: scroll horizontal con snap */
+  .demo-switcher__inner {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 0.5rem 0.75rem 0.65rem;
+  }
+  .demo-switcher__track {
+    display: flex;
+    gap: 0.5rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding: 0.15rem 0.25rem;
+    margin: 0 -0.25rem;
+  }
+  .demo-switcher__track::-webkit-scrollbar { display: none; }
+  .demo-switcher__track [data-demo-tab] {
+    scroll-snap-align: center;
+    flex-shrink: 0;
+    min-height: 44px;
+    min-width: 7.5rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  .demo-switcher__tab-short { display: inline; }
+  .demo-switcher__tab-full { display: none; }
+
+  /* Hero móvil */
+  .hero-section {
+    min-height: 100dvh;
+    min-height: 100svh;
+  }
+  .hero-section .relative.max-w-6xl,
+  .hero-section .relative.text-center {
+    padding-bottom: 5.5rem;
+  }
+  .hero-badges { gap: 0.4rem; }
+  .hero-badge { font-size: 0.65rem; padding: 0.4rem 0.75rem; }
+
+  .btn-cta {
+    width: 100%;
+    min-height: 52px;
+    padding: 1rem 1.25rem;
+    font-size: 1rem;
+    border-radius: 0.75rem;
+  }
+
+  .demo-carta-cta {
+    width: 100%;
+    max-width: 100%;
+    min-height: 52px;
+    margin-top: 1.25rem;
+    padding: 1rem 1.25rem;
+    font-size: 1rem;
+  }
+
+  .trust-bar {
+    gap: 0.5rem;
+    padding: 1rem 0.75rem;
+  }
+  .trust-bar__item { padding: 0.65rem 0.35rem; }
+  .trust-bar__value { font-size: 1.45rem; }
+  .trust-bar__label { font-size: 0.625rem; }
+
+  /* Nav móvil tipo drawer */
+  .mobile-nav {
+    display: none;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 0.75rem 1rem 1rem;
+    max-height: min(70vh, 420px);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .mobile-nav.is-open { display: flex; }
+  .mobile-nav a {
+    display: flex;
+    align-items: center;
+    min-height: 48px;
+    padding: 0.75rem 1rem;
+    border-radius: 0.625rem;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: background 0.2s ease;
+  }
+  .mobile-nav a:active { transform: scale(0.99); }
+  .demo-1 .mobile-nav a:hover,
+  .demo-1 .mobile-nav a:focus-visible { background: rgba(245, 158, 11, 0.1); }
+  .demo-2 .mobile-nav a:hover,
+  .demo-2 .mobile-nav a:focus-visible { background: rgba(34, 211, 238, 0.08); }
+  .demo-3 .mobile-nav a:hover,
+  .demo-3 .mobile-nav a:focus-visible { background: rgba(249, 115, 22, 0.1); }
+  .mobile-nav__cta {
+    margin-top: 0.35rem;
+    justify-content: center;
+    font-weight: 700 !important;
+    min-height: 52px !important;
+  }
+  .demo-1 .mobile-nav__cta { background: #d97706; color: #0a0a0a !important; }
+  .demo-2 .mobile-nav__cta { background: linear-gradient(90deg, #22d3ee, #d946ef); color: #000 !important; }
+  .demo-3 .mobile-nav__cta { background: #ea580c; color: #fff !important; text-transform: uppercase; letter-spacing: 0.06em; }
+
+  .nav-toggle-btn {
+    min-width: 44px;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.5rem;
+    transition: background 0.2s ease;
+  }
+  .nav-toggle-btn:active { background: rgba(255, 255, 255, 0.06); }
+  .nav-toggle-btn[aria-expanded="true"] .nav-toggle-icon--menu { display: none; }
+  .nav-toggle-btn[aria-expanded="false"] .nav-toggle-icon--close { display: none; }
+
+  body.nav-open { overflow: hidden; }
+  body.nav-open .demo-header-sticky { z-index: 60; }
+
+  /* Formularios: evitar zoom iOS */
+  input, select, textarea {
+    font-size: 16px !important;
+  }
+  [data-reservation-form] input,
+  [data-reservation-form] select,
+  [data-reservation-form] button[type="submit"] {
+    min-height: 48px;
+  }
+  [data-reservation-form] button[type="submit"] {
+    font-size: 1rem;
+    font-weight: 700;
+  }
+
+  /* Barra CTA inferior */
+  .mobile-cta-bar {
+    gap: 0.4rem;
+    padding: 0.5rem 0.65rem calc(0.55rem + env(safe-area-inset-bottom, 0px));
+    box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.45);
+  }
+  .mobile-cta-bar__btn {
+    flex-direction: column;
+    gap: 0.15rem;
+    min-height: 52px;
+    padding: 0.5rem 0.35rem;
+    font-size: 0.6875rem;
+    letter-spacing: 0.02em;
+    line-height: 1.1;
+  }
+  .mobile-cta-bar__icon {
+    width: 1.25rem;
+    height: 1.25rem;
+    flex-shrink: 0;
+  }
+  .mobile-cta-bar__btn--primary {
+    flex: 1.15;
+  }
+
+  /* WhatsApp FAB: ocultar cuando la barra inferior ya está visible */
+  body.has-mobile-cta .mobile-cta-bar.is-visible ~ .wa-fab {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: scale(0.85);
+    transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s;
+  }
+  .wa-fab__btn {
+    width: 3.25rem;
+    height: 3.25rem;
+  }
+  .wa-fab__tooltip { display: none; }
+
+  /* Cards menú en móvil */
+  .card-hover:active { transform: scale(0.99); }
+
+  /* Eventos grid */
+  #d2-events .grid,
+  .event-card { touch-action: manipulation; }
+
+  /* Cervecería: tablero táctil */
+  #beer-board button {
+    min-height: 52px;
+    font-size: 1.125rem !important;
+  }
+
+  /* Galería mosaico */
+  .gallery-mosaic__item { min-height: 120px; }
+
+  /* Secciones más aireadas */
+  .demo-panel section { padding-left: 0; padding-right: 0; }
+  .demo-panel section > .max-w-6xl,
+  .demo-panel section > .max-w-xl,
+  .demo-panel section > .max-w-lg {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .demo-switcher__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.75rem 1.25rem;
+  }
+  .demo-switcher__track {
+    display: flex;
+    gap: 0.5rem;
+    flex-shrink: 0;
+  }
+  .demo-switcher__tab-short { display: none; }
+  .demo-switcher__tab-full { display: inline; }
+  .mobile-nav { display: none !important; }
+}
+
+/* —— Carta móvil —— */
+@media (max-width: 767px) {
+  .carta-page {
+    padding-bottom: calc(5rem + env(safe-area-inset-bottom, 0px));
+  }
+  .carta-header {
+    padding-top: env(safe-area-inset-top, 0px);
+  }
+  .carta-back {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    font-size: 0.8125rem;
+  }
+  .carta-sticky-tools {
+    position: sticky;
+    top: calc(3.25rem + env(safe-area-inset-top, 0px));
+    z-index: 35;
+    margin: 0 -1rem;
+    padding: 0.65rem 1rem 0.75rem;
+    background: linear-gradient(180deg, rgba(10, 10, 10, 0.98) 75%, rgba(10, 10, 10, 0) 100%);
+    backdrop-filter: blur(10px);
+  }
+  .carta-tabs {
+    scroll-snap-type: x mandatory;
+    padding-bottom: 0.35rem;
+  }
+  .carta-tab { scroll-snap-align: start; }
+  .carta-page--classic .carta-sticky-tools {
+    border-bottom: 1px solid rgba(245, 158, 11, 0.12);
+  }
+  .carta-page--neon .carta-sticky-tools {
+    border-bottom: 1px solid rgba(34, 211, 238, 0.12);
+  }
+  .carta-page--industrial .carta-sticky-tools {
+    border-bottom: 1px solid rgba(249, 115, 22, 0.12);
+  }
+  .carta-search {
+    min-height: 48px;
+    font-size: 16px !important;
+    padding-top: 0.875rem;
+    padding-bottom: 0.875rem;
+  }
+  .carta-tab {
+    min-height: 44px;
+    padding: 0.625rem 1.125rem;
+    font-size: 0.875rem;
+  }
+  .carta-item {
+    padding: 1rem;
+    gap: 1rem;
+  }
+  .carta-item__img-wrap {
+    width: 4.5rem;
+    height: 4.5rem;
+  }
+  .carta-item__title { font-size: 1.125rem; }
+  .carta-item:active {
+    transform: scale(0.99);
+    opacity: 0.95;
+  }
+  .carta-hero-mini { padding-top: 0.25rem; }
+  .carta-title { font-size: 1.625rem !important; }
+  .wa-fab--carta .wa-fab__btn {
+    width: 3.5rem;
+    height: 3.5rem;
+  }
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .card-hover:hover { transform: none; box-shadow: none; }
+  .carta-item:hover { transform: none; box-shadow: none !important; }
+  [data-demo-tab]:hover { transform: none; }
+}
