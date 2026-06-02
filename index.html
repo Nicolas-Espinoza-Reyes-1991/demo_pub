@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="es" class="no-js scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="After Office Resto-Bar en Futrono. Cócteles de autor, cocina de barra, cerveza artesanal y ambiente nocturno. Reserva tu mesa.">
+  <meta name="theme-color" content="#0a0a0a">
+  <meta name="robots" content="index, follow">
+  <title>After Office Resto-Bar · Futrono</title>
+
+  <!-- Vista previa al compartir (WhatsApp, Facebook, Instagram, etc.) -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="After Office Resto-Bar">
+  <meta property="og:locale" content="es_CL">
+  <meta property="og:title" content="After Office Resto-Bar · Futrono">
+  <meta property="og:description" content="Noche · Música · Drinks. Cócteles, comida de pub y el mejor ambiente en Futrono, Los Ríos. Reserva tu mesa.">
+  <meta property="og:image" content="./imagenes_bar/og-share.jpg">
+  <meta property="og:image:secure_url" content="./imagenes_bar/og-share.jpg">
+  <meta property="og:image:type" content="image/jpeg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="After Office Resto-Bar — Futrono, Los Ríos">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="After Office Resto-Bar · Futrono">
+  <meta name="twitter:description" content="Cócteles, cocina de barra y ambiente nocturno en Futrono. Reserva tu mesa.">
+  <meta name="twitter:image" content="./imagenes_bar/og-share.jpg">
+  <meta name="twitter:image:alt" content="After Office Resto-Bar — Futrono, Los Ríos">
+  <meta name="apple-mobile-web-app-title" content="After Office">
+  <link rel="apple-touch-icon" href="./imagenes_bar/og-share.jpg">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect fill='%230a0a0a' width='32' height='32' rx='4'/%3E%3Ctext x='16' y='21' text-anchor='middle' fill='%23fbbf24' font-family='sans-serif' font-size='14' font-weight='700'%3EAO%3C/text%3E%3C/svg%3E">
+  <link rel="dns-prefetch" href="https://cdn.tailwindcss.com">
+  <link rel="dns-prefetch" href="https://unpkg.com">
+  <link rel="dns-prefetch" href="https://maps.google.com">
+  <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
+  <link rel="preload" as="image" href="./imagenes_bar/photo-1598994671512-395d7a6147e0%20(2).jpg" fetchpriority="high">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            playfair: ['"Playfair Display"', 'Georgia', 'serif'],
+            outfit: ['Outfit', 'system-ui', 'sans-serif'],
+            oswald: ['Oswald', 'system-ui', 'sans-serif'],
+            caveat: ['Caveat', 'cursive'],
+            lato: ['Lato', 'system-ui', 'sans-serif'],
+            bebas: ['"Bebas Neue"', 'sans-serif'],
+            montserrat: ['Montserrat', 'system-ui', 'sans-serif'],
+          },
+        },
+      },
+    };
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Caveat:wght@400;600&family=Lato:wght@400;700&family=Montserrat:wght@800&family=Oswald:wght@400;600;700&family=Outfit:wght@400;600;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./css/demos.css">
+  <script defer src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js"></script>
+</head>
+<body class="bg-neutral-950 text-stone-100 font-lato antialiased">
+
+  <!-- Selector de demo fijo -->
+  <div id="demo-switcher" class="fixed top-0 left-0 right-0 z-[100] bg-neutral-900/95 backdrop-blur-md border-b border-stone-800 shadow-lg" role="tablist" aria-label="Seleccionar diseño demo">
+    <div class="max-w-6xl mx-auto px-3 sm:px-4 py-2.5 sm:py-3 flex flex-wrap items-center justify-center gap-1.5 sm:gap-3">
+      <span class="text-xs text-stone-500 uppercase tracking-wider mr-1 hidden sm:inline font-lato">Vista demo</span>
+      <button type="button" data-demo-tab="demo-1" aria-selected="true"
+        class="px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg text-xs sm:text-sm font-medium bg-amber-600/20 text-amber-300 border border-amber-600/40 opacity-100 ring-2 ring-amber-500 sm:ring-offset-2 ring-offset-neutral-900 transition">
+        Demo 1 · Clásico
+      </button>
+      <button type="button" data-demo-tab="demo-2" aria-selected="false"
+        class="px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg text-xs sm:text-sm font-medium bg-cyan-500/10 text-cyan-300 border border-cyan-500/30 opacity-70 transition hover:opacity-100">
+        Demo 2 · Neón
+      </button>
+      <button type="button" data-demo-tab="demo-3" aria-selected="false"
+        class="px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg text-xs sm:text-sm font-medium bg-orange-600/10 text-orange-300 border border-orange-600/30 opacity-70 transition hover:opacity-100">
+        Demo 3 · Cervecería
+      </button>
+    </div>
+  </div>
+
+  <div class="demo-switcher-spacer" aria-hidden="true"></div>
+
+
+  <!-- ============================================================ -->
+  <!-- DEMO 1 — CLÁSICO (Playfair / amber)                         -->
+  <!-- ============================================================ -->
+  <div id="demo-1" class="demo-panel demo-1 font-playfair" role="tabpanel" aria-hidden="false">
+
+    <header class="demo-header-sticky sticky z-50 bg-neutral-950/90 backdrop-blur border-b border-amber-900/30">
+      <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+        <a href="#d1-hero" class="brand-wordmark brand-wordmark--sm brand-wordmark--classic" aria-label="After Office Futrono">
+          <span class="brand-wordmark__stack">
+            <span class="brand-wordmark__condensed">After</span>
+            <span class="brand-wordmark__condensed">Office</span>
+            <span class="brand-wordmark__city">Futrono</span>
+          </span>
+        </a>
+        <button type="button" data-mobile-toggle="d1-mobile-menu" class="md:hidden p-2 text-amber-400 hover:text-amber-300 transition" aria-label="Abrir menú">
+          <i data-lucide="menu" class="w-6 h-6"></i>
+        </button>
+        <nav class="hidden md:flex items-center gap-6 text-sm font-lato">
+          <a href="#d1-promo" class="text-stone-300 hover:text-amber-400 transition">Happy Hour</a>
+          <a href="#d1-menu" class="text-stone-300 hover:text-amber-400 transition">Carta</a>
+          <a href="#d1-gallery" class="text-stone-300 hover:text-amber-400 transition">Galería</a>
+          <a href="#d1-reserve" class="px-4 py-2 bg-amber-600 text-neutral-950 rounded font-semibold hover:bg-amber-500 transition">Reservar</a>
+        </nav>
+      </div>
+      <nav id="d1-mobile-menu" class="hidden md:hidden border-t border-amber-900/20 px-4 py-3 flex flex-col gap-1 font-lato text-sm">
+        <a href="#d1-promo" class="text-stone-300 hover:text-amber-400 py-2.5">Happy Hour</a>
+        <a href="#d1-menu" class="text-stone-300 hover:text-amber-400 py-2.5">Carta</a>
+        <a href="#d1-gallery" class="text-stone-300 hover:text-amber-400 py-2.5">Galería</a>
+        <a href="#d1-reserve" class="text-amber-400 font-semibold py-2.5">Reservar mesa</a>
+      </nav>
+    </header>
+
+    <section id="d1-hero" class="relative min-h-[85vh] flex items-end overflow-hidden">
+      <img src="./imagenes_bar/photo-1598994671512-395d7a6147e0%20(2).jpg" alt="Interior elegante de After Office en Futrono" class="absolute inset-0 w-full h-full object-cover" fetchpriority="high" decoding="async">
+      <div class="absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-950/75 to-neutral-950/30"></div>
+      <div class="relative max-w-6xl mx-auto px-4 pb-12 sm:pb-16 pt-20 sm:pt-28 md:pt-32 w-full">
+        <p class="brand-tagline brand-tagline--classic">Resto Bar · Los Ríos</p>
+        <h1 class="brand-wordmark brand-wordmark--lg brand-wordmark--classic mb-4">
+          <span class="brand-wordmark__stack">
+            <span class="brand-wordmark__condensed">After</span>
+            <span class="brand-wordmark__condensed">Office</span>
+            <span class="brand-wordmark__city">Futrono</span>
+          </span>
+        </h1>
+        <p class="font-lato text-stone-400 text-lg md:text-xl max-w-xl mb-8">Cócteles de autor, cocina de barra y el ambiente perfecto para cerrar el día con estilo en el corazón de Futrono.</p>
+        <div class="flex flex-col sm:flex-row flex-wrap gap-3 font-lato">
+          <a href="#d1-reserve" class="px-6 py-3 bg-amber-600 text-neutral-950 font-semibold rounded hover:bg-amber-500 transition text-center">Reservar mesa</a>
+          <a href="#d1-menu" class="px-6 py-3 border border-amber-700/50 text-amber-300 rounded hover:bg-amber-900/20 transition text-center">Ver carta</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="d1-promo" class="py-16 md:py-24 bg-gradient-to-b from-neutral-950 to-amber-950/20 border-y border-amber-900/20">
+      <div class="max-w-6xl mx-auto px-4">
+        <div class="grid md:grid-cols-2 gap-10 items-center">
+          <div>
+            <span class="font-lato text-amber-500 text-sm uppercase tracking-widest">Promoción · Futrono</span>
+            <h2 class="text-3xl md:text-4xl font-bold text-amber-100 mt-2 mb-4">Happy Hour</h2>
+            <p class="font-lato text-stone-400 mb-4">De 17:00 a 20:00 hrs, todos los días. 2×1 en cócteles de la casa y schop seleccionado.</p>
+            <ul class="font-lato text-stone-300 space-y-2 text-sm">
+              <li class="flex items-center gap-2"><i data-lucide="clock" class="w-4 h-4 text-amber-500"></i> Lun – Sáb · 17:00 – 20:00</li>
+              <li class="flex items-center gap-2"><i data-lucide="martini" class="w-4 h-4 text-amber-500"></i> Cócteles signature y clásicos</li>
+              <li class="flex items-center gap-2"><i data-lucide="percent" class="w-4 h-4 text-amber-500"></i> 30% off en tablas para compartir</li>
+            </ul>
+          </div>
+          <div class="relative rounded-lg overflow-hidden aspect-[4/3] card-hover">
+            <img src="./imagenes_bar/photo-1626201853293-d39a9fca6c3d.jpg" alt="Cócteles en barra After Office" class="w-full h-full object-cover">
+            <div class="absolute bottom-4 left-4 bg-neutral-950/80 px-4 py-2 rounded font-lato text-amber-400 text-sm font-semibold">2×1 · After Five</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="d1-menu" class="py-16 md:py-24">
+      <div class="max-w-6xl mx-auto px-4">
+        <div class="text-center mb-10">
+          <h2 class="text-3xl md:text-4xl font-bold text-amber-100">Nuestra Carta</h2>
+          <p class="font-lato text-stone-500 mt-2">Selección curada por nuestro bar manager</p>
+        </div>
+
+        <div id="demo1-menu-tabs">
+          <div class="flex flex-wrap justify-center gap-2 mb-8 font-lato" role="tablist">
+            <button type="button" data-menu-tab="cocteles" role="tab"
+              class="px-5 py-2 rounded-full border border-amber-500 text-amber-400 bg-amber-500/10 text-sm font-medium transition">
+              Cócteles
+            </button>
+            <button type="button" data-menu-tab="comida" role="tab"
+              class="px-5 py-2 rounded-full border border-transparent text-stone-400 text-sm font-medium hover:text-amber-300 transition">
+              Comida
+            </button>
+            <button type="button" data-menu-tab="destilados" role="tab"
+              class="px-5 py-2 rounded-full border border-transparent text-stone-400 text-sm font-medium hover:text-amber-300 transition">
+              Destilados
+            </button>
+          </div>
+
+          <div data-menu-panel="cocteles" class="grid sm:grid-cols-2 gap-6 font-lato">
+            <article class="card-hover flex gap-4 p-4 rounded-lg bg-neutral-900/50 border border-amber-900/20">
+              <img src="./imagenes_bar/photo-1598994671512-395d7a6147e0%20(2).jpg" alt="Old Fashioned" class="w-20 h-20 rounded object-cover shrink-0">
+              <div>
+                <h3 class="font-playfair text-lg text-amber-100">Old Fashioned</h3>
+                <p class="text-stone-500 text-sm">Bourbon, angostura, azúcar morena</p>
+                <p class="text-amber-400 font-semibold mt-1">$8.990</p>
+              </div>
+            </article>
+            <article class="card-hover flex gap-4 p-4 rounded-lg bg-neutral-900/50 border border-amber-900/20">
+              <img src="./imagenes_bar/photo-1626201853293-d39a9fca6c3d.jpg" alt="Negroni" class="w-20 h-20 rounded object-cover shrink-0">
+              <div>
+                <h3 class="font-playfair text-lg text-amber-100">Negroni Clásico</h3>
+                <p class="text-stone-500 text-sm">Gin, Campari, vermut rosso</p>
+                <p class="text-amber-400 font-semibold mt-1">$7.990</p>
+              </div>
+            </article>
+            <article class="card-hover flex gap-4 p-4 rounded-lg bg-neutral-900/50 border border-amber-900/20">
+              <img src="./imagenes_bar/photo-1745052811236-a56a0f8718d1.jpg" alt="Espresso Martini" class="w-20 h-20 rounded object-cover shrink-0">
+              <div>
+                <h3 class="font-playfair text-lg text-amber-100">Espresso Martini</h3>
+                <p class="text-stone-500 text-sm">Vodka, licor de café, espresso</p>
+                <p class="text-amber-400 font-semibold mt-1">$8.490</p>
+              </div>
+            </article>
+            <article class="card-hover flex gap-4 p-4 rounded-lg bg-neutral-900/50 border border-amber-900/20">
+              <img src="./imagenes_bar/photo-1745052838929-39e6579e130e.jpg" alt="Whisky Sour" class="w-20 h-20 rounded object-cover shrink-0">
+              <div>
+                <h3 class="font-playfair text-lg text-amber-100">Whisky Sour</h3>
+                <p class="text-stone-500 text-sm">Bourbon, limón, clara, bitter</p>
+                <p class="text-amber-400 font-semibold mt-1">$7.490</p>
+              </div>
+            </article>
+          </div>
+
+          <div data-menu-panel="comida" class="hidden grid sm:grid-cols-2 gap-6 font-lato">
+            <article class="card-hover flex gap-4 p-4 rounded-lg bg-neutral-900/50 border border-amber-900/20">
+              <img src="./imagenes_bar/photo-1644447393594-86ac32d94a09.jpg" alt="Tabla de carnes" class="w-20 h-20 rounded object-cover shrink-0">
+              <div>
+                <h3 class="font-playfair text-lg text-amber-100">Tabla After Office</h3>
+                <p class="text-stone-500 text-sm">Carnes curadas, quesos, aceitunas, panes</p>
+                <p class="text-amber-400 font-semibold mt-1">$18.990</p>
+              </div>
+            </article>
+            <article class="card-hover flex gap-4 p-4 rounded-lg bg-neutral-900/50 border border-amber-900/20">
+              <img src="./imagenes_bar/photo-1644447381290-85358ae625cb.jpg" alt="Pizza" class="w-20 h-20 rounded object-cover shrink-0">
+              <div>
+                <h3 class="font-playfair text-lg text-amber-100">Pizza de Prosciutto</h3>
+                <p class="text-stone-500 text-sm">Masa madre, rúcula, parmesano</p>
+                <p class="text-amber-400 font-semibold mt-1">$12.990</p>
+              </div>
+            </article>
+            <article class="card-hover flex gap-4 p-4 rounded-lg bg-neutral-900/50 border border-amber-900/20">
+              <img src="./imagenes_bar/photo-1626203046629-88de33a823c8%20(2).jpg" alt="Burger" class="w-20 h-20 rounded object-cover shrink-0">
+              <div>
+                <h3 class="font-playfair text-lg text-amber-100">Burger Signature</h3>
+                <p class="text-stone-500 text-sm">Angus, cheddar ahumado, cebolla caramelizada</p>
+                <p class="text-amber-400 font-semibold mt-1">$11.990</p>
+              </div>
+            </article>
+            <article class="card-hover flex gap-4 p-4 rounded-lg bg-neutral-900/50 border border-amber-900/20">
+              <img src="./imagenes_bar/photo-1644447338949-b2538f4063c0%20(2).jpg" alt="Nachos" class="w-20 h-20 rounded object-cover shrink-0">
+              <div>
+                <h3 class="font-playfair text-lg text-amber-100">Nachos Deluxe</h3>
+                <p class="text-stone-500 text-sm">Guacamole, pico de gallo, crema agria</p>
+                <p class="text-amber-400 font-semibold mt-1">$9.490</p>
+              </div>
+            </article>
+          </div>
+
+          <div data-menu-panel="destilados" class="hidden grid sm:grid-cols-2 gap-6 font-lato">
+            <article class="card-hover p-5 rounded-xl bg-neutral-900/50 border border-amber-900/20">
+              <h3 class="font-playfair text-lg text-amber-100">Macallan 12</h3>
+              <p class="text-stone-500 text-sm">Single malt · 30 ml</p>
+              <p class="text-amber-400 font-semibold mt-1">$12.990</p>
+            </article>
+            <article class="card-hover p-5 rounded-xl bg-neutral-900/50 border border-amber-900/20">
+              <h3 class="font-playfair text-lg text-amber-100">Don Julio 1942</h3>
+              <p class="text-stone-500 text-sm">Tequila añejo · 30 ml</p>
+              <p class="text-amber-400 font-semibold mt-1">$14.990</p>
+            </article>
+            <article class="card-hover p-5 rounded-xl bg-neutral-900/50 border border-amber-900/20">
+              <h3 class="font-playfair text-lg text-amber-100">Hendrick's Gin</h3>
+              <p class="text-stone-500 text-sm">Gin premium · 30 ml</p>
+              <p class="text-amber-400 font-semibold mt-1">$6.990</p>
+            </article>
+            <article class="card-hover p-5 rounded-xl bg-neutral-900/50 border border-amber-900/20">
+              <h3 class="font-playfair text-lg text-amber-100">Patrón Silver</h3>
+              <p class="text-stone-500 text-sm">Tequila blanco · 30 ml</p>
+              <p class="text-amber-400 font-semibold mt-1">$7.490</p>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="d1-gallery" class="py-16 md:py-24 bg-neutral-900/40">
+      <div class="max-w-6xl mx-auto px-4">
+        <h2 class="text-3xl md:text-4xl font-bold text-amber-100 text-center mb-10">Ambiente</h2>
+        <div class="gallery-mosaic gallery-mosaic--classic">
+          <figure class="gallery-mosaic__item gallery-mosaic__item--span-6">
+            <img src="./imagenes_bar/photo-1598994671512-395d7a6147e0%20(2).jpg" alt="Barra iluminada After Office Futrono">
+            <figcaption class="gallery-mosaic__caption font-lato">Barra principal</figcaption>
+          </figure>
+          <figure class="gallery-mosaic__item gallery-mosaic__item--span-3">
+            <img src="./imagenes_bar/photo-1626201853293-d39a9fca6c3d.jpg" alt="Coctelería craft">
+            <figcaption class="gallery-mosaic__caption font-lato">Coctelería</figcaption>
+          </figure>
+          <figure class="gallery-mosaic__item gallery-mosaic__item--span-3">
+            <img src="./imagenes_bar/photo-1745052835300-7ed3ccedeb9e.jpg" alt="Detalle de bar">
+            <figcaption class="gallery-mosaic__caption font-lato">Detalle bar</figcaption>
+          </figure>
+          <figure class="gallery-mosaic__item gallery-mosaic__item--span-4">
+            <img src="./imagenes_bar/photo-1644447393594-86ac32d94a09.jpg" alt="Tabla para compartir">
+            <figcaption class="gallery-mosaic__caption font-lato">Para compartir</figcaption>
+          </figure>
+          <figure class="gallery-mosaic__item gallery-mosaic__item--span-4">
+            <img src="./imagenes_bar/photo-1745052844350-bbd08e7d2990.jpg" alt="Terraza nocturna Futrono">
+            <figcaption class="gallery-mosaic__caption font-lato">Noches en Futrono</figcaption>
+          </figure>
+          <figure class="gallery-mosaic__item gallery-mosaic__item--span-4">
+            <img src="./imagenes_bar/photo-1551810058-a88784bc3381%20(2).jpg" alt="Cerveza y ambiente">
+            <figcaption class="gallery-mosaic__caption font-lato">After Five</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <section id="d1-reserve" class="py-16 md:py-24">
+      <div class="max-w-xl mx-auto px-4">
+        <h2 class="text-3xl font-bold text-amber-100 text-center mb-2">Reserva tu mesa</h2>
+        <p class="font-lato text-stone-500 text-center mb-8">Confirmación en menos de 24 horas · Futrono</p>
+        <form data-reservation-form class="space-y-4 font-lato">
+          <div>
+            <label for="d1-name" class="block text-sm text-stone-400 mb-1">Nombre completo</label>
+            <input type="text" id="d1-name" name="name" required class="w-full px-4 py-3 bg-neutral-900 border border-amber-900/30 rounded text-stone-100 focus:outline-none focus:border-amber-500">
+          </div>
+          <div class="grid sm:grid-cols-2 gap-4">
+            <div>
+              <label for="d1-email" class="block text-sm text-stone-400 mb-1">Email</label>
+              <input type="email" id="d1-email" name="email" required class="w-full px-4 py-3 bg-neutral-900 border border-amber-900/30 rounded text-stone-100 focus:outline-none focus:border-amber-500">
+            </div>
+            <div>
+              <label for="d1-phone" class="block text-sm text-stone-400 mb-1">Teléfono</label>
+              <input type="tel" id="d1-phone" name="phone" required class="w-full px-4 py-3 bg-neutral-900 border border-amber-900/30 rounded text-stone-100 focus:outline-none focus:border-amber-500">
+            </div>
+          </div>
+          <div class="grid sm:grid-cols-2 gap-4">
+            <div>
+              <label for="d1-date" class="block text-sm text-stone-400 mb-1">Fecha</label>
+              <input type="date" id="d1-date" name="date" required class="w-full px-4 py-3 bg-neutral-900 border border-amber-900/30 rounded text-stone-100 focus:outline-none focus:border-amber-500">
+            </div>
+            <div>
+              <label for="d1-guests" class="block text-sm text-stone-400 mb-1">Personas</label>
+              <select id="d1-guests" name="guests" class="w-full px-4 py-3 bg-neutral-900 border border-amber-900/30 rounded text-stone-100 focus:outline-none focus:border-amber-500">
+                <option>2</option><option>3</option><option>4</option><option>5</option><option>6+</option>
+              </select>
+            </div>
+          </div>
+          <button type="submit" data-label="Confirmar reserva" class="w-full py-3 bg-amber-600 text-neutral-950 font-semibold rounded hover:bg-amber-500 transition">Confirmar reserva</button>
+          <p data-reservation-toast class="hidden text-center text-amber-400 text-sm py-2">¡Reserva enviada! Te contactaremos pronto.</p>
+        </form>
+      </div>
+    </section>
+
+    <footer class="py-12 border-t border-amber-900/20 bg-neutral-950">
+      <div class="max-w-6xl mx-auto px-4">
+        <div class="grid md:grid-cols-2 gap-8 items-start mb-8 font-lato text-sm text-stone-500">
+          <div>
+            <div class="brand-wordmark brand-wordmark--sm brand-wordmark--classic mb-3" aria-hidden="true">
+              <span class="brand-wordmark__stack">
+                <span class="brand-wordmark__condensed">After</span>
+                <span class="brand-wordmark__condensed">Office</span>
+                <span class="brand-wordmark__city">Futrono</span>
+              </span>
+            </div>
+            <p class="text-stone-300 mb-1">Gaston Guarda Parades 54, Futrono, Los Ríos</p>
+            <p class="mt-2"><a href="tel:+56993015918" class="inline-flex items-center gap-2 text-stone-300 hover:text-amber-400 transition"><i data-lucide="phone" class="w-4 h-4 text-amber-500"></i> +56 9 9301 5918</a></p>
+            <p class="flex items-center gap-2 text-amber-500/80 mt-3"><i data-lucide="clock" class="w-4 h-4"></i> Lun – Sáb · 17:00 – 02:00</p>
+            <p class="mt-1">Domingo cerrado</p>
+          </div>
+          <iframe
+            title="Ubicación After Office Resto Bar en Futrono"
+            src="about:blank"
+            data-src="https://maps.google.com/maps?q=AFTER+OFFICE+RESTO-BAR+Gaston+Guarda+Parades+54+Futrono+Los+Rios&output=embed"
+            width="100%"
+            height="280"
+            class="demo-map rounded-lg border border-amber-900/30 w-full"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            allowfullscreen>
+          </iframe>
+        </div>
+        <p class="text-center text-stone-600 text-xs">© After Office Resto Bar · Futrono</p>
+        <p class="footer-credit footer-credit--classic text-center">Desarrollado por <a href="https://www.adkiniq.cl" target="_blank" rel="noopener noreferrer">Adkiniq</a></p>
+      </div>
+    </footer>
+  </div>
+
+
+  <!-- ============================================================ -->
+  <!-- DEMO 2 — NEÓN (cyan / fuchsia / Outfit)                      -->
+  <!-- ============================================================ -->
+  <div id="demo-2" class="demo-panel demo-2 font-outfit hidden" role="tabpanel" aria-hidden="true">
+
+    <header class="demo-header-sticky sticky z-50 bg-black/90 backdrop-blur border-b border-cyan-500/20" style="background-image: linear-gradient(rgba(0,0,0,0.92), rgba(0,0,0,0.92)), repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(34,211,238,0.03) 2px, rgba(34,211,238,0.03) 4px);">
+      <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+        <a href="#d2-hero" class="brand-wordmark brand-wordmark--sm brand-wordmark--neon" aria-label="After Office Futrono">
+          <span class="brand-wordmark__stack">
+            <span class="brand-wordmark__condensed">After</span>
+            <span class="brand-wordmark__condensed">Office</span>
+            <span class="brand-wordmark__city">Futrono</span>
+          </span>
+        </a>
+        <button type="button" data-mobile-toggle="d2-mobile-menu" class="md:hidden p-2 text-cyan-400" aria-label="Abrir menú">
+          <i data-lucide="menu" class="w-6 h-6"></i>
+        </button>
+        <nav class="hidden md:flex items-center gap-6 text-sm">
+          <a href="#d2-events" class="text-stone-400 hover:text-cyan-400 transition">Eventos</a>
+          <a href="#d2-promo" class="text-stone-400 hover:text-cyan-400 transition">Promos</a>
+          <a href="#d2-menu" class="text-stone-400 hover:text-cyan-400 transition">Menú</a>
+          <a href="#d2-gallery" class="text-stone-400 hover:text-cyan-400 transition">Galería</a>
+          <a href="#d2-reserve" class="px-4 py-2 bg-fuchsia-600 text-white rounded font-semibold hover:bg-fuchsia-500 transition shadow-[0_0_20px_#ff00aa40]">Reservar</a>
+        </nav>
+      </div>
+      <nav id="d2-mobile-menu" class="hidden md:hidden border-t border-cyan-500/20 px-4 py-3 flex flex-col gap-1 text-sm">
+        <a href="#d2-events" class="text-stone-400 hover:text-cyan-400 py-2.5">Eventos</a>
+        <a href="#d2-promo" class="text-stone-400 hover:text-cyan-400 py-2.5">Promos</a>
+        <a href="#d2-menu" class="text-stone-400 hover:text-cyan-400 py-2.5">Menú</a>
+        <a href="#d2-gallery" class="text-stone-400 hover:text-cyan-400 py-2.5">Galería</a>
+        <a href="#d2-reserve" class="text-fuchsia-400 font-semibold py-2.5">Reservar</a>
+      </nav>
+    </header>
+
+    <section id="d2-hero" class="relative min-h-[70vh] sm:min-h-[80vh] flex items-center justify-center overflow-hidden bg-black px-4 py-16 sm:py-0">
+      <img src="./imagenes_bar/photo-1745052835300-7ed3ccedeb9e.jpg" alt="Club neón After Office Futrono" class="absolute inset-0 w-full h-full object-cover opacity-55 sm:scale-105">
+      <div class="absolute inset-0 bg-gradient-to-b from-black/55 via-black/40 to-black/70"></div>
+      <div class="absolute inset-0 bg-gradient-to-tr from-cyan-500/15 via-transparent to-fuchsia-500/20"></div>
+      <div class="relative text-center px-2 sm:px-4 max-w-3xl w-full">
+        <p class="brand-tagline brand-tagline--neon brand-tagline--center">Noche · Música · Drinks</p>
+        <h1 class="brand-wordmark brand-wordmark--lg brand-wordmark--neon brand-wordmark--center mb-4">
+          <span class="brand-wordmark__stack">
+            <span class="brand-wordmark__condensed">After</span>
+            <span class="brand-wordmark__condensed">Office</span>
+            <span class="brand-wordmark__city">Futrono</span>
+          </span>
+        </h1>
+        <p class="text-stone-400 text-base sm:text-lg mb-6 sm:mb-8 px-2">El punto de encuentro post-jornada en Futrono. DJ sets, shots neón y energía sin filtro.</p>
+        <a href="#d2-reserve" class="inline-block w-full sm:w-auto px-8 py-3 bg-cyan-400 text-black font-bold rounded-full hover:bg-cyan-300 transition shadow-[0_0_30px_#00bcd450] text-center">Reservar ahora</a>
+      </div>
+    </section>
+
+    <section id="d2-events" class="py-16 md:py-20 bg-black border-y border-fuchsia-500/10">
+      <div class="max-w-6xl mx-auto px-4">
+        <h2 class="text-3xl font-bold text-center neon-text-cyan mb-10">Próximos Eventos</h2>
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <article class="card-hover relative rounded-xl bg-neutral-900/80 border border-cyan-500/30 overflow-hidden">
+            <div class="h-36 overflow-hidden">
+              <img src="./imagenes_bar/photo-1745052844350-bbd08e7d2990.jpg" alt="Neon Tuesdays DJ" class="w-full h-full object-cover">
+            </div>
+            <div class="p-6">
+              <span class="absolute top-3 right-4 px-3 py-1 bg-cyan-500 text-black text-xs font-bold rounded-full uppercase">Hoy</span>
+              <h3 class="text-xl font-semibold text-white mt-1 mb-2">Neon Tuesdays</h3>
+              <p class="text-stone-500 text-sm mb-3">DJ Vortex · 22:00 – 03:00</p>
+              <p class="text-stone-400 text-sm">Shot de bienvenida + entrada free antes de las 23:00.</p>
+            </div>
+          </article>
+          <article class="card-hover relative rounded-xl bg-neutral-900/80 border border-fuchsia-500/30 overflow-hidden">
+            <div class="h-36 overflow-hidden">
+              <img src="./imagenes_bar/photo-1745052835300-7ed3ccedeb9e.jpg" alt="Fuchsia Friday live set" class="w-full h-full object-cover">
+            </div>
+            <div class="p-6">
+              <span class="absolute top-3 right-4 px-3 py-1 bg-fuchsia-500 text-white text-xs font-bold rounded-full uppercase">Este Viernes</span>
+              <h3 class="text-xl font-semibold text-white mt-1 mb-2">Fuchsia Friday</h3>
+              <p class="text-stone-500 text-sm mb-3">Live set · 23:00 – 04:00</p>
+              <p class="text-stone-400 text-sm">Dress code neón. 2×1 en gin tonic hasta medianoche.</p>
+            </div>
+          </article>
+          <article class="card-hover relative rounded-xl bg-neutral-900/80 border border-cyan-500/20 overflow-hidden sm:col-span-2 lg:col-span-1">
+            <div class="h-36 overflow-hidden">
+              <img src="./imagenes_bar/photo-1626202160883-36e0a01f69fd.jpg" alt="Karaoke Cyan" class="w-full h-full object-cover">
+            </div>
+            <div class="p-6">
+              <h3 class="text-xl font-semibold text-white mb-2">Karaoke Cyan</h3>
+              <p class="text-stone-500 text-sm mb-3">Jueves · 21:00 · Futrono</p>
+              <p class="text-stone-400 text-sm">Sube al escenario y gana una botella para tu mesa.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="d2-promo" class="py-16 bg-gradient-to-r from-cyan-950/30 to-fuchsia-950/30">
+      <div class="max-w-6xl mx-auto px-4 grid md:grid-cols-2 gap-8 items-center">
+        <img src="./imagenes_bar/photo-1745052812320-153cac8ae8ab.jpg" alt="Bebidas neón After Office" class="rounded-xl w-full aspect-video object-cover border border-cyan-500/30 card-hover">
+        <div>
+          <h2 class="text-3xl font-bold neon-text-magenta mb-4">Promo Midnight</h2>
+          <p class="text-stone-400 mb-4">De 00:00 a 02:00 en Futrono, todos los tragos con luz UV a precio especial. Pide el "Electric Blue" y brilla.</p>
+          <p class="text-4xl font-bold text-cyan-400">$5.990 <span class="text-lg text-stone-600 line-through">$8.990</span></p>
+        </div>
+      </div>
+    </section>
+
+    <section id="d2-menu" class="py-16 md:py-20">
+      <div class="max-w-6xl mx-auto px-4">
+        <h2 class="text-3xl font-bold text-center mb-10"><span class="neon-text-cyan">Menú</span> <span class="text-fuchsia-500">Nocturno</span></h2>
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <article class="card-hover rounded-lg bg-neutral-900 border border-cyan-500/20 overflow-hidden">
+            <div class="h-28 overflow-hidden">
+              <img src="./imagenes_bar/photo-1626201853293-d39a9fca6c3d.jpg" alt="Electric Blue" class="w-full h-full object-cover">
+            </div>
+            <div class="p-5">
+              <h3 class="text-cyan-400 font-semibold">Electric Blue</h3>
+              <p class="text-stone-500 text-sm mt-1">Vodka, curaçao, limón, LED cube</p>
+              <p class="text-fuchsia-400 font-bold mt-2">$6.990</p>
+            </div>
+          </article>
+          <article class="card-hover rounded-lg bg-neutral-900 border border-fuchsia-500/20 overflow-hidden">
+            <div class="h-28 overflow-hidden">
+              <img src="./imagenes_bar/photo-1745052811236-a56a0f8718d1.jpg" alt="Pink Plasma" class="w-full h-full object-cover">
+            </div>
+            <div class="p-5">
+              <h3 class="text-fuchsia-400 font-semibold">Pink Plasma</h3>
+              <p class="text-stone-500 text-sm mt-1">Gin, frambuesa, prosecco</p>
+              <p class="text-cyan-400 font-bold mt-2">$7.490</p>
+            </div>
+          </article>
+          <article class="card-hover rounded-lg bg-neutral-900 border border-cyan-500/20 overflow-hidden">
+            <div class="h-28 overflow-hidden">
+              <img src="./imagenes_bar/photo-1598994671512-395d7a6147e0%20(2).jpg" alt="Cyber Mule" class="w-full h-full object-cover">
+            </div>
+            <div class="p-5">
+              <h3 class="text-cyan-400 font-semibold">Cyber Mule</h3>
+              <p class="text-stone-500 text-sm mt-1">Vodka, ginger beer, lima</p>
+              <p class="text-fuchsia-400 font-bold mt-2">$5.990</p>
+            </div>
+          </article>
+          <article class="card-hover rounded-lg bg-neutral-900 border border-fuchsia-500/20 overflow-hidden">
+            <div class="h-28 overflow-hidden">
+              <img src="./imagenes_bar/photo-1644447338949-b2538f4063c0%20(2).jpg" alt="Nachos UV" class="w-full h-full object-cover">
+            </div>
+            <div class="p-5">
+              <h3 class="text-fuchsia-400 font-semibold">Nachos UV</h3>
+              <p class="text-stone-500 text-sm mt-1">Queso fundido, jalapeños, guacamole</p>
+              <p class="text-cyan-400 font-bold mt-2">$9.990</p>
+            </div>
+          </article>
+          <article class="card-hover rounded-lg bg-neutral-900 border border-cyan-500/20 overflow-hidden">
+            <div class="h-28 overflow-hidden">
+              <img src="./imagenes_bar/photo-1626203046629-88de33a823c8%20(2).jpg" alt="Slider Neon" class="w-full h-full object-cover">
+            </div>
+            <div class="p-5">
+              <h3 class="text-cyan-400 font-semibold">Slider Neon</h3>
+              <p class="text-stone-500 text-sm mt-1">×3 mini burgers, salsa secreta</p>
+              <p class="text-fuchsia-400 font-bold mt-2">$10.990</p>
+            </div>
+          </article>
+          <article class="card-hover rounded-lg bg-neutral-900 border border-fuchsia-500/20 overflow-hidden">
+            <div class="h-28 overflow-hidden">
+              <img src="./imagenes_bar/photo-1745052838929-39e6579e130e.jpg" alt="Shots Pack" class="w-full h-full object-cover">
+            </div>
+            <div class="p-5">
+              <h3 class="text-fuchsia-400 font-semibold">Shots Pack x6</h3>
+              <p class="text-stone-500 text-sm mt-1">Sabores surtidos de la casa</p>
+              <p class="text-cyan-400 font-bold mt-2">$12.990</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="d2-gallery" class="py-16 bg-black">
+      <div class="max-w-6xl mx-auto px-4">
+        <h2 class="text-2xl font-bold text-center neon-text-magenta mb-8">La Noche en Imágenes</h2>
+        <div class="gallery-grid-3">
+          <figure class="gallery-grid-3__cell">
+            <img src="./imagenes_bar/photo-1745052844350-bbd08e7d2990.jpg" alt="Ambiente de noche Futrono">
+          </figure>
+          <figure class="gallery-grid-3__cell">
+            <img src="./imagenes_bar/photo-1551810058-a88784bc3381%20(2).jpg" alt="Cerveza en barra">
+          </figure>
+          <figure class="gallery-grid-3__cell">
+            <img src="./imagenes_bar/photo-1598994671512-395d7a6147e0%20(2).jpg" alt="Coctelería neón">
+          </figure>
+          <figure class="gallery-grid-3__cell">
+            <img src="./imagenes_bar/photo-1626201853293-d39a9fca6c3d.jpg" alt="Drink en barra">
+          </figure>
+          <figure class="gallery-grid-3__cell">
+            <img src="./imagenes_bar/photo-1745052835300-7ed3ccedeb9e.jpg" alt="Bar nocturno">
+          </figure>
+          <figure class="gallery-grid-3__cell">
+            <img src="./imagenes_bar/photo-1626202160883-36e0a01f69fd.jpg" alt="Música en vivo">
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <section id="d2-reserve" class="py-16 border-t border-cyan-500/10">
+      <div class="max-w-lg mx-auto px-4">
+        <h2 class="text-2xl font-bold text-center neon-text-cyan mb-6">Lista VIP</h2>
+        <form data-reservation-form class="space-y-4">
+          <input type="text" name="name" placeholder="Nombre" required class="w-full px-4 py-3 bg-neutral-900 border border-cyan-500/30 rounded-lg text-white placeholder-stone-600 focus:border-cyan-400 focus:outline-none">
+          <input type="email" name="email" placeholder="Email" required class="w-full px-4 py-3 bg-neutral-900 border border-fuchsia-500/30 rounded-lg text-white placeholder-stone-600 focus:border-fuchsia-400 focus:outline-none">
+          <input type="date" name="date" required class="w-full px-4 py-3 bg-neutral-900 border border-cyan-500/30 rounded-lg text-white focus:outline-none">
+          <select name="guests" class="w-full px-4 py-3 bg-neutral-900 border border-fuchsia-500/30 rounded-lg text-white">
+            <option>2 personas</option><option>4 personas</option><option>6+ personas</option>
+          </select>
+          <button type="submit" data-label="Unirme a la lista" class="w-full py-3 bg-gradient-to-r from-cyan-500 to-fuchsia-500 text-black font-bold rounded-lg hover:opacity-90 transition">Unirme a la lista</button>
+          <p data-reservation-toast class="hidden text-center text-cyan-400 text-sm">¡Estás en la lista! Revisa tu email.</p>
+        </form>
+      </div>
+    </section>
+
+    <footer class="py-12 border-t border-stone-900 bg-black">
+      <div class="max-w-6xl mx-auto px-4">
+        <div class="grid md:grid-cols-2 gap-8 items-start mb-6 text-sm text-stone-500">
+          <div class="text-center md:text-left">
+            <div class="brand-wordmark brand-wordmark--sm brand-wordmark--neon mb-2" aria-hidden="true">
+              <span class="brand-wordmark__stack">
+                <span class="brand-wordmark__condensed">After</span>
+                <span class="brand-wordmark__condensed">Office</span>
+                <span class="brand-wordmark__city">Futrono</span>
+              </span>
+            </div>
+            <p class="text-stone-400">Gaston Guarda Parades 54, Futrono, Los Ríos</p>
+            <p class="mt-2"><a href="tel:+56993015918" class="inline-flex items-center gap-2 text-stone-400 hover:text-cyan-400 transition"><i data-lucide="phone" class="w-4 h-4 text-cyan-400"></i> +56 9 9301 5918</a></p>
+            <p class="mt-2 text-stone-500">Vie – Sáb 20:00 – 05:00</p>
+          </div>
+          <iframe
+            title="Mapa After Office Neón Futrono"
+            src="about:blank"
+            data-src="https://maps.google.com/maps?q=AFTER+OFFICE+RESTO-BAR+Gaston+Guarda+Parades+54+Futrono+Los+Rios&output=embed"
+            width="100%"
+            height="280"
+            class="demo-map rounded-lg border border-cyan-500/20 w-full"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            allowfullscreen>
+          </iframe>
+        </div>
+        <p class="text-center text-stone-600 text-xs">After Office Neón · Futrono</p>
+        <p class="footer-credit footer-credit--neon text-center">Desarrollado por <a href="https://www.adkiniq.cl" target="_blank" rel="noopener noreferrer">Adkiniq</a></p>
+      </div>
+    </footer>
+  </div>
+
+
+  <!-- ============================================================ -->
+  <!-- DEMO 3 — INDUSTRIAL / CERVECERÍA (Oswald)                    -->
+  <!-- ============================================================ -->
+  <div id="demo-3" class="demo-panel demo-3 font-oswald hidden" role="tabpanel" aria-hidden="true">
+
+    <header class="demo-header-sticky sticky z-50 border-b border-stone-700" style="background: linear-gradient(180deg, #292524 0%, #1c1917 100%);">
+      <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+        <a href="#d3-hero" class="brand-wordmark brand-wordmark--sm brand-wordmark--industrial" aria-label="After Office Futrono Cervecería">
+          <span class="brand-wordmark__stack">
+            <span class="brand-wordmark__condensed">After</span>
+            <span class="brand-wordmark__condensed">Office</span>
+            <span class="brand-wordmark__city">Futrono</span>
+          </span>
+        </a>
+        <button type="button" data-mobile-toggle="d3-mobile-menu" class="md:hidden p-2 text-orange-400" aria-label="Abrir menú">
+          <i data-lucide="menu" class="w-6 h-6"></i>
+        </button>
+        <nav class="hidden md:flex items-center gap-6 text-sm font-lato uppercase tracking-wide">
+          <a href="#d3-promo" class="text-stone-400 hover:text-orange-400 transition">Promos</a>
+          <a href="#d3-beers" class="text-stone-400 hover:text-orange-400 transition">Cervezas</a>
+          <a href="#d3-gallery" class="text-stone-400 hover:text-orange-400 transition">Galería</a>
+          <a href="#d3-reserve" class="px-4 py-2 bg-orange-600 text-white font-semibold hover:bg-orange-500 transition">Reservar</a>
+        </nav>
+      </div>
+      <nav id="d3-mobile-menu" class="hidden md:hidden border-t border-stone-700 px-4 py-3 flex flex-col gap-1 font-lato text-sm">
+        <a href="#d3-promo" class="text-stone-400 hover:text-orange-400 py-2.5">Promos</a>
+        <a href="#d3-beers" class="text-stone-400 hover:text-orange-400 py-2.5">Cervezas</a>
+        <a href="#d3-gallery" class="text-stone-400 hover:text-orange-400 py-2.5">Galería</a>
+        <a href="#d3-reserve" class="text-orange-400 font-semibold py-2.5">Reservar</a>
+      </nav>
+    </header>
+
+    <section id="d3-hero" class="relative min-h-[75vh] flex items-center overflow-hidden" style="background: #1c1917;">
+      <img src="./imagenes_bar/photo-1644447381290-85358ae625cb.jpg" alt="Cervecería After Office Futrono" class="absolute inset-0 w-full h-full object-cover mix-blend-multiply opacity-50">
+      <div class="absolute inset-0 bg-gradient-to-r from-neutral-950/95 via-neutral-950/70 to-transparent"></div>
+      <div class="relative max-w-6xl mx-auto px-4 py-16 sm:py-20 w-full">
+        <p class="brand-tagline brand-tagline--industrial">Cerveza · Cocina · Futrono</p>
+        <h1 class="brand-wordmark brand-wordmark--lg brand-wordmark--industrial mb-4">
+          <span class="brand-wordmark__stack">
+            <span class="brand-wordmark__condensed">After</span>
+            <span class="brand-wordmark__condensed">Office</span>
+            <span class="brand-wordmark__city">Futrono</span>
+          </span>
+        </h1>
+        <p class="font-lato text-stone-400 max-w-md text-lg mb-6">6 barriles rotativos, comida de pub y el sabor del lúpulo en cada schop — en el corazón de Futrono, Los Ríos.</p>
+        <a href="#d3-beers" class="inline-block px-6 py-3 bg-orange-600 text-white font-semibold uppercase tracking-wider hover:bg-orange-500 transition">Ver tablero</a>
+      </div>
+    </section>
+
+    <section id="d3-promo" class="py-14 border-y border-stone-800" style="background: linear-gradient(180deg, #292524 0%, #1c1917 100%);">
+      <div class="max-w-6xl mx-auto px-4 flex flex-col md:flex-row items-center gap-8">
+        <div class="flex-1">
+          <h2 class="text-3xl font-bold uppercase text-orange-400 mb-3">Schop del Mes</h2>
+          <p class="font-lato text-stone-400">IPA Cítrica del Sur a precio especial todo el mes en Futrono. Pide la jarra de 1 litro y comparte con el equipo.</p>
+          <p class="text-5xl font-bold text-amber-500 mt-4 font-caveat">$3.990 <span class="text-xl text-stone-600 font-oswald line-through">$4.990</span></p>
+        </div>
+        <img src="./imagenes_bar/photo-1551810058-a88784bc3381%20(2).jpg" alt="Schop de cerveza artesanal" class="w-full md:w-80 rounded-lg border-4 border-stone-700 object-cover aspect-square card-hover">
+      </div>
+    </section>
+
+    <section id="d3-beers" class="py-16 md:py-20 bg-neutral-950">
+      <div class="max-w-6xl mx-auto px-4">
+        <h2 class="text-3xl font-bold uppercase text-center text-stone-100 mb-2">Tablero de Cervezas</h2>
+        <p class="font-lato text-stone-500 text-center mb-10">Toca una cerveza para ver detalles</p>
+        <div class="grid lg:grid-cols-2 gap-8">
+          <div id="beer-board" class="chalk-board rounded-lg p-4 md:p-6 grid grid-cols-2 gap-2">
+            <button type="button" data-beer-item="ipa" class="chalk-text text-left p-3 rounded hover:bg-white/5 transition text-lg md:text-xl">① IPA Cítrica</button>
+            <button type="button" data-beer-item="stout" class="chalk-text text-left p-3 rounded hover:bg-white/5 transition text-lg md:text-xl">② Stout Ahumada</button>
+            <button type="button" data-beer-item="lager" class="chalk-text text-left p-3 rounded hover:bg-white/5 transition text-lg md:text-xl">③ Lager After Five</button>
+            <button type="button" data-beer-item="sour" class="chalk-text text-left p-3 rounded hover:bg-white/5 transition text-lg md:text-xl">④ Sour Berries</button>
+            <button type="button" data-beer-item="weizen" class="chalk-text text-left p-3 rounded hover:bg-white/5 transition text-lg md:text-xl">⑤ Weizen Niebla</button>
+            <button type="button" data-beer-item="amber" class="chalk-text text-left p-3 rounded hover:bg-white/5 transition text-lg md:text-xl">⑥ Ámbar Cobre</button>
+          </div>
+          <div id="beer-detail" class="rounded-lg p-6 md:p-8 border border-stone-700 min-h-[240px] flex flex-col justify-center" style="background: linear-gradient(180deg, #292524 0%, #1c1917 100%);">
+            <p class="chalk-text text-2xl text-stone-500">Selecciona una cerveza</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="d3-gallery" class="py-16" style="background: #292524 url('data:image/svg+xml,%3Csvg width=%2240%22 height=%2240%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cpath d=%22M0 20h40M20 0v40%22 stroke=%22%2344403c%22 stroke-width=%220.5%22 fill=%22none%22/%3E%3C/svg%3E');">
+      <div class="max-w-6xl mx-auto px-4">
+        <h2 class="text-2xl font-bold uppercase text-orange-400 mb-6 text-center">El Local</h2>
+        <div class="gallery-mosaic gallery-mosaic--industrial">
+          <figure class="gallery-mosaic__item gallery-mosaic__item--span-6">
+            <img src="./imagenes_bar/photo-1745052844350-bbd08e7d2990.jpg" alt="Ambiente pub industrial Futrono">
+            <figcaption class="gallery-mosaic__caption font-lato uppercase tracking-wider">Barriles y barra</figcaption>
+          </figure>
+          <figure class="gallery-mosaic__item gallery-mosaic__item--span-3">
+            <img src="./imagenes_bar/photo-1551810058-a88784bc3381%20(2).jpg" alt="Cerveza artesanal">
+            <figcaption class="gallery-mosaic__caption font-lato uppercase tracking-wider">Schop fresco</figcaption>
+          </figure>
+          <figure class="gallery-mosaic__item gallery-mosaic__item--span-3">
+            <img src="./imagenes_bar/photo-1745052835300-7ed3ccedeb9e.jpg" alt="Ambiente pub">
+            <figcaption class="gallery-mosaic__caption font-lato uppercase tracking-wider">Salón</figcaption>
+          </figure>
+          <figure class="gallery-mosaic__item gallery-mosaic__item--span-4">
+            <img src="./imagenes_bar/photo-1644447381290-85358ae625cb.jpg" alt="Comida pub">
+            <figcaption class="gallery-mosaic__caption font-lato uppercase tracking-wider">Cocina pub</figcaption>
+          </figure>
+          <figure class="gallery-mosaic__item gallery-mosaic__item--span-4">
+            <img src="./imagenes_bar/photo-1644447393594-86ac32d94a09.jpg" alt="Tabla compartir">
+            <figcaption class="gallery-mosaic__caption font-lato uppercase tracking-wider">Para compartir</figcaption>
+          </figure>
+          <figure class="gallery-mosaic__item gallery-mosaic__item--span-4">
+            <img src="./imagenes_bar/photo-1598994671512-395d7a6147e0%20(2).jpg" alt="Coctelería craft">
+            <figcaption class="gallery-mosaic__caption font-lato uppercase tracking-wider">Bar craft</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <section id="d3-reserve" class="py-16 bg-neutral-950">
+      <div class="max-w-lg mx-auto px-4">
+        <h2 class="text-2xl font-bold uppercase text-center mb-6">Reserva Mesa</h2>
+        <form data-reservation-form class="space-y-4 font-lato">
+          <input type="text" name="name" placeholder="Nombre" required class="w-full px-4 py-3 bg-neutral-900 border border-stone-700 rounded text-stone-100 focus:border-orange-500 focus:outline-none">
+          <input type="email" name="email" placeholder="Email" required class="w-full px-4 py-3 bg-neutral-900 border border-stone-700 rounded text-stone-100 focus:border-orange-500 focus:outline-none">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <input type="date" name="date" required class="w-full px-4 py-3 bg-neutral-900 border border-stone-700 rounded text-stone-100 focus:outline-none">
+            <select name="guests" class="w-full px-4 py-3 bg-neutral-900 border border-stone-700 rounded text-stone-100">
+              <option>2</option><option>4</option><option>6+</option>
+            </select>
+          </div>
+          <textarea name="notes" rows="2" placeholder="Comentarios (opcional)" class="w-full px-4 py-3 bg-neutral-900 border border-stone-700 rounded text-stone-100 focus:outline-none resize-none"></textarea>
+          <button type="submit" data-label="Reservar mesa" class="w-full py-3 bg-orange-600 text-white font-oswald uppercase tracking-wider font-semibold hover:bg-orange-500 transition">Reservar mesa</button>
+          <p data-reservation-toast class="hidden text-center text-orange-400 text-sm">¡Mesa reservada! Nos vemos pronto.</p>
+        </form>
+      </div>
+    </section>
+
+    <footer class="py-12 border-t border-stone-800" style="background: linear-gradient(180deg, #292524 0%, #1c1917 100%);">
+      <div class="max-w-6xl mx-auto px-4">
+        <div class="grid md:grid-cols-2 gap-8 items-start mb-6 font-lato text-sm text-stone-500">
+          <div class="text-center md:text-left">
+            <div class="brand-wordmark brand-wordmark--sm brand-wordmark--industrial mb-3 inline-block" aria-hidden="true">
+              <span class="brand-wordmark__stack">
+                <span class="brand-wordmark__condensed">After</span>
+                <span class="brand-wordmark__condensed">Office</span>
+                <span class="brand-wordmark__city">Futrono</span>
+              </span>
+            </div>
+            <p class="font-lato text-stone-400 text-xs uppercase tracking-widest mb-2">Cervecería</p>
+            <p class="text-stone-300">Gaston Guarda Parades 54, Futrono, Los Ríos</p>
+            <p class="mt-2"><a href="tel:+56993015918" class="inline-flex items-center gap-2 text-stone-300 hover:text-orange-400 transition"><i data-lucide="phone" class="w-4 h-4 text-orange-400"></i> +56 9 9301 5918</a></p>
+            <p class="mt-2">Mar – Dom · 18:00 – 01:00</p>
+          </div>
+          <iframe
+            title="Mapa After Office Cervecería Futrono"
+            src="about:blank"
+            data-src="https://maps.google.com/maps?q=AFTER+OFFICE+RESTO-BAR+Gaston+Guarda+Parades+54+Futrono+Los+Rios&output=embed"
+            width="100%"
+            height="280"
+            class="demo-map rounded-lg border border-stone-700 w-full"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            allowfullscreen>
+          </iframe>
+        </div>
+        <p class="text-center text-stone-600 text-xs">After Office · Futrono, Los Ríos</p>
+        <p class="footer-credit footer-credit--industrial text-center">Desarrollado por <a href="https://www.adkiniq.cl" target="_blank" rel="noopener noreferrer">Adkiniq</a></p>
+      </div>
+    </footer>
+  </div>
+
+
+  <!-- WhatsApp FAB -->
+  <div class="wa-fab">
+    <span class="wa-fab__tooltip font-lato">Reservar por WhatsApp</span>
+    <a href="https://wa.me/56993015918?text=Hola,%20me%20gustar%C3%ADa%20hacer%20una%20reserva%20en%20After%20Office%20Resto-Bar" class="wa-fab__btn" target="_blank" rel="noopener noreferrer" aria-label="Contactar por WhatsApp al +56 9 9301 5918">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.435 9.884-9.881 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+      </svg>
+    </a>
+  </div>
+
+  <script defer src="./js/demo1-menu.js"></script>
+  <script defer src="./js/demo3-beer.js"></script>
+  <script defer src="./js/main.js"></script>
+</body>
+</html>
