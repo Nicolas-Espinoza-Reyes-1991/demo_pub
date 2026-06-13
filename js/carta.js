@@ -122,7 +122,7 @@
         'role="button" tabindex="0" aria-label="Ver ' + name + '" ' +
         'style="--carta-reveal-delay:' + delay + 's">' +
         '<div class="carta-item__img-wrap neon-border">' +
-          '<img data-img="' + img + '" alt="' + name + '" loading="lazy" decoding="async" width="88" height="88">' +
+          '<img class="site-img-motion" data-img="' + img + '" alt="' + name + '" loading="lazy" decoding="async" width="88" height="88">' +
         '</div>' +
         '<div class="carta-item__body">' +
           '<h3 class="carta-item__title font-outfit">' + name + '</h3>' +

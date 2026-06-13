@@ -144,6 +144,43 @@
   scroll-margin-top: var(--site-sticky-top, 7rem);
 }
 
+/* —— Imágenes: movimiento unificado (Ken Burns + zoom al hover) —— */
+.site-neon .site-img-motion,
+.site-neon .carta-preview-card__img,
+.site-neon .juego-tile__img,
+.site-neon.carta-page .carta-item__img-wrap img {
+  animation: siteImgKenBurns 24s ease-in-out infinite alternate;
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), filter 0.35s ease;
+}
+
+@keyframes siteImgKenBurns {
+  from { transform: scale(1) translate(0, 0); }
+  to { transform: scale(1.07) translate(-1%, -0.5%); }
+}
+
+.site-neon .site-img-frame:hover .site-img-motion,
+.site-neon .card-hover:hover .site-img-motion,
+.site-neon .disco-stage:hover .site-img-motion,
+.site-neon .carta-preview-card:hover .carta-preview-card__img,
+.site-neon .juego-tile:hover .juego-tile__img,
+.site-neon.carta-page .carta-item:hover .carta-item__img-wrap img {
+  animation-play-state: paused;
+  transform: scale(1.06);
+  filter: brightness(1.06) saturate(1.08);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-neon .site-img-motion,
+  .site-neon .carta-preview-card__img,
+  .site-neon .juego-tile__img,
+  .site-neon.carta-page .carta-item__img-wrap img {
+    animation: none !important;
+    transform: none !important;
+    filter: none !important;
+    transition: none !important;
+  }
+}
+
 .zone-card {
   position: relative;
   border-radius: 1rem;
@@ -376,12 +413,6 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), filter 0.35s ease;
-}
-
-.carta-preview-card:hover .carta-preview-card__img {
-  transform: scale(1.06);
-  filter: brightness(1.06) saturate(1.08);
 }
 
 .carta-preview-card__tag {
@@ -574,6 +605,7 @@
   }
 
   .carta-preview-card:hover .carta-preview-card__img {
+    animation: none;
     transform: none;
     filter: none;
   }
@@ -583,11 +615,6 @@
   .site-neon .carta-preview-card:hover {
     transform: none;
     box-shadow: none;
-  }
-
-  .site-neon .carta-preview-card:hover .carta-preview-card__img {
-    transform: none;
-    filter: none;
   }
 
   .site-neon .carta-preview-cta:hover {
@@ -810,12 +837,6 @@
   z-index: 2;
   border-radius: calc(1rem - var(--juego-neon-frame));
   object-fit: cover;
-  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), filter 0.35s ease;
-}
-
-.juego-tile:hover .juego-tile__img {
-  transform: scale(1.08);
-  filter: brightness(1.08) saturate(1.12);
 }
 
 .juego-tile__badge {
@@ -907,7 +928,9 @@
   }
 
   .juego-tile:hover .juego-tile__img {
+    animation: none;
     transform: none;
+    filter: none;
   }
 }
 
@@ -1231,7 +1254,6 @@ body.nav-open .site-section-nav-wrap { z-index: 30; }
   .site-neon .card-hover:hover,
   .site-neon .social-link:hover,
   .site-neon .juego-tile:hover { transform: none; box-shadow: none; }
-  .site-neon .juego-tile:hover .juego-tile__img { transform: none; filter: none; }
   .site-neon .juego-tile:hover::before { animation-duration: 3.5s; }
 }
 
@@ -2825,14 +2847,6 @@ body.carta-modal-open .wa-fab--carta {
   color: rgba(34, 211, 238, 0.85);
 }
 
-.site-neon.carta-page .carta-item__img-wrap img {
-  transition: transform 0.35s ease;
-}
-
-.site-neon.carta-page .carta-item:hover .carta-item__img-wrap img {
-  transform: scale(1.04);
-}
-
 /* —— Modal detalle de producto —— */
 .site-neon.carta-page .carta-product-modal {
   position: fixed;
@@ -3069,7 +3083,9 @@ body.carta-modal-open .wa-fab--carta {
   }
 
   .site-neon.carta-page .carta-item:hover .carta-item__img-wrap img {
+    animation: none;
     transform: none;
+    filter: none;
   }
 
   .site-neon.carta-page .carta-item__tap {
@@ -3081,10 +3097,6 @@ body.carta-modal-open .wa-fab--carta {
 @media (hover: none) and (pointer: coarse) {
   .site-neon.carta-page .carta-item__tap {
     opacity: 0.75;
-    transform: none;
-  }
-
-  .site-neon.carta-page .carta-item:hover .carta-item__img-wrap img {
     transform: none;
   }
 
@@ -3486,11 +3498,6 @@ body.carta-modal-open .wa-fab--carta {
   .site-neon .carta-preview-cta:hover {
     transform: none;
     box-shadow: none;
-  }
-
-  .site-neon .carta-preview-card:hover .carta-preview-card__img {
-    transform: none;
-    filter: none;
   }
 
   .site-neon .carta-preview-cta:hover .carta-preview-cta__arrow {
