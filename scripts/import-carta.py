@@ -126,8 +126,6 @@ def main():
             continue
         tab_id = sec["id"]
         label = re.sub(r"\s+", " ", sec["name"].strip())
-        if len(label) > 30:
-            label = label[:27].rstrip() + "…"
         tabs.append({"id": tab_id, "label": label})
         items[tab_id] = prods
 

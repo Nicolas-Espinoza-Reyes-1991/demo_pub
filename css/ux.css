@@ -24,19 +24,62 @@
   inset: 0;
   overflow: hidden;
 }
+.hero-bg--carousel {
+  background: #000;
+  z-index: 0;
+}
+.hero-bg--carousel::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: rgba(0, 0, 0, 0.14);
+  pointer-events: none;
+}
+.hero-bg__slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity var(--hero-fade-ms, 1.4s) ease-in-out;
+  will-change: opacity;
+  pointer-events: none;
+}
+.hero-bg--carousel-reduced .hero-bg__slide {
+  transition: none;
+}
+.hero-bg__slide.is-active {
+  opacity: 1;
+  z-index: 1;
+}
+.hero-bg--carousel .hero-bg__slide.is-active {
+  opacity: 0.55;
+}
+.hero-bg--carousel .hero-bg__slide--lit.is-active {
+  opacity: 0.4;
+}
 .hero-bg__img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  animation: heroKenBurns 18s ease-in-out infinite alternate;
   transform-origin: center center;
+}
+.hero-bg:not(.hero-bg--carousel) .hero-bg__img,
+.hero-bg:not(.hero-bg--carousel) .hero-bg__img.opacity-55 {
+  opacity: 0.55;
+}
+.hero-bg--carousel .hero-bg__img {
+  opacity: 1 !important;
+}
+.hero-bg__slide.is-active .hero-bg__img {
+  animation: heroKenBurns 18s ease-in-out infinite alternate;
 }
 @keyframes heroKenBurns {
   from { transform: scale(1) translate(0, 0); }
   to { transform: scale(1.08) translate(-1%, -1%); }
 }
 @media (prefers-reduced-motion: reduce) {
-  .hero-bg__img { animation: none; }
+  .hero-bg__slide { transition: none; }
+  .hero-bg__slide.is-active .hero-bg__img { animation: none; }
   .reveal { opacity: 1; transform: none; }
   .hero-badge--pulse .hero-badge__dot { animation: none; }
 }

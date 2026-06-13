@@ -283,8 +283,61 @@
     setTimeout(openPopup, delay);
   }
 
-  document.documentElement.classList.remove('no-js');
-  document.addEventListener('DOMContentLoaded', function () {
+  function initHeroCarousel() {
+    var carousel = document.querySelector('.hero-bg--carousel');
+    if (!carousel) return;
+
+    var slides = carousel.querySelectorAll('.hero-bg__slide');
+    if (slides.length < 2) return;
+
+    var index = 0;
+    var intervalMs = 5500;
+    var timer = null;
+    var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var fadeMs = reducedMotion ? 0 : 1400;
+
+    carousel.style.setProperty('--hero-fade-ms', fadeMs + 'ms');
+    if (reducedMotion) {
+      carousel.classList.add('hero-bg--carousel-reduced');
+    }
+
+    slides.forEach(function (slide) {
+      var img = slide.querySelector('img');
+      if (img && img.src) {
+        var preload = new Image();
+        preload.src = img.getAttribute('src');
+      }
+    });
+
+    function showSlide(next) {
+      slides[index].classList.remove('is-active');
+      index = (next + slides.length) % slides.length;
+      slides[index].classList.add('is-active');
+    }
+
+    function tick() {
+      showSlide(index + 1);
+    }
+
+    function start() {
+      if (timer) return;
+      timer = setInterval(tick, intervalMs);
+    }
+
+    function stop() {
+      if (!timer) return;
+      clearInterval(timer);
+      timer = null;
+    }
+
+    start();
+    document.addEventListener('visibilitychange', function () {
+      if (document.hidden) stop();
+      else start();
+    });
+  }
+
+  function bootSite() {
     document.body.classList.add('has-site-mobile-bar');
     createIcons();
     initStickyOffsets();
@@ -296,7 +349,15 @@
     initForm();
     initHashScroll();
     initEventPopup();
+    initHeroCarousel();
     updateOpenBadges();
     setInterval(updateOpenBadges, 60000);
-  });
+  }
+
+  document.documentElement.classList.remove('no-js');
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', bootSite);
+  } else {
+    bootSite();
+  }
 })();

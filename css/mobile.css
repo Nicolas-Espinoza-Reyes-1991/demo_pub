@@ -206,6 +206,17 @@
     padding-left: 1rem;
     padding-right: 1rem;
   }
+
+  /* Landing After Office */
+  .site-neon #pub-karaoke .grid,
+  .site-neon #eventos .grid,
+  .site-neon #contacto .grid {
+    gap: 1rem;
+  }
+
+  .site-neon #pub-karaoke .aspect-\[4\/3\] {
+    min-height: 14rem;
+  }
 }
 
 @media (min-width: 768px) {
@@ -229,25 +240,23 @@
 /* —— Carta móvil —— */
 @media (max-width: 767px) {
   .carta-page {
-    padding-bottom: calc(5rem + env(safe-area-inset-bottom, 0px));
+    padding-bottom: calc(1.5rem + env(safe-area-inset-bottom, 0px));
   }
-  .carta-header {
-    padding-top: env(safe-area-inset-top, 0px);
-  }
-  .carta-back {
+
+  .carta-back--hero {
+    min-width: 44px;
     min-height: 44px;
-    display: inline-flex;
-    align-items: center;
-    font-size: 0.8125rem;
   }
+
   .carta-sticky-tools {
     position: sticky;
-    top: calc(3.25rem + env(safe-area-inset-top, 0px));
+    top: env(safe-area-inset-top, 0px);
     z-index: 35;
-    margin: 0 -1rem;
-    padding: 0.65rem 1rem 0.75rem;
+    margin: 0 calc(-1 * clamp(0.75rem, 4vw, 1rem));
+    padding: 0.65rem clamp(0.75rem, 4vw, 1rem) 0.75rem;
     background: linear-gradient(180deg, rgba(10, 10, 10, 0.98) 75%, rgba(10, 10, 10, 0) 100%);
     backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     overflow: visible;
   }
   .carta-tabs {
@@ -309,16 +318,43 @@
     width: 4.5rem;
     height: 4.5rem;
   }
-  .carta-item__title { font-size: 1.125rem; }
+  .carta-item__title { font-size: 1.0625rem; line-height: 1.3; }
+  .carta-item__desc {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
   .carta-item:active {
     transform: scale(0.99);
     opacity: 0.95;
   }
   .carta-hero-mini { padding-top: 0.25rem; }
-  .carta-title { font-size: 1.625rem !important; }
-  .wa-fab--carta .wa-fab__btn {
-    width: 3.5rem;
-    height: 3.5rem;
+  .carta-title { font-size: clamp(1.5rem, 6vw, 1.75rem) !important; }
+  .carta-subtitle { font-size: 0.8125rem; }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .carta-page .carta-main {
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+  }
+
+  .carta-item__img-wrap {
+    width: 5.25rem;
+    height: 5.25rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .carta-tab {
+    min-height: 2.25rem;
+    padding: 0.5rem 1rem;
+  }
+
+  .carta-sections-btn {
+    width: 2.75rem;
+    height: 2.75rem;
   }
 }
 

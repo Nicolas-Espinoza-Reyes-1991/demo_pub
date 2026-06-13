@@ -21,9 +21,9 @@
   <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous">
   <link rel="stylesheet" href="./css/demos.css">
-  <link rel="stylesheet" href="./css/ux.css">
+  <link rel="stylesheet" href="./css/ux.css?v=hero-dark-fix">
   <link rel="stylesheet" href="./css/mobile.css">
-  <link rel="stylesheet" href="./css/sitio.css">
+  <link rel="stylesheet" href="./css/sitio.css?v=responsive-scale-up">
   <script defer src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js"></script>
 </head>
 <body class="site-neon demo-2 font-outfit bg-black text-stone-100 antialiased">
@@ -80,11 +80,19 @@
 
   <!-- BANNER -->
   <section id="inicio" class="hero-section relative min-h-[88vh] sm:min-h-[92vh] flex items-center justify-center overflow-hidden bg-black px-4 py-20">
-    <div class="hero-bg">
-      <img src="./imagenes_sitio/hero-interior.jpg" alt="Salón principal de After Office Resto-Bar con clientes disfrutando la noche" class="hero-bg__img opacity-55" fetchpriority="high">
+    <div class="hero-bg hero-bg--carousel" aria-hidden="true">
+      <div class="hero-bg__slide is-active">
+        <img src="./imagenes_sitio/hero-interior.jpg" alt="" class="hero-bg__img" fetchpriority="high" decoding="async">
+      </div>
+      <div class="hero-bg__slide hero-bg__slide--lit">
+        <img src="./imagenes_sitio/disco-pista-neon.jpg" alt="" class="hero-bg__img" decoding="async">
+      </div>
+      <div class="hero-bg__slide hero-bg__slide--lit">
+        <img src="./imagenes_sitio/karaoke-live.jpg" alt="" class="hero-bg__img" decoding="async">
+      </div>
     </div>
-    <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-black/45 to-black"></div>
-    <div class="absolute inset-0 bg-gradient-to-tr from-cyan-500/15 via-transparent to-fuchsia-500/20"></div>
+    <div class="absolute inset-0 z-[1] bg-gradient-to-b from-black/60 via-black/45 to-black"></div>
+    <div class="absolute inset-0 z-[1] bg-gradient-to-tr from-cyan-500/15 via-transparent to-fuchsia-500/20"></div>
     <div class="relative text-center px-2 max-w-4xl w-full z-10">
       <div class="hero-badges font-lato justify-center mb-5">
         <span class="hero-badge hero-badge--pulse hero-badge--neon" data-open-badge><span class="hero-badge__dot"></span> <span data-open-text>Abierto ahora</span></span>
@@ -110,7 +118,7 @@
   <div class="trust-bar trust-bar--neon max-w-6xl mx-auto reveal-site">
     <div class="trust-bar__item"><div class="trust-bar__value">KARAOKE</div><div class="trust-bar__label">Escenario<br>y micrófonos</div></div>
     <div class="trust-bar__item"><div class="trust-bar__value">FOOD</div><div class="trust-bar__label">Carta nocturna<br>hasta tarde</div></div>
-    <div class="trust-bar__item"><div class="trust-bar__value">PLAY</div><div class="trust-bar__label">Pool · Dardos<br>· Arcade</div></div>
+    <div class="trust-bar__item"><div class="trust-bar__value">PLAY</div><div class="trust-bar__label">Party · Cartas<br>· Ruleta</div></div>
     <div class="trust-bar__item"><div class="trust-bar__value">DJ</div><div class="trust-bar__label">Pista disco<br>vie y sáb</div></div>
   </div>
 
@@ -138,30 +146,111 @@
     </div>
   </section>
 
-  <!-- COMIDA -->
-  <section id="comida" class="site-section py-16 md:py-24 reveal-site">
-    <div class="max-w-6xl mx-auto px-4">
-      <div class="text-center max-w-2xl mx-auto mb-12">
+  <!-- COMIDA & TRAGOS -->
+  <section id="comida" class="carta-preview-section site-section py-12 md:py-16 lg:py-20 reveal-site">
+    <div class="carta-preview-section__glow" aria-hidden="true"></div>
+    <div class="max-w-6xl mx-auto px-4 relative z-[1]">
+      <div class="carta-preview-header text-center max-w-2xl mx-auto">
         <span class="section-eyebrow">Carta nocturna</span>
-        <h2 class="section-heading"><span class="neon-text-cyan">Comida</span> <span class="text-stone-500 font-normal text-2xl">para compartir</span></h2>
-        <p class="text-stone-400">Pichangas, burgers, picoteos y platos pensados para acompañar tragos, karaoke y pista de baile.</p>
+        <h2 class="section-heading"><span class="neon-text-cyan">Comida</span> <span class="neon-text-magenta">& tragos</span></h2>
+        <p class="carta-preview-header__desc text-stone-400">Lo mejor de nuestra carta para compartir en mesa: cocina nocturna y coctelería de barra.</p>
       </div>
-      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
-        <article class="card-hover rounded-xl bg-neutral-900 border border-cyan-500/20 overflow-hidden">
-          <div class="h-36 overflow-hidden"><img src="./imagenes_sitio/comida-pichanga.jpg" alt="Pichanga con papas fritas, queso y carne en After Office" class="w-full h-full object-cover object-center" loading="lazy"></div>
-          <div class="p-5"><h3 class="text-cyan-400 font-semibold text-lg">Pichanga Neon</h3><p class="text-stone-500 text-sm mt-1">Papas cargadas, queso, carne y pimientos</p><p class="text-fuchsia-400 font-bold mt-3">$9.990</p></div>
-        </article>
-        <article class="card-hover rounded-xl bg-neutral-900 border border-fuchsia-500/20 overflow-hidden">
-          <div class="h-36 overflow-hidden"><img src="./imagenes_sitio/comida-burger.jpg" alt="Burger con papas fritas servido en After Office Futrono" class="w-full h-full object-cover object-center" loading="lazy"></div>
-          <div class="p-5"><h3 class="text-fuchsia-400 font-semibold text-lg">Burger Neon</h3><p class="text-stone-500 text-sm mt-1">Doble burger, queso fundido y papas fritas</p><p class="text-cyan-400 font-bold mt-3">$10.990</p></div>
-        </article>
-        <article class="card-hover rounded-xl bg-neutral-900 border border-cyan-500/20 overflow-hidden">
-          <div class="h-36 overflow-hidden"><img src="./imagenes_sitio/comida-camarones.jpg" alt="Picoteo de camarones con pan tostado en After Office" class="w-full h-full object-cover object-[center_35%]" loading="lazy"></div>
-          <div class="p-5"><h3 class="text-cyan-400 font-semibold text-lg">Picoteo de Camarones</h3><p class="text-stone-500 text-sm mt-1">Camarones, cebolla morada y pan tostado</p><p class="text-fuchsia-400 font-bold mt-3">$15.990</p></div>
-        </article>
+
+      <div class="carta-preview-blocks">
+      <div class="carta-preview-block">
+        <div class="carta-preview-block__head">
+          <span class="carta-preview-block__icon carta-preview-block__icon--cyan"><i data-lucide="utensils" class="w-4 h-4"></i></span>
+          <h3 class="carta-preview-block__title">Comidas</h3>
+        </div>
+        <div class="carta-preview-grid">
+          <a href="carta.html" class="carta-preview-card carta-preview-card--cyan">
+            <div class="carta-preview-card__img-wrap">
+              <img src="./imagenes_carta/432134_1742215796.webp" alt="Pichanga de la casa en After Office" class="carta-preview-card__img" loading="lazy">
+              <span class="carta-preview-card__tag">Para compartir</span>
+            </div>
+            <div class="carta-preview-card__body">
+              <h4 class="carta-preview-card__name">Pichanga de la Casa</h4>
+              <p class="carta-preview-card__desc">Papas fritas, cerdo, pollo, chorizo, queso y palta</p>
+              <p class="carta-preview-card__price">$14.990</p>
+            </div>
+          </a>
+          <a href="carta.html" class="carta-preview-card carta-preview-card--magenta">
+            <div class="carta-preview-card__img-wrap">
+              <img src="./imagenes_carta/425344_1741124654.webp" alt="Guacamole Burger casera" class="carta-preview-card__img" loading="lazy">
+              <span class="carta-preview-card__tag">Hamburguesa</span>
+            </div>
+            <div class="carta-preview-card__body">
+              <h4 class="carta-preview-card__name">Guacamole Burger</h4>
+              <p class="carta-preview-card__desc">100% casera, guacamole, queso y pan frica</p>
+              <p class="carta-preview-card__price">$9.990</p>
+            </div>
+          </a>
+          <a href="carta.html" class="carta-preview-card carta-preview-card--cyan">
+            <div class="carta-preview-card__img-wrap">
+              <img src="./imagenes_carta/433474_1741295498.webp" alt="Ceviche individual de camarón" class="carta-preview-card__img" loading="lazy">
+              <span class="carta-preview-card__tag">Picoteo</span>
+            </div>
+            <div class="carta-preview-card__body">
+              <h4 class="carta-preview-card__name">Ceviche Individual</h4>
+              <p class="carta-preview-card__desc">Camarón ecuatoriano, palta, choclo y tostadas</p>
+              <p class="carta-preview-card__price">$6.900</p>
+            </div>
+          </a>
+        </div>
       </div>
-      <div class="text-center mt-10">
-        <a href="carta.html" class="demo-carta-cta demo-carta-cta--neon"><i data-lucide="utensils" class="w-5 h-5"></i> Ver menú completo</a>
+
+      <div class="carta-preview-block">
+        <div class="carta-preview-block__head">
+          <span class="carta-preview-block__icon carta-preview-block__icon--magenta"><i data-lucide="wine" class="w-4 h-4"></i></span>
+          <h3 class="carta-preview-block__title">Tragos</h3>
+        </div>
+        <div class="carta-preview-grid">
+          <a href="carta.html" class="carta-preview-card carta-preview-card--magenta">
+            <div class="carta-preview-card__img-wrap">
+              <img src="./imagenes_carta/425419_1739918857.webp" alt="Aperol Spritz en After Office" class="carta-preview-card__img" loading="lazy">
+              <span class="carta-preview-card__tag">Barra</span>
+            </div>
+            <div class="carta-preview-card__body">
+              <h4 class="carta-preview-card__name">Aperol Spritz</h4>
+              <p class="carta-preview-card__desc">Aperol, espumante brut y agua mineral</p>
+              <p class="carta-preview-card__price">$5.990</p>
+            </div>
+          </a>
+          <a href="carta.html" class="carta-preview-card carta-preview-card--cyan">
+            <div class="carta-preview-card__img-wrap">
+              <img src="./imagenes_carta/439248_1742216201.webp" alt="Mojito cubano 500 cc" class="carta-preview-card__img" loading="lazy">
+              <span class="carta-preview-card__tag">Mojito</span>
+            </div>
+            <div class="carta-preview-card__body">
+              <h4 class="carta-preview-card__name">Mojito Cubano</h4>
+              <p class="carta-preview-card__desc">Hierva buena, ron blanco, limón y soda</p>
+              <p class="carta-preview-card__price">$5.500</p>
+            </div>
+          </a>
+          <a href="carta.html" class="carta-preview-card carta-preview-card--magenta">
+            <div class="carta-preview-card__img-wrap">
+              <img src="./imagenes_carta/433580_1741301409.webp" alt="Pisco Sour clásico" class="carta-preview-card__img" loading="lazy">
+              <span class="carta-preview-card__tag">Clásico</span>
+            </div>
+            <div class="carta-preview-card__body">
+              <h4 class="carta-preview-card__name">Pisco Sour</h4>
+              <p class="carta-preview-card__desc">Pisco, jugo de limón natural y goma</p>
+              <p class="carta-preview-card__price">$5.000</p>
+            </div>
+          </a>
+        </div>
+      </div>
+      </div>
+
+      <div class="carta-preview-cta-wrap">
+        <a href="carta.html" class="carta-preview-cta">
+          <span class="carta-preview-cta__shine" aria-hidden="true"></span>
+          <span class="carta-preview-cta__glow" aria-hidden="true"></span>
+          <i data-lucide="book-open" class="w-5 h-5"></i>
+          <span>Ver carta completa</span>
+          <i data-lucide="arrow-right" class="carta-preview-cta__arrow w-5 h-5"></i>
+        </a>
+        <p class="carta-preview-cta__hint font-lato">Más de 200 opciones · comida, cervezas, coctelería y promos</p>
       </div>
     </div>
   </section>
@@ -207,40 +296,72 @@
   </section>
 
   <!-- JUEGO -->
-  <section id="juego" class="site-section py-16 md:py-24 reveal-site">
-    <div class="max-w-6xl mx-auto px-4">
-      <div class="grid lg:grid-cols-2 gap-10 items-start">
-        <div>
+  <section id="juego" class="juego-section site-section py-16 md:py-24 reveal-site">
+    <div class="juego-section__glow juego-section__glow--cyan" aria-hidden="true"></div>
+    <div class="juego-section__glow juego-section__glow--magenta" aria-hidden="true"></div>
+    <div class="max-w-6xl mx-auto px-4 relative z-[1]">
+      <div class="grid lg:grid-cols-5 gap-10 lg:gap-12 items-start">
+        <div class="lg:col-span-2 lg:sticky lg:top-28">
           <span class="section-eyebrow">Zona recreativa</span>
           <h2 class="section-heading"><span class="neon-text-magenta">Juego</span> <span class="text-stone-500 font-normal text-2xl">& diversión</span></h2>
-          <p class="text-stone-400 text-base sm:text-lg leading-relaxed mb-8">Antes o después de la pista, reta a tus amigos en nuestra zona de juegos. Tragos en mano, competencia sana y premios de la casa.</p>
+          <p class="text-stone-400 text-base sm:text-lg leading-relaxed mb-6">Antes o después del karaoke o la pista, pide juegos en tu mesa. Party games, cartas y ruleta — tragos en mano, risas aseguradas y préstamo sin costo.</p>
+          <ul class="space-y-3 text-stone-300 font-lato text-sm sm:text-base mb-8">
+            <li class="flex items-start gap-3"><i data-lucide="gift" class="w-5 h-5 text-fuchsia-400 shrink-0 mt-0.5"></i> Préstamo gratuito en mesa · solicítalo al garzón</li>
+            <li class="flex items-start gap-3"><i data-lucide="sparkles" class="w-5 h-5 text-cyan-400 shrink-0 mt-0.5"></i> Party games para grupos y noches largas</li>
+            <li class="flex items-start gap-3"><i data-lucide="layers" class="w-5 h-5 text-fuchsia-400 shrink-0 mt-0.5"></i> Barajas clásicas y juegos de mesa</li>
+            <li class="flex items-start gap-3"><i data-lucide="wine" class="w-5 h-5 text-cyan-400 shrink-0 mt-0.5"></i> Ruleta del beber para animar la noche</li>
+          </ul>
+          <a href="carta.html" class="btn-cta btn-cta--neon-outline inline-flex"><i data-lucide="gamepad-2" class="w-5 h-5"></i> Ver carta de juegos</a>
         </div>
-        <div>
-          <div class="rounded-2xl overflow-hidden border border-fuchsia-500/25 mb-4 aspect-[16/9] lg:aspect-[4/3]">
-            <img src="./imagenes_sitio/juego-zona.jpg" alt="Zona de diversión y ambiente nocturno en After Office" class="w-full h-full object-cover" loading="lazy">
+        <div class="lg:col-span-3">
+          <div class="juego-showcase">
+            <a href="carta.html" class="juego-tile">
+              <img src="./imagenes_carta/707021_1776380863.webp" alt="Curao, Volao o Weón" class="juego-tile__img" loading="lazy">
+              <span class="juego-tile__badge">Gratis</span>
+              <span class="juego-tile__label">Curao Volao o Weón</span>
+            </a>
+            <a href="carta.html" class="juego-tile juego-tile--magenta">
+              <img src="./imagenes_carta/707027_1776380944.webp" alt="Basta" class="juego-tile__img" loading="lazy">
+              <span class="juego-tile__badge">Gratis</span>
+              <span class="juego-tile__label">Basta</span>
+            </a>
+            <a href="carta.html" class="juego-tile">
+              <img src="./imagenes_carta/707030_1776381048.webp" alt="Chupilca" class="juego-tile__img" loading="lazy">
+              <span class="juego-tile__badge">Gratis</span>
+              <span class="juego-tile__label">Chupilca</span>
+            </a>
+            <a href="carta.html" class="juego-tile juego-tile--magenta">
+              <img src="./imagenes_carta/707033_1776381187.webp" alt="Palta Borracha" class="juego-tile__img" loading="lazy">
+              <span class="juego-tile__badge">Gratis</span>
+              <span class="juego-tile__label">Palta Borracha</span>
+            </a>
+            <a href="carta.html" class="juego-tile">
+              <img src="./imagenes_carta/707037_1776381327.webp" alt="Cartas Inglesa" class="juego-tile__img" loading="lazy">
+              <span class="juego-tile__badge">Gratis</span>
+              <span class="juego-tile__label">Cartas Inglesa</span>
+            </a>
+            <a href="carta.html" class="juego-tile juego-tile--magenta">
+              <img src="./imagenes_carta/707039_1776381380.webp" alt="Carta Española" class="juego-tile__img" loading="lazy">
+              <span class="juego-tile__badge">Gratis</span>
+              <span class="juego-tile__label">Carta Española</span>
+            </a>
+            <a href="carta.html" class="juego-tile">
+              <img src="./imagenes_carta/707042_1776381534.webp" alt="Carta Uno" class="juego-tile__img" loading="lazy">
+              <span class="juego-tile__badge">Gratis</span>
+              <span class="juego-tile__label">Carta Uno</span>
+            </a>
+            <a href="carta.html" class="juego-tile juego-tile--magenta">
+              <img src="./imagenes_carta/709691_1776810840.webp" alt="Bachillerato" class="juego-tile__img" loading="lazy">
+              <span class="juego-tile__badge">Gratis</span>
+              <span class="juego-tile__label">Bachillerato</span>
+            </a>
+            <a href="carta.html" class="juego-tile">
+              <img src="./imagenes_carta/709693_1776810897.webp" alt="Ruleta del beber" class="juego-tile__img" loading="lazy">
+              <span class="juego-tile__badge">Gratis</span>
+              <span class="juego-tile__label">Ruleta del beber</span>
+            </a>
           </div>
-          <div class="grid sm:grid-cols-2 gap-4">
-          <div class="zone-card p-6">
-            <div class="zone-card__icon"><i data-lucide="circle-dot" class="w-6 h-6"></i></div>
-            <h3 class="text-white font-semibold text-lg mb-2">Pool Pro</h3>
-            <p class="text-stone-500 text-sm">2 mesas profesionales · Torneo mensual con premio en consumo.</p>
-          </div>
-          <div class="zone-card zone-card--magenta p-6">
-            <div class="zone-card__icon"><i data-lucide="target" class="w-6 h-6"></i></div>
-            <h3 class="text-white font-semibold text-lg mb-2">Dardos LED</h3>
-            <p class="text-stone-500 text-sm">Marcador digital · Desafíos entre mesas los miércoles.</p>
-          </div>
-          <div class="zone-card p-6">
-            <div class="zone-card__icon"><i data-lucide="gamepad-2" class="w-6 h-6"></i></div>
-            <h3 class="text-white font-semibold text-lg mb-2">Arcade Retro</h3>
-            <p class="text-stone-500 text-sm">Clásicos arcade y trivia en pantalla para grupos.</p>
-          </div>
-          <div class="zone-card zone-card--magenta p-6">
-            <div class="zone-card__icon"><i data-lucide="dice-5" class="w-6 h-6"></i></div>
-            <h3 class="text-white font-semibold text-lg mb-2">Juegos de Mesa</h3>
-            <p class="text-stone-500 text-sm">Cartas, dados y party games disponibles en barra.</p>
-          </div>
-          </div>
+          <p class="juego-showcase__hint font-lato"><span class="juego-showcase__dot" aria-hidden="true"></span>9 juegos disponibles · préstamo sin costo en mesa</p>
         </div>
       </div>
     </div>
@@ -390,6 +511,6 @@
     </div>
   </div>
 
-  <script src="./js/sitio.js"></script>
+  <script src="./js/sitio.js?v=hero-carousel-fix"></script>
 </body>
 </html>

@@ -9,12 +9,6 @@
       .replace(/"/g, '&quot;');
   }
 
-  function shortLabel(label, max) {
-    var s = String(label || '').replace(/\s+/g, ' ').trim();
-    if (s.length <= max) return s;
-    return s.slice(0, max - 1) + '…';
-  }
-
   function showCartaError(msg) {
     var list = document.getElementById('carta-list');
     if (list) {
@@ -28,7 +22,10 @@
     body.classList.remove('carta-page--classic', 'carta-page--industrial', 'font-playfair', 'font-oswald');
 
     var back = document.getElementById('carta-back');
-    if (back) back.setAttribute('href', 'index.html#inicio');
+    if (back) {
+      back.setAttribute('href', 'index.html#inicio');
+      back.className = 'carta-back carta-back--hero font-lato';
+    }
 
     var title = document.getElementById('carta-title');
     if (title) {
@@ -44,7 +41,7 @@
 
     var brand = document.getElementById('carta-brand');
     if (brand) {
-      brand.className = 'brand-wordmark brand-wordmark--sm brand-wordmark--neon text-center flex-1';
+      brand.className = 'carta-logo carta-logo--hero';
       brand.setAttribute('href', 'index.html#inicio');
     }
 
@@ -103,6 +100,13 @@
     return hay.indexOf(query) !== -1;
   }
 
+  function itemShowsPrice(item) {
+    var price = String(item && item.price != null ? item.price : '').trim();
+    if (!price) return false;
+    var digits = price.replace(/[^\d]/g, '');
+    return digits !== '' && parseInt(digits, 10) > 0;
+  }
+
   function renderItemCard(item, sectionLabel) {
     var key = 'k' + (itemAnimIndex++);
     itemRegistry[key] = { item: item, section: sectionLabel || '' };
@@ -110,6 +114,9 @@
     var name = escapeHtml(item.name);
     var desc = escapeHtml(item.desc);
     var img = escapeHtml(item.img);
+    var footPrice = itemShowsPrice(item)
+      ? '<span class="carta-item__price">' + escapeHtml(item.price) + '</span>'
+      : '<span class="carta-item__request font-lato">Solicitar al garzón</span>';
     return (
       '<article class="carta-item carta-item--reveal card-hover" data-carta-item-key="' + key + '" ' +
         'role="button" tabindex="0" aria-label="Ver ' + name + '" ' +
@@ -121,7 +128,7 @@
           '<h3 class="carta-item__title font-outfit">' + name + '</h3>' +
           '<p class="carta-item__desc font-lato">' + desc + '</p>' +
           '<div class="carta-item__foot">' +
-            '<span class="carta-item__price">' + escapeHtml(item.price) + '</span>' +
+            footPrice +
             (item.tags && item.tags.length ? '<span class="carta-item__tags font-lato">' + item.tags.slice(0, 2).map(function (t) {
               return '<span class="carta-item__tag">' + escapeHtml(t) + '</span>';
             }).join('') + '</span>' : '') +
@@ -144,13 +151,12 @@
     );
     html += tabs.map(function (t) {
       var on = t.id === active;
-      var label = escapeHtml(shortLabel(t.label, 16));
-      var full = escapeHtml(t.label);
+      var label = escapeHtml(t.label);
       return (
         '<button type="button" role="tab" aria-selected="' + on + '" ' +
         'data-carta-tab="' + escapeHtml(t.id) + '" ' +
-        'class="carta-tab' + (on ? ' carta-tab--active' : '') + '" ' +
-        'title="' + full + '">' + label + '</button>'
+        'class="carta-tab' + (on ? ' carta-tab--active' : '') + '">' +
+        label + '</button>'
       );
     }).join('');
     nav.innerHTML = html;
@@ -248,13 +254,15 @@
     if (window.AOImages) AOImages.initImages(list);
   }
 
+  function getStickyOffset() {
+    var sticky = document.querySelector('.carta-sticky-tools');
+    return (sticky ? sticky.offsetHeight : 0) + 12;
+  }
+
   function scrollToSection(sectionId) {
     var target = document.getElementById('carta-' + sectionId);
     if (!target) return;
-    var sticky = document.querySelector('.carta-sticky-tools');
-    var header = document.querySelector('.carta-header');
-    var offset = (sticky ? sticky.offsetHeight : 0) + (header ? header.offsetHeight : 0) + 12;
-    var top = target.getBoundingClientRect().top + window.scrollY - offset;
+    var top = target.getBoundingClientRect().top + window.scrollY - getStickyOffset();
     window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
   }
 
@@ -374,7 +382,17 @@
       }
       if (titleEl) titleEl.textContent = item.name;
       if (descEl) descEl.textContent = item.desc || 'Consulta con tu garzón';
-      if (priceEl) priceEl.textContent = item.price;
+      if (priceEl) {
+        if (itemShowsPrice(item)) {
+          priceEl.textContent = item.price;
+          priceEl.hidden = false;
+          priceEl.classList.remove('carta-product-modal__price--request');
+        } else {
+          priceEl.textContent = 'Solicitar al garzón';
+          priceEl.hidden = false;
+          priceEl.classList.add('carta-product-modal__price--request');
+        }
+      }
       if (tagsEl) {
         tagsEl.innerHTML = (item.tags || []).map(function (t) {
           return '<span class="carta-item__tag">' + escapeHtml(t) + '</span>';
@@ -441,6 +459,65 @@
 
     window.__cartaCloseProduct = closeProduct;
     window.__cartaProductOpen = function () { return !modal.hidden; };
+  }
+
+  function initClickCaret() {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    var layer = document.createElement('div');
+    layer.className = 'carta-click-caret-layer';
+    layer.setAttribute('aria-hidden', 'true');
+    document.body.appendChild(layer);
+
+    var activeCaret = null;
+    var hideTimer = null;
+
+    function modalOpen() {
+      var productModal = document.getElementById('carta-product-modal');
+      var sheet = document.getElementById('carta-sections-sheet');
+      return (productModal && !productModal.hidden) || (sheet && !sheet.hidden);
+    }
+
+    function isBlocked(target) {
+      if (!target) return true;
+      if (modalOpen()) return true;
+      return !!target.closest('input, textarea, select');
+    }
+
+    function hideCaret(caret) {
+      if (caret && caret.parentNode) caret.parentNode.removeChild(caret);
+      if (activeCaret === caret) activeCaret = null;
+    }
+
+    function showCaret(clientX, clientY) {
+      if (activeCaret) hideCaret(activeCaret);
+      if (hideTimer) {
+        clearTimeout(hideTimer);
+        hideTimer = null;
+      }
+
+      var pad = 6;
+      var x = Math.max(pad, Math.min(clientX, window.innerWidth - pad));
+      var y = Math.max(pad, Math.min(clientY, window.innerHeight - pad));
+
+      var caret = document.createElement('span');
+      caret.className = 'carta-click-caret';
+      caret.style.left = x + 'px';
+      caret.style.top = y + 'px';
+      layer.appendChild(caret);
+      activeCaret = caret;
+
+      hideTimer = setTimeout(function () {
+        caret.classList.add('is-fading');
+        setTimeout(function () { hideCaret(caret); }, 380);
+      }, 2200);
+    }
+
+    document.addEventListener('pointerdown', function (e) {
+      if (e.button !== 0) return;
+      if (isBlocked(e.target)) return;
+      showCaret(e.clientX, e.clientY);
+    });
   }
 
   function initSectionSheet(setActiveFn) {
@@ -531,12 +608,9 @@
             return;
           }
         }
-        var sticky = document.querySelector('.carta-sticky-tools');
-        var header = document.querySelector('.carta-header');
-        var offset = (sticky ? sticky.offsetHeight : 0) + (header ? header.offsetHeight : 0) + 12;
         var listEl = document.getElementById('carta-list');
         if (listEl) {
-          var top = listEl.getBoundingClientRect().top + window.scrollY - offset;
+          var top = listEl.getBoundingClientRect().top + window.scrollY - getStickyOffset();
           window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
         }
       });
@@ -577,6 +651,7 @@
     initTabsScroll();
     initSectionSheet(setActive);
     initProductModal();
+    initClickCaret();
     initNeonPulse();
 
     document.body.classList.add('carta-page-ready');
