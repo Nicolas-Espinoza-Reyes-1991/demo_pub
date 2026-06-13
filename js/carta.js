@@ -66,10 +66,47 @@
     document.title = 'Menú Nocturno · After Office Futrono';
   }
 
+  var ALL_SECTIONS_ID = '__all__';
+
+  function matchesQuery(item, query) {
+    var hay = (item.name + ' ' + item.desc + ' ' + (item.tags || []).join(' ')).toLowerCase();
+    return hay.indexOf(query) !== -1;
+  }
+
+  function renderItemCard(item) {
+    var name = escapeHtml(item.name);
+    var desc = escapeHtml(item.desc);
+    var img = escapeHtml(item.img);
+    return (
+      '<article class="carta-item card-hover" data-name="' + name.toLowerCase() + '">' +
+        '<div class="carta-item__img-wrap neon-border">' +
+          '<img data-img="' + img + '" alt="' + name + '" loading="lazy" decoding="async" width="88" height="88">' +
+        '</div>' +
+        '<div class="carta-item__body">' +
+          '<h3 class="carta-item__title font-outfit">' + name + '</h3>' +
+          '<p class="carta-item__desc font-lato">' + desc + '</p>' +
+          '<div class="carta-item__foot">' +
+            '<span class="carta-item__price">' + escapeHtml(item.price) + '</span>' +
+            (item.tags && item.tags.length ? '<span class="carta-item__tags font-lato">' + item.tags.slice(0, 2).map(function (t) {
+              return '<span class="carta-item__tag">' + escapeHtml(t) + '</span>';
+            }).join('') + '</span>' : '') +
+          '</div>' +
+        '</div>' +
+      '</article>'
+    );
+  }
+
   function renderTabs(tabs, active) {
     var nav = document.getElementById('carta-tabs');
     if (!nav) return;
-    nav.innerHTML = tabs.map(function (t) {
+    var showAll = active === null || active === ALL_SECTIONS_ID;
+    var html = (
+      '<button type="button" role="tab" aria-selected="' + showAll + '" ' +
+      'data-carta-tab="' + ALL_SECTIONS_ID + '" ' +
+      'class="carta-tab' + (showAll ? ' carta-tab--active' : '') + '" ' +
+      'title="Ver carta completa">Todos</button>'
+    );
+    html += tabs.map(function (t) {
       var on = t.id === active;
       var label = escapeHtml(shortLabel(t.label, 16));
       var full = escapeHtml(t.label);
@@ -80,12 +117,23 @@
         'title="' + full + '">' + label + '</button>'
       );
     }).join('');
+    nav.innerHTML = html;
   }
 
   function renderSectionsSheet(tabs, active) {
     var list = document.getElementById('carta-sections-list');
     if (!list) return;
-    list.innerHTML = tabs.map(function (t, i) {
+    var showAll = active === null || active === ALL_SECTIONS_ID;
+    var html = (
+      '<li class="carta-sheet__item-wrap">' +
+        '<button type="button" class="carta-sheet__item' + (showAll ? ' carta-sheet__item--active' : '') + '" ' +
+        'data-carta-sheet-tab="' + ALL_SECTIONS_ID + '">' +
+          '<span class="carta-sheet__item-num">★</span>' +
+          '<span class="carta-sheet__item-label">Ver carta completa</span>' +
+        '</button>' +
+      '</li>'
+    );
+    html += tabs.map(function (t, i) {
       var on = t.id === active;
       return (
         '<li class="carta-sheet__item-wrap">' +
@@ -97,63 +145,68 @@
         '</li>'
       );
     }).join('');
+    list.innerHTML = html;
   }
 
-  function collectItems(items, category, query) {
-    var q = (query || '').trim().toLowerCase();
-    var pool = [];
-
-    if (q) {
-      Object.keys(items).forEach(function (cat) {
-        (items[cat] || []).forEach(function (item) {
-          var hay = (item.name + ' ' + item.desc + ' ' + (item.tags || []).join(' ')).toLowerCase();
-          if (hay.indexOf(q) !== -1) pool.push(item);
-        });
-      });
-      return pool;
-    }
-
-    return (items[category] || []).slice();
-  }
-
-  function renderItems(items, category, query) {
+  function renderItems(items, tabs, category, query) {
     var list = document.getElementById('carta-list');
     if (!list) return;
 
-    var catItems = collectItems(items, category, query);
-    var q = (query || '').trim();
+    var q = (query || '').trim().toLowerCase();
+    var parts = [];
+    var hasResults = false;
 
-    if (!catItems.length) {
+    if (q) {
+      tabs.forEach(function (tab) {
+        var catItems = (items[tab.id] || []).filter(function (item) { return matchesQuery(item, q); });
+        if (!catItems.length) return;
+        hasResults = true;
+        parts.push(
+          '<section class="carta-section" id="carta-' + escapeHtml(tab.id) + '">' +
+            '<h2 class="carta-section__title font-outfit">' + escapeHtml(tab.label) + '</h2>' +
+            '<div class="carta-section__items">' + catItems.map(renderItemCard).join('') + '</div>' +
+          '</section>'
+        );
+      });
+    } else if (category === null || category === ALL_SECTIONS_ID) {
+      tabs.forEach(function (tab) {
+        var catItems = items[tab.id] || [];
+        if (!catItems.length) return;
+        hasResults = true;
+        parts.push(
+          '<section class="carta-section" id="carta-' + escapeHtml(tab.id) + '">' +
+            '<h2 class="carta-section__title font-outfit">' + escapeHtml(tab.label) + '</h2>' +
+            '<div class="carta-section__items">' + catItems.map(renderItemCard).join('') + '</div>' +
+          '</section>'
+        );
+      });
+    } else {
+      var single = items[category] || [];
+      if (single.length) {
+        hasResults = true;
+        parts.push('<div class="carta-section__items">' + single.map(renderItemCard).join('') + '</div>');
+      }
+    }
+
+    if (!hasResults) {
       list.innerHTML = '<p class="carta-empty font-lato">' +
         (q ? 'No encontramos platos con ese filtro.' : 'No hay productos en esta sección.') +
         '</p>';
       return;
     }
 
-    list.innerHTML = catItems.map(function (item) {
-      var name = escapeHtml(item.name);
-      var desc = escapeHtml(item.desc);
-      var img = escapeHtml(item.img);
-      return (
-        '<article class="carta-item card-hover" data-name="' + name.toLowerCase() + '">' +
-          '<div class="carta-item__img-wrap neon-border">' +
-            '<img data-img="' + img + '" alt="' + name + '" loading="lazy" decoding="async" width="88" height="88">' +
-          '</div>' +
-          '<div class="carta-item__body">' +
-            '<h3 class="carta-item__title font-outfit">' + name + '</h3>' +
-            '<p class="carta-item__desc font-lato">' + desc + '</p>' +
-            '<div class="carta-item__foot">' +
-              '<span class="carta-item__price">' + escapeHtml(item.price) + '</span>' +
-              (item.tags && item.tags.length ? '<span class="carta-item__tags font-lato">' + item.tags.slice(0, 2).map(function (t) {
-                return '<span class="carta-item__tag">' + escapeHtml(t) + '</span>';
-              }).join('') + '</span>' : '') +
-            '</div>' +
-          '</div>' +
-        '</article>'
-      );
-    }).join('');
-
+    list.innerHTML = parts.join('');
     if (window.AOImages) AOImages.initImages(list);
+  }
+
+  function scrollToSection(sectionId) {
+    var target = document.getElementById('carta-' + sectionId);
+    if (!target) return;
+    var sticky = document.querySelector('.carta-sticky-tools');
+    var header = document.querySelector('.carta-header');
+    var offset = (sticky ? sticky.offsetHeight : 0) + (header ? header.offsetHeight : 0) + 12;
+    var top = target.getBoundingClientRect().top + window.scrollY - offset;
+    window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
   }
 
   function updateSearchUI(query) {
@@ -304,7 +357,7 @@
       list.addEventListener('click', function (e) {
         var btn = e.target.closest('[data-carta-sheet-tab]');
         if (!btn) return;
-        setActiveFn(btn.getAttribute('data-carta-sheet-tab'), true);
+        setActiveFn(btn.getAttribute('data-carta-sheet-tab'), btn.getAttribute('data-carta-sheet-tab') !== ALL_SECTIONS_ID);
         closeSheet();
       });
     }
@@ -330,31 +383,42 @@
 
     var tabs = config.tabs;
     var items = config.items;
-    var active = tabs[0].id;
+    var active = null;
     var search = document.getElementById('carta-search');
     var tabsNav = document.getElementById('carta-tabs');
 
-    function setActive(id, scrollToProducts) {
-      active = id;
+    function normalizeCategory(id) {
+      return id === ALL_SECTIONS_ID ? null : id;
+    }
+
+    function setActive(id, scrollToList) {
+      active = normalizeCategory(id);
       refresh();
-      if (scrollToProducts) {
+      if (!scrollToList) return;
+      requestAnimationFrame(function () {
+        if (active) {
+          var section = document.getElementById('carta-' + active);
+          if (section) {
+            scrollToSection(active);
+            return;
+          }
+        }
         var sticky = document.querySelector('.carta-sticky-tools');
+        var header = document.querySelector('.carta-header');
+        var offset = (sticky ? sticky.offsetHeight : 0) + (header ? header.offsetHeight : 0) + 12;
         var listEl = document.getElementById('carta-list');
         if (listEl) {
-          var top = listEl.getBoundingClientRect().top + window.scrollY;
-          var offset = sticky ? sticky.offsetHeight + 12 : 12;
-          var header = document.querySelector('.carta-header');
-          if (header) offset += header.offsetHeight;
-          window.scrollTo({ top: Math.max(0, top - offset), behavior: 'smooth' });
+          var top = listEl.getBoundingClientRect().top + window.scrollY - offset;
+          window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
         }
-      }
+      });
     }
 
     function refresh() {
       var query = search ? search.value : '';
       renderTabs(tabs, active);
       renderSectionsSheet(tabs, active);
-      renderItems(items, active, query);
+      renderItems(items, tabs, active, query);
       updateSearchUI(query);
       requestAnimationFrame(function () {
         scrollActiveTabIntoView();
@@ -366,13 +430,18 @@
       tabsNav.addEventListener('click', function (e) {
         var btn = e.target.closest('[data-carta-tab]');
         if (!btn) return;
-        setActive(btn.getAttribute('data-carta-tab'));
+        var id = btn.getAttribute('data-carta-tab');
+        if (id === ALL_SECTIONS_ID) {
+          setActive(null);
+          return;
+        }
+        setActive(id, false);
       });
     }
 
     if (search) {
       search.addEventListener('input', function () {
-        renderItems(items, active, search.value);
+        renderItems(items, tabs, active, search.value);
         updateSearchUI(search.value);
       });
     }

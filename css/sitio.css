@@ -1102,6 +1102,38 @@ body.event-popup-open .wa-fab {
   text-shadow: 0 0 10px rgba(34, 211, 238, 0.4);
 }
 
+.site-neon.carta-page .carta-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.site-neon.carta-page .carta-section {
+  scroll-margin-top: 11rem;
+}
+
+.site-neon.carta-page .carta-section + .carta-section {
+  margin-top: 1.75rem;
+}
+
+.site-neon.carta-page .carta-section__title {
+  margin: 0 0 0.85rem;
+  padding-bottom: 0.55rem;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #e879f9;
+  border-bottom: 1px solid rgba(217, 70, 239, 0.35);
+  text-shadow: 0 0 12px rgba(217, 70, 239, 0.35);
+}
+
+.site-neon.carta-page .carta-section__items {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
 .site-neon.carta-page .carta-item {
   background: linear-gradient(135deg, rgba(10, 10, 10, 0.95), rgba(15, 10, 20, 0.9));
   border: 1px solid rgba(217, 70, 239, 0.25);
