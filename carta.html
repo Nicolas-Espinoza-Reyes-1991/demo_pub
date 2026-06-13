@@ -57,22 +57,20 @@
         <input type="search" id="carta-search" class="carta-search" placeholder="Buscar plato o bebida…" autocomplete="off" enterkeyhint="search">
       </div>
       <div class="carta-nav">
-        <label for="carta-category" class="carta-nav__label font-lato">Ir a sección</label>
-        <select id="carta-category" class="carta-category-select font-lato" aria-label="Seleccionar sección del menú"></select>
         <div class="carta-tabs-wrap" data-carta-tabs-wrap>
           <button type="button" class="carta-tabs-scroll carta-tabs-scroll--prev" data-carta-scroll="prev" aria-label="Categorías anteriores" hidden>
             <span aria-hidden="true">‹</span>
           </button>
-          <div id="carta-tabs" class="carta-tabs" role="tablist" aria-label="Categorías de la carta"></div>
+          <nav id="carta-tabs" class="carta-tabs" aria-label="Ir a sección del menú"></nav>
           <button type="button" class="carta-tabs-scroll carta-tabs-scroll--next" data-carta-scroll="next" aria-label="Más categorías" hidden>
             <span aria-hidden="true">›</span>
           </button>
         </div>
-        <p class="carta-nav__hint font-lato" id="carta-nav-hint"></p>
+        <p class="carta-nav__hint font-lato" id="carta-nav-hint">Desliza y toca una sección para ir directo</p>
       </div>
     </div>
 
-    <div id="carta-list" class="carta-list mt-4" role="tabpanel" aria-live="polite"></div>
+    <div id="carta-list" class="carta-list mt-4" aria-live="polite"></div>
 
     <p class="text-center text-stone-500 text-xs mt-8 leading-relaxed font-lato">
       Precios referenciales · consulta disponibilidad con tu garzón.<br>

@@ -254,10 +254,6 @@
     padding-bottom: 0.35rem;
   }
   .carta-tab { scroll-snap-align: center; }
-  .carta-category-select {
-    min-height: 48px;
-    font-size: 16px !important;
-  }
   .carta-tabs-scroll {
     min-width: 44px;
     min-height: 44px;

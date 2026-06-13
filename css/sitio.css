@@ -809,39 +809,6 @@ body.event-popup-open .wa-fab {
   margin-top: 0.25rem;
 }
 
-.site-neon.carta-page .carta-nav__label {
-  display: block;
-  font-size: 0.6875rem;
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: #d946ef;
-  margin-bottom: 0.4rem;
-}
-
-.site-neon.carta-page .carta-category-select {
-  width: 100%;
-  appearance: none;
-  -webkit-appearance: none;
-  padding: 0.75rem 2.5rem 0.75rem 1rem;
-  margin-bottom: 0.75rem;
-  border-radius: 0.75rem;
-  border: 1px solid rgba(34, 211, 238, 0.4);
-  background:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2322d3ee' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E") no-repeat right 0.85rem center,
-    rgba(0, 0, 0, 0.88);
-  color: #fafaf9;
-  font-size: 0.9375rem;
-  font-weight: 600;
-  outline: none;
-  box-shadow: 0 0 16px rgba(34, 211, 238, 0.1);
-}
-
-.site-neon.carta-page .carta-category-select:focus {
-  border-color: #22d3ee;
-  box-shadow: 0 0 20px rgba(34, 211, 238, 0.25);
-}
-
 .site-neon.carta-page .carta-tabs-wrap {
   position: relative;
   display: flex;
@@ -945,6 +912,38 @@ body.event-popup-open .wa-fab {
   border-color: rgba(34, 211, 238, 0.5) !important;
   box-shadow: 0 0 16px rgba(34, 211, 238, 0.2);
   text-shadow: 0 0 10px rgba(34, 211, 238, 0.4);
+}
+
+.site-neon.carta-page .carta-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.site-neon.carta-page .carta-section {
+  scroll-margin-top: 11rem;
+}
+
+.site-neon.carta-page .carta-section + .carta-section {
+  margin-top: 1.75rem;
+}
+
+.site-neon.carta-page .carta-section__title {
+  margin: 0 0 0.85rem;
+  padding-bottom: 0.55rem;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #e879f9;
+  border-bottom: 1px solid rgba(217, 70, 239, 0.35);
+  text-shadow: 0 0 12px rgba(217, 70, 239, 0.35);
+}
+
+.site-neon.carta-page .carta-section__items {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
 }
 
 .site-neon.carta-page .carta-item {

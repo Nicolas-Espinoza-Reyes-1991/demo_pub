@@ -3,6 +3,12 @@
 
   var WA_URL = 'https://wa.me/56993015918?text=' + encodeURIComponent('Hola, estoy en mesa y quisiera hacer un pedido en After Office Resto-Bar');
 
+  var activeSection = '';
+  var sectionObserver = null;
+  var jumpLock = false;
+  var jumpTimer = null;
+  var cartaTabs = [];
+
   function escapeHtml(str) {
     return String(str || '')
       .replace(/&/g, '&amp;')
@@ -66,14 +72,32 @@
     document.title = 'Menú Nocturno · After Office Futrono';
   }
 
-  function renderCategorySelect(tabs, active) {
-    var select = document.getElementById('carta-category');
-    if (!select) return;
-    select.innerHTML = tabs.map(function (t) {
-      var sel = t.id === active ? ' selected' : '';
-      return '<option value="' + escapeHtml(t.id) + '"' + sel + '>' + escapeHtml(t.label) + '</option>';
-    }).join('');
-    select.value = active;
+  function matchesQuery(item, query) {
+    var hay = (item.name + ' ' + item.desc + ' ' + (item.tags || []).join(' ')).toLowerCase();
+    return hay.indexOf(query) !== -1;
+  }
+
+  function renderItemCard(item) {
+    var name = escapeHtml(item.name);
+    var desc = escapeHtml(item.desc);
+    var img = escapeHtml(item.img);
+    return (
+      '<article class="carta-item card-hover" data-name="' + name.toLowerCase() + '">' +
+        '<div class="carta-item__img-wrap neon-border">' +
+          '<img data-img="' + img + '" alt="' + name + '" loading="lazy" decoding="async" width="88" height="88">' +
+        '</div>' +
+        '<div class="carta-item__body">' +
+          '<h3 class="carta-item__title font-outfit">' + name + '</h3>' +
+          '<p class="carta-item__desc font-lato">' + desc + '</p>' +
+          '<div class="carta-item__foot">' +
+            '<span class="carta-item__price">' + escapeHtml(item.price) + '</span>' +
+            (item.tags && item.tags.length ? '<span class="carta-item__tags font-lato">' + item.tags.slice(0, 2).map(function (t) {
+              return '<span class="carta-item__tag">' + escapeHtml(t) + '</span>';
+            }).join('') + '</span>' : '') +
+          '</div>' +
+        '</div>' +
+      '</article>'
+    );
   }
 
   function renderTabs(tabs, active) {
@@ -84,69 +108,61 @@
       var label = escapeHtml(shortLabel(t.label, 18));
       var full = escapeHtml(t.label);
       return (
-        '<button type="button" role="tab" aria-selected="' + on + '" ' +
-        'data-carta-tab="' + escapeHtml(t.id) + '" ' +
+        '<button type="button" data-carta-jump="' + escapeHtml(t.id) + '" ' +
         'class="carta-tab' + (on ? ' carta-tab--active' : '') + '" ' +
         'title="' + full + '">' + label + '</button>'
       );
     }).join('');
   }
 
-  function collectItems(items, category, query) {
-    var q = (query || '').trim().toLowerCase();
-    var pool = [];
-
-    if (q) {
-      Object.keys(items).forEach(function (cat) {
-        (items[cat] || []).forEach(function (item) {
-          var hay = (item.name + ' ' + item.desc + ' ' + (item.tags || []).join(' ')).toLowerCase();
-          if (hay.indexOf(q) !== -1) pool.push(item);
-        });
+  function setActiveSection(id, scrollTab) {
+    if (!id || activeSection === id) return;
+    activeSection = id;
+    renderTabs(cartaTabs, id);
+    if (scrollTab) {
+      requestAnimationFrame(function () {
+        scrollActiveTabIntoView();
       });
-      return pool;
     }
-
-    return (items[category] || []).slice();
   }
 
-  function renderItems(items, category, query) {
+  function renderFullMenu(tabs, items, query) {
     var list = document.getElementById('carta-list');
     if (!list) return;
 
-    var catItems = collectItems(items, category, query);
-    var q = (query || '').trim();
+    var q = (query || '').trim().toLowerCase();
+    var parts = [];
+    var hasResults = false;
 
-    if (!catItems.length) {
+    tabs.forEach(function (tab) {
+      var catItems = items[tab.id] || [];
+      if (q) {
+        catItems = catItems.filter(function (item) { return matchesQuery(item, q); });
+      }
+      if (!catItems.length) return;
+
+      hasResults = true;
+      parts.push(
+        '<section id="carta-' + escapeHtml(tab.id) + '" class="carta-section" data-carta-section="' + escapeHtml(tab.id) + '">' +
+          '<h2 class="carta-section__title font-outfit">' + escapeHtml(tab.label) + '</h2>' +
+          '<div class="carta-section__items">' +
+            catItems.map(renderItemCard).join('') +
+          '</div>' +
+        '</section>'
+      );
+    });
+
+    if (!hasResults) {
       list.innerHTML = '<p class="carta-empty font-lato">' +
-        (q ? 'No encontramos platos con ese filtro.' : 'No hay productos en esta sección.') +
+        (q ? 'No encontramos platos con ese filtro.' : 'No hay productos en la carta.') +
         '</p>';
+      disconnectSectionObserver();
       return;
     }
 
-    list.innerHTML = catItems.map(function (item) {
-      var name = escapeHtml(item.name);
-      var desc = escapeHtml(item.desc);
-      var img = escapeHtml(item.img);
-      return (
-        '<article class="carta-item card-hover" data-name="' + name.toLowerCase() + '">' +
-          '<div class="carta-item__img-wrap neon-border">' +
-            '<img data-img="' + img + '" alt="' + name + '" loading="lazy" decoding="async" width="88" height="88">' +
-          '</div>' +
-          '<div class="carta-item__body">' +
-            '<h3 class="carta-item__title font-outfit">' + name + '</h3>' +
-            '<p class="carta-item__desc font-lato">' + desc + '</p>' +
-            '<div class="carta-item__foot">' +
-              '<span class="carta-item__price">' + escapeHtml(item.price) + '</span>' +
-              (item.tags && item.tags.length ? '<span class="carta-item__tags font-lato">' + item.tags.slice(0, 2).map(function (t) {
-                return '<span class="carta-item__tag">' + escapeHtml(t) + '</span>';
-              }).join('') + '</span>' : '') +
-            '</div>' +
-          '</div>' +
-        '</article>'
-      );
-    }).join('');
-
+    list.innerHTML = parts.join('');
     if (window.AOImages) AOImages.initImages(list);
+    initSectionObserver(tabs);
   }
 
   function scrollActiveTabIntoView() {
@@ -201,18 +217,70 @@
     updateTabsScrollState();
   }
 
-  function updateNavHint(tabs, active, query) {
+  function disconnectSectionObserver() {
+    if (sectionObserver) {
+      sectionObserver.disconnect();
+      sectionObserver = null;
+    }
+  }
+
+  function initSectionObserver(tabs) {
+    disconnectSectionObserver();
+
+    var sections = document.querySelectorAll('[data-carta-section]');
+    if (!sections.length) return;
+
+    if (!activeSection || !document.getElementById('carta-' + activeSection)) {
+      activeSection = tabs[0] ? tabs[0].id : '';
+      renderTabs(tabs, activeSection);
+    }
+
+    sectionObserver = new IntersectionObserver(function (entries) {
+      if (jumpLock) return;
+
+      var visible = entries
+        .filter(function (e) { return e.isIntersecting; })
+        .sort(function (a, b) { return b.intersectionRatio - a.intersectionRatio; });
+
+      if (!visible.length) return;
+      var id = visible[0].target.getAttribute('data-carta-section');
+      if (id) setActiveSection(id, true);
+    }, {
+      root: null,
+      rootMargin: '-11rem 0px -55% 0px',
+      threshold: [0, 0.15, 0.35, 0.6]
+    });
+
+    sections.forEach(function (section) {
+      sectionObserver.observe(section);
+    });
+  }
+
+  function jumpToSection(id) {
+    var target = document.getElementById('carta-' + id);
+    if (!target) return;
+
+    jumpLock = true;
+    if (jumpTimer) clearTimeout(jumpTimer);
+
+    setActiveSection(id, true);
+    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+    jumpTimer = setTimeout(function () {
+      jumpLock = false;
+    }, 700);
+  }
+
+  function updateNavHint(query, tabs) {
     var hint = document.getElementById('carta-nav-hint');
     if (!hint) return;
 
     if ((query || '').trim()) {
-      hint.textContent = 'Buscando en todas las secciones';
+      hint.textContent = 'Resultados en todas las secciones';
       return;
     }
 
-    var current = tabs.find(function (t) { return t.id === active; });
-    var index = tabs.findIndex(function (t) { return t.id === active; });
-    hint.textContent = (index + 1) + ' de ' + tabs.length + ' · ' + (current ? current.label : '');
+    hint.textContent = tabs.length + ' secciones · desliza y toca para ir directo';
   }
 
   function init() {
@@ -231,46 +299,31 @@
 
     var tabs = config.tabs;
     var items = config.items;
-    var active = tabs[0].id;
     var search = document.getElementById('carta-search');
     var tabsNav = document.getElementById('carta-tabs');
-    var categorySelect = document.getElementById('carta-category');
 
-    function setActive(id) {
-      active = id;
-      refresh();
-    }
+    cartaTabs = tabs;
+    activeSection = tabs[0].id;
 
     function refresh() {
       var query = search ? search.value : '';
-      renderCategorySelect(tabs, active);
-      renderTabs(tabs, active);
-      renderItems(items, active, query);
-      updateNavHint(tabs, active, query);
-      requestAnimationFrame(function () {
-        scrollActiveTabIntoView();
-        updateTabsScrollState();
-      });
+      renderFullMenu(tabs, items, query);
+      updateNavHint(query, tabs);
+      requestAnimationFrame(updateTabsScrollState);
     }
 
     if (tabsNav) {
       tabsNav.addEventListener('click', function (e) {
-        var btn = e.target.closest('[data-carta-tab]');
+        var btn = e.target.closest('[data-carta-jump]');
         if (!btn) return;
-        setActive(btn.getAttribute('data-carta-tab'));
-      });
-    }
-
-    if (categorySelect) {
-      categorySelect.addEventListener('change', function () {
-        setActive(categorySelect.value);
+        jumpToSection(btn.getAttribute('data-carta-jump'));
       });
     }
 
     if (search) {
       search.addEventListener('input', function () {
-        renderItems(items, active, search.value);
-        updateNavHint(tabs, active, search.value);
+        activeSection = tabs[0].id;
+        refresh();
       });
     }
 
@@ -278,6 +331,7 @@
     if (wa) wa.setAttribute('href', WA_URL);
 
     initTabsScroll();
+    renderTabs(tabs, activeSection);
 
     if (window.AOImages) AOImages.initImages(document);
     refresh();
