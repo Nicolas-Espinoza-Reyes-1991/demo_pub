@@ -1,99 +1,261 @@
-var MENU_BY_DEMO = {
-  '1': {
-    tabs: [
-      { id: 'cocteleria', label: 'Coctelería' },
-      { id: 'cervezas', label: 'Cervezas' },
-      { id: 'hamburguesas', label: 'Hamburguesas' },
-      { id: 'tablas', label: 'Tablas' }
+var MENU = {
+  tabs: [
+    { id: '2-x-de-martes-a-sabado-hasta-las-22-30', label: "2 X DE MARTES A SABADO HAST…" },
+    { id: 'para-dos', label: "PARA DOS" },
+    { id: 'hamburguesas', label: "HAMBURGUESAS 100% CASERAS." },
+    { id: 'pizza', label: "PIZZA" },
+    { id: 'pichangas-y-papas', label: "PICHANGAS Y PAPAS FRITAS" },
+    { id: 'tablas', label: "TABLAS" },
+    { id: 'juegos', label: "JUEGOS" },
+    { id: 'bebidas-y-jugos', label: "BEBIDAS Y JUGOS" },
+    { id: 'vinos-y-espumantes', label: "VINOS Y ESPUMANTES" },
+    { id: 'cervezas', label: "CERVEZAS" },
+    { id: 'aperitivos', label: "APERITIVOS Y BAJATIVOS" },
+    { id: 'cocteleria-clasica', label: "COCTELERIA SIN ALCOHOL Y CE…" },
+    { id: 'cocteleria-de-autor', label: "COCTELERIA DE AUTOR" },
+    { id: 'familia-mojitos', label: "FAMILIA MOJITOS" },
+    { id: 'piscos', label: "PISCOS" },
+    { id: 'gin', label: "GIN" },
+    { id: 'vodka', label: "VODKA" },
+    { id: 'ron', label: "RON" },
+    { id: 'bourbon-y-whisky', label: "BOURBON Y WHISKY" },
+    { id: 'licores-hervales', label: "LICORES HERVALES" },
+    { id: 'tequila', label: "TEQUILA" }
+  ],
+  items: {
+    "2-x-de-martes-a-sabado-hasta-las-22-30": [
+      { name: "2X APEROL SPRITZ", desc: "Consulta con tu garzón", price: "$9.990", img: "707052_1776382279.webp", tags: ["barra", "promo"] },
+      { name: "2X MOJITO CUBANO", desc: "Consulta con tu garzón", price: "$7.990", img: "707056_1776382380.webp", tags: ["barra", "promo"] },
+      { name: "2X MARGARITA", desc: "Consulta con tu garzón", price: "$7.990", img: "707059_1776382490.webp", tags: ["barra", "promo"] },
+      { name: "2 X JAGER A LAS ROCAS O CON BEBIDA", desc: "Consulta con tu garzón", price: "$9.990", img: "707063_1776382670.webp", tags: ["barra", "promo"] },
+      { name: "PISCOLA", desc: "2 PISCOLAS SERVIDAS", price: "$7.990", img: "725487_1778101062_waTT8b.webp", tags: ["promo"] },
+      { name: "1 ESPUMANTE + 2 RED BULL CLASICAS", desc: "1 ESPUMANTE 750 UNDURRAGA + 2 RED BULL CLASICAS", price: "$15.990", img: "725490_1778101212_giwF1C.webp", tags: ["promo"] },
+      { name: "2X ROYAL GOLD", desc: "Consulta con tu garzón", price: "$4.990", img: "725493_1778101264_sDUVt1.webp", tags: ["promo"] },
+      { name: "2 X HAVANA ESPECIAL", desc: "2 RON HAVANA ESPECIAL SERVIDOS", price: "$7.990", img: "725495_1778101324_7s3USV.webp", tags: ["promo"] },
+      { name: "2 X BALLANTINE´S", desc: "2 BALLANTINE´S SERVIDOS", price: "$9.990", img: "725497_1778101408_jAxfEI.webp", tags: ["promo"] }
     ],
-    items: {
-      cocteleria: [
-        { name: 'Old Fashioned', desc: 'Bourbon, angostura, azúcar morena', price: '$8.990', img: 'photo-1598994671512-395d7a6147e0 (2).jpg', tags: ['clásico', 'whisky'] },
-        { name: 'Negroni Clásico', desc: 'Gin, Campari, vermut rosso', price: '$7.990', img: 'photo-1626201853293-d39a9fca6c3d.jpg', tags: ['gin', 'amargo'] },
-        { name: 'Espresso Martini', desc: 'Vodka, licor de café, espresso', price: '$8.490', img: 'photo-1745052811236-a56a0f8718d1.jpg', tags: ['vodka', 'café'] },
-        { name: 'Whisky Sour', desc: 'Bourbon, limón, clara, bitter', price: '$7.490', img: 'photo-1745052838929-39e6579e130e.jpg', tags: ['whisky', 'cítrico'] },
-        { name: 'Pisco Sour Futrono', desc: 'Pisco, limón, amargo de angostura', price: '$6.990', img: 'photo-1598994671512-395d7a6147e0 (2).jpg', tags: ['pisco', 'local'] },
-        { name: 'Moscow Mule', desc: 'Vodka, ginger beer, lima', price: '$6.490', img: 'photo-1626201853293-d39a9fca6c3d.jpg', tags: ['vodka', 'refrescante'] }
-      ],
-      cervezas: [
-        { name: 'Schop After Five', desc: 'Lager house · 500 ml', price: '$3.990', img: 'photo-1551810058-a88784bc3381 (2).jpg', tags: ['lager', 'schop'] },
-        { name: 'IPA Cítrica del Sur', desc: '6.2% ABV · lúpulo Cascade', price: '$4.990', img: 'photo-1551810058-a88784bc3381 (2).jpg', tags: ['ipa', 'craft'] },
-        { name: 'Stout Ahumada', desc: 'Malta torrada, café, cacao', price: '$4.590', img: 'photo-1551810058-a88784bc3381 (2).jpg', tags: ['stout', 'oscura'] },
-        { name: 'Weizen Niebla', desc: 'Trigo maltoso · jarra 500 ml', price: '$4.290', img: 'photo-1551810058-a88784bc3381 (2).jpg', tags: ['trigo', 'schop'] },
-        { name: 'Sour Berries', desc: 'Frutos rojos · edición mes', price: '$5.290', img: 'photo-1551810058-a88784bc3381 (2).jpg', tags: ['sour', 'frutal'] }
-      ],
-      hamburguesas: [
-        { name: 'Burger Signature', desc: 'Angus, cheddar ahumado, cebolla caramelizada', price: '$11.990', img: 'photo-1626203046629-88de33a823c8 (2).jpg', tags: ['angus', 'premium'] },
-        { name: 'Classic After Office', desc: 'Doble carne, lechuga, tomate, salsa house', price: '$9.990', img: 'photo-1644447381290-85358ae625cb.jpg', tags: ['clásica'] },
-        { name: 'BBQ Bacon', desc: 'Salsa BBQ, bacon crocante, cebolla morada', price: '$10.990', img: 'photo-1626203046629-88de33a823c8 (2).jpg', tags: ['bbq', 'bacon'] },
-        { name: 'Slider Pack x3', desc: 'Mini burgers con papas rústicas', price: '$10.490', img: 'photo-1644447381290-85358ae625cb.jpg', tags: ['para compartir'] }
-      ],
-      tablas: [
-        { name: 'Tabla After Office', desc: 'Carnes curadas, quesos, aceitunas, panes', price: '$18.990', img: 'photo-1644447393594-86ac32d94a09.jpg', tags: ['premium', 'compartir'] },
-        { name: 'Tabla de Quesos', desc: 'Selección nacional e importada', price: '$14.990', img: 'photo-1644447393594-86ac32d94a09.jpg', tags: ['quesos'] },
-        { name: 'Nachos Deluxe', desc: 'Guacamole, pico de gallo, crema agria', price: '$9.490', img: 'photo-1644447338949-b2538f4063c0 (2).jpg', tags: ['snack'] },
-        { name: 'Pizza Prosciutto', desc: 'Masa madre, rúcula, parmesano', price: '$12.990', img: 'photo-1644447381290-85358ae625cb.jpg', tags: ['pizza'] }
-      ]
-    }
-  },
-  '2': {
-    tabs: [
-      { id: 'cocteles', label: 'Cocteles Neón' },
-      { id: 'shots', label: 'Shots & Tragos' },
-      { id: 'comida', label: 'Comida Nocturna' }
+    "para-dos": [
+      { name: "AROS DE CEBOLLA", desc: "10 UNIDADES + SALSA", price: "$3.500", img: "432159_1741128318.webp", tags: [] },
+      { name: "EMPANADAS DE QUESO", desc: "RECETA CASERA!!", price: "$9.990", img: "433461_1741294970.webp", tags: [] },
+      { name: "ARROLLADOS PRIMAVERA", desc: "6 UNIDADES", price: "$6.000", img: "433463_1741295057.webp", tags: [] },
+      { name: "ARROLLADOS JAMON QUESO", desc: "6 UNIDADES.", price: "$6.000", img: "433466_1741295135.webp", tags: [] },
+      { name: "CHICKEN FINGERS", desc: "12 UNIDADES.", price: "$9.990", img: "433471_1741295285.webp", tags: [] },
+      { name: "CEVICHE INDIVIDUAL", desc: "CAMARON ECUATORIANO, CEBOLLA MORADA, PALTA, CHOCLO, LECHUGA Y TOSTADAS.", price: "$6.900", img: "433474_1741295498.webp", tags: [] }
     ],
-    items: {
-      cocteles: [
-        { name: 'Electric Blue', desc: 'Vodka, curaçao, limón, LED cube', price: '$6.990', img: 'photo-1626201853293-d39a9fca6c3d.jpg', tags: ['uv', 'signature'] },
-        { name: 'Pink Plasma', desc: 'Gin, frambuesa, prosecco', price: '$7.490', img: 'photo-1745052811236-a56a0f8718d1.jpg', tags: ['gin', 'frutal'] },
-        { name: 'Cyber Mule', desc: 'Vodka, ginger beer, lima', price: '$5.990', img: 'photo-1598994671512-395d7a6147e0 (2).jpg', tags: ['refrescante'] },
-        { name: 'Neon Sour', desc: 'Pisco, maracuyá, espuma cítrica', price: '$6.490', img: 'photo-1745052838929-39e6579e130e.jpg', tags: ['pisco', 'ácido'] },
-        { name: 'Midnight Espresso', desc: 'Vodka, licor de café, cold brew', price: '$7.990', img: 'photo-1745052811236-a56a0f8718d1.jpg', tags: ['café', 'nocturno'] }
-      ],
-      shots: [
-        { name: 'Shots Pack x6', desc: 'Sabores surtidos de la casa', price: '$12.990', img: 'photo-1745052838929-39e6579e130e.jpg', tags: ['pack', 'fiesta'] },
-        { name: 'Glow Tequila', desc: 'Tequila blanco, curaçao, lima', price: '$3.990', img: 'photo-1626201853293-d39a9fca6c3d.jpg', tags: ['tequila', 'uv'] },
-        { name: 'Fuchsia Gin', desc: 'Gin, bitter rosado, tonic', price: '$4.490', img: 'photo-1745052811236-a56a0f8718d1.jpg', tags: ['gin'] },
-        { name: 'Cyan Vodka', desc: 'Vodka, blue curaçao, sprite', price: '$3.790', img: 'photo-1598994671512-395d7a6147e0 (2).jpg', tags: ['vodka'] }
-      ],
-      comida: [
-        { name: 'Nachos UV', desc: 'Queso fundido, jalapeños, guacamole', price: '$9.990', img: 'photo-1644447338949-b2538f4063c0 (2).jpg', tags: ['snack', 'compartir'] },
-        { name: 'Slider Neon', desc: '×3 mini burgers, salsa secreta', price: '$10.990', img: 'photo-1626203046629-88de33a823c8 (2).jpg', tags: ['burgers'] },
-        { name: 'Papas Loaded', desc: 'Cheddar, bacon, sour cream', price: '$8.490', img: 'photo-1644447381290-85358ae625cb.jpg', tags: ['papas'] },
-        { name: 'Tabla Midnight', desc: 'Fiambres, quesos, dips UV', price: '$15.990', img: 'photo-1644447393594-86ac32d94a09.jpg', tags: ['tabla'] }
-      ]
-    }
-  },
-  '3': {
-    tabs: [
-      { id: 'cervezas', label: 'Cervezas' },
-      { id: 'pub', label: 'Pub Food' },
-      { id: 'tablas', label: 'Para Compartir' }
+    "hamburguesas": [
+      { name: "CORDON BLUE", desc: "hamburguesa 100% casera, queso azul, pan frica, cebolla caramelizada con azúcar rubia.", price: "$10.990", img: "425342_1739910993.webp", tags: [] },
+      { name: "GUACAMOLE BURGER", desc: "Hamburguesa 100% casera, guacamole, pan frica, queso y hojas de lechuga.", price: "$9.990", img: "425344_1741124654.webp", tags: [] },
+      { name: "DOBLE BACON", desc: "doble hamburguesa 100% casera, queso, lechuga, salsa bbq, tocino y cebolla caramelizada con azúcar rubia.", price: "$13.990", img: "425345_1741126956.webp", tags: [] },
+      { name: "BACON CLASICA", desc: "Pan frica, tomate en rodaja, hojas de lechuga, tocino, queso y hamburguesa 100% casera.", price: "$9.990", img: "432104_1741126989.webp", tags: [] },
+      { name: "HAMBURGUESA CAMPESTRE", desc: "hamburguesa 100% casera, mix de morrones acompañada de 200grs de queso fundido", price: "$10.990", img: "532214_1753490913.webp", tags: [] }
     ],
-    items: {
-      cervezas: [
-        { name: 'IPA Cítrica del Sur', desc: '6.2% ABV · 45 IBU · Cascade & Citra', price: '$4.990', img: 'photo-1551810058-a88784bc3381 (2).jpg', tags: ['ipa', 'craft'] },
-        { name: 'Stout Ahumada', desc: '5.8% ABV · malta torrada, café, cacao', price: '$4.590', img: 'photo-1551810058-a88784bc3381 (2).jpg', tags: ['stout'] },
-        { name: 'Lager After Five', desc: '4.5% ABV · house brew refrescante', price: '$3.990', img: 'photo-1551810058-a88784bc3381 (2).jpg', tags: ['lager', 'schop'] },
-        { name: 'Sour Berries', desc: '4.8% ABV · frutos rojos · edición mes', price: '$5.290', img: 'photo-1551810058-a88784bc3381 (2).jpg', tags: ['sour'] },
-        { name: 'Weizen Niebla', desc: '5.0% ABV · trigo · jarra 500 ml', price: '$4.290', img: 'photo-1551810058-a88784bc3381 (2).jpg', tags: ['weizen'] },
-        { name: 'Ámbar Cobre', desc: '5.4% ABV · caramelo y amargor moderado', price: '$4.190', img: 'photo-1551810058-a88784bc3381 (2).jpg', tags: ['ámbar'] }
-      ],
-      pub: [
-        { name: 'Burger Signature', desc: 'Angus, cheddar ahumado, cebolla caramelizada', price: '$11.990', img: 'photo-1626203046629-88de33a823c8 (2).jpg', tags: ['burger'] },
-        { name: 'Classic After Office', desc: 'Doble carne, lechuga, tomate, salsa house', price: '$9.990', img: 'photo-1644447381290-85358ae625cb.jpg', tags: ['clásica'] },
-        { name: 'Fish & Chips', desc: 'Merluza empanizada, papas rústicas', price: '$10.490', img: 'photo-1644447381290-85358ae625cb.jpg', tags: ['pescado'] },
-        { name: 'Pizza Prosciutto', desc: 'Masa madre, rúcula, parmesano', price: '$12.990', img: 'photo-1644447381290-85358ae625cb.jpg', tags: ['pizza'] }
-      ],
-      tablas: [
-        { name: 'Tabla After Office', desc: 'Carnes curadas, quesos, aceitunas', price: '$18.990', img: 'photo-1644447393594-86ac32d94a09.jpg', tags: ['premium'] },
-        { name: 'Nachos Deluxe', desc: 'Guacamole, pico de gallo, crema agria', price: '$9.490', img: 'photo-1644447338949-b2538f4063c0 (2).jpg', tags: ['snack'] },
-        { name: 'Alitas BBQ x12', desc: 'Salsa ahumada o picante', price: '$9.990', img: 'photo-1644447381290-85358ae625cb.jpg', tags: ['alitas'] },
-        { name: 'Papas Rústicas', desc: 'Ajo, romero, dip de la casa', price: '$5.990', img: 'photo-1644447338949-b2538f4063c0 (2).jpg', tags: ['papas'] }
-      ]
-    }
+    "pizza": [
+      { name: "PIZZA DE CAMARONES", desc: "Rica masa a la piedra acompañada de salsa de tomate, cebollín, queso mantecoso, colas de camarón toques sutiles de ajo .", price: "$14.990", img: "531169_1753396740.webp", tags: [] },
+      { name: "PIZZA DEL VIEJO", desc: "rica masa a la piedra acompañada de salsa de tomate, queso mantecoso, tomates en rodajas a la plancha, aceituna, fondo de alcachofa, salame a la plancha, orégano.", price: "$9.990", img: "531175_1753396892.webp", tags: [] },
+      { name: "PIZZA DE SALAME Y ALCAPARRA", desc: "Rica masa a la piedra acompañada de salame a la plancha, alcaparra, queso mantecoso, salsa de tomate y una cama de cebolla caramelizada.", price: "$9.990", img: "", tags: [] },
+      { name: "PIZZA VEGGIE", desc: "rica masa a la piedra acompañada de queso mantecoso, salsa de tomates, tomates cherry, choclo a la plancha aceitunas y hojas de albahaca.", price: "$9.000", img: "", tags: [] }
+    ],
+    "pichangas-y-papas": [
+      { name: "PICHANGA DE LA CASA", desc: "papas fritas, aceituna, huevo duro, tomate, pickle, cerdo, pollo, chorizo, queso y palta. (imagen referencial)", price: "$14.990", img: "432134_1742215796.webp", tags: [] },
+      { name: "CHORRILLANA", desc: "ricas papas fritas, carne de vacuno, cebolla caramelizada, longaniza, huevo frito. (imagen referencial)", price: "$13.990", img: "432141_1741127304.webp", tags: [] },
+      { name: "PICHANGA RANCO", desc: "papas fritas, camarones, cerdo y pollo, cebolla caramelizada, queso mantecoso, pepinillo, tomate y aceitunas,", price: "$16.990", img: "432150_1743778121.webp", tags: [] },
+      { name: "PORCION PAPAS INDIVIDUAL", desc: "PORCION DE PAPAS PRE FRITAS", price: "$4.000", img: "433478_1741295840.webp", tags: [] },
+      { name: "PORCION DE PAPAS GRANDE", desc: "PORCION DE PAPAS PRE FRITAS. (800GRS)", price: "$7.000", img: "433483_1741296026.webp", tags: [] },
+      { name: "PAPAS BRAVAS", desc: "PAPAS PRE FRITAS, ACOMPAÑADAS DE UNA RICA SALSA PICANTE Y CARNE DE CERDO.", price: "$9.990", img: "433491_1743778167.webp", tags: [] },
+      { name: "PAPAS CHEDAR BACON", desc: "PAPAS PRE FRITAS ACOMPAÑADAS CON SALSA DE QUESO CHEDAR Y TOCINO CRISPY .", price: "$9.000", img: "433514_1742215699.webp", tags: [] }
+    ],
+    "tablas": [
+      { name: "TABLA CAMPESTRE", desc: "Rica cama de papas fritas, con un salteado de mix de pimientos morrones, cebolla carameliza, queso mantecoso acompañado de un rico cerdo al curry.", price: "$12.990", img: "432099_1741295925.webp", tags: [] },
+      { name: "TABLA AFTER", desc: "papas fritas con una cama de lomo saltado (vacuno) con cebolla y tomate en gajos acompañado de un salteado de mariscos y trozos de queso.", price: "$19.990", img: "433546_1742215744.webp", tags: [] },
+      { name: "TABLA SUREÑA", desc: "exquisita combinación de carnes a la plancha, longaniza y chorizo sureño acompañada de tomate cherry salteado en ciboullete sobre hoja de lechuga acompañado de papas pre fritas y tostadas", price: "$17.990", img: "", tags: [] },
+      { name: "POLLO GRINGO", desc: "pollo salteado en salsa bbq, con champiñones y tomates cherry salteado en mantequilla, cebolla morada, aros de cebolla todo sobre una cama de papas fritas.", price: "$18.990", img: "779766_1781225327_qCxnT5.webp", tags: [] }
+    ],
+    "juegos": [
+      { name: "CURAO, VOLAO O WEON", desc: "El juego se prestara a mesa que lo solicite a costo 0, sin embargo, si este presenta algún tipo de daño al ser retirado, se cobrara un valor de 20.000 pesos, lo mismo pasara si llegase a faltar alguna pieza de este. Curao, Volao o Weoón es un party game diseñado para disfrutar con amigos. En cada turno, un jugador actúa como juez y lee una carta en voz alta. Luego, los participantes acusan a otro de encajar con la descripción de la carta, basándose en personalidad o anécdotas. El juez escucha las acusaciones y decide a quién asignar la carta. Aquellos que acumulen 7 cartas pierden en este juego donde no hay ganadores, solo perdedores.", price: "$0", img: "707021_1776380863.webp", tags: [] },
+      { name: "BASTA", desc: "El juego se prestara a mesa que lo solicite a costo 0, sin embargo, si este presenta algún tipo de daño al ser retirado, se cobrara un valor de 20.000 pesos, lo mismo pasara si llegase a faltar alguna pieza de este. El objetivo del juego es simple pero cautivador: los jugadores deben completar categorías con palabras que comiencen con una letra específica. Esto no solo pone a prueba el conocimiento general, sino que también desafía la rapidez mental y la capacidad de pensar de manera creativa. Cada partida es única, lo que garantiza horas de entretenimiento y risas.", price: "$0", img: "707027_1776380944.webp", tags: [] },
+      { name: "CHUPILCA", desc: "El juego se prestara a mesa que lo solicite a costo 0, sin embargo, si este presenta algún tipo de daño al ser retirado, se cobrara un valor de 10.000 pesos, lo mismo pasara si llegase a faltar alguna pieza de este.", price: "$0", img: "707030_1776381048.webp", tags: [] },
+      { name: "PALTA BORRACHA", desc: "El juego se prestara a mesa que lo solicite a costo 0, sin embargo, si este presenta algún tipo de daño al ser retirado, se cobrara un valor de 10.000 pesos, lo mismo pasara si llegase a faltar alguna pieza de este.", price: "$0", img: "707033_1776381187.webp", tags: [] },
+      { name: "CARTAS INGLESA", desc: "El juego se prestara a mesa que lo solicite a costo 0, sin embargo, si este presenta algún tipo de daño al ser retirado, se cobrara un valor de 10.000 pesos, lo mismo pasara si llegase a faltar alguna pieza de este.", price: "$0", img: "707037_1776381327.webp", tags: [] },
+      { name: "CARTA ESPAÑOLA", desc: "El juego se prestara a mesa que lo solicite a costo 0, sin embargo, si este presenta algún tipo de daño al ser retirado, se cobrara un valor de 10.000 pesos, lo mismo pasara si llegase a faltar alguna pieza de este.", price: "$0", img: "707039_1776381380.webp", tags: [] },
+      { name: "CARTA UNO", desc: "El juego se prestara a mesa que lo solicite a costo 0, sin embargo, si este presenta algún tipo de daño al ser retirado, se cobrara un valor de 10.000 pesos, lo mismo pasara si llegase a faltar alguna pieza de este.", price: "$0", img: "707042_1776381534.webp", tags: [] },
+      { name: "BACHILLERATO", desc: "El juego se prestara a mesa que lo solicite a costo 0, sin embargo, si este presenta algún tipo de daño al ser retirado, se cobrara un valor de 20.000 pesos, lo mismo pasara si llegase a faltar alguna pieza de este.", price: "$0", img: "709691_1776810840.webp", tags: [] },
+      { name: "RULETA DEL BEBER", desc: "El juego se prestara a mesa que lo solicite a costo 0, sin embargo, si este presenta algún tipo de daño al ser retirado, se cobrara un valor de 20.000 pesos, lo mismo pasara si llegase a faltar alguna pieza de este", price: "$0", img: "709693_1776810897.webp", tags: [] },
+      { name: "MANTA DE POLAR", desc: "Las mantas se prestara a mesa que lo solicite a costo 0, sin embargo, si este presenta algún tipo de daño al ser retirado, se cobrara un valor de 10.000 pesos.", price: "$0", img: "709696_1776811066.webp", tags: [] }
+    ],
+    "bebidas-y-jugos": [
+      { name: "PEPSI LIGHT 270 CC", desc: "Consulta con tu garzón", price: "$1.800", img: "440166_1742321053.webp", tags: [] },
+      { name: "COCA – COLA", desc: "Consulta con tu garzón", price: "$1.800", img: "440168_1742321127.webp", tags: [] },
+      { name: "SPRITE", desc: "Consulta con tu garzón", price: "$1.800", img: "440170_1742321166.webp", tags: [] },
+      { name: "RED BULL´S", desc: "RED BULL CLASICA", price: "$3.300", img: "440183_1742321865.webp", tags: [] },
+      { name: "JUGO DE MANGO", desc: "Consulta con tu garzón", price: "$3.000", img: "440188_1742321963.webp", tags: ["barra"] },
+      { name: "JUGO DE FRAMBUESA", desc: "Consulta con tu garzón", price: "$3.000", img: "440190_1742322023.webp", tags: ["barra"] },
+      { name: "JUGO DE PIÑA", desc: "Consulta con tu garzón", price: "$3.000", img: "440192_1742322059.webp", tags: ["barra"] },
+      { name: "JUGO DE MARACUYA", desc: "Consulta con tu garzón", price: "$3.000", img: "440194_1742322106.webp", tags: ["barra"] }
+    ],
+    "vinos-y-espumantes": [
+      { name: "OVEJA NEGRA CHARD/VIONGN 750 CC", desc: "Consulta con tu garzón", price: "$9.990", img: "443003_1742605353.webp", tags: ["barra"] }
+    ],
+    "cervezas": [
+      { name: "CERVEZA CUELLO NEGRO AMBAR", desc: "GRADO ALCOHÓLICO 5.8 IBU 23", price: "$5.000", img: "427452_1740363742.webp", tags: ["barra"] },
+      { name: "CERVEZA CUELLO NEGRO STOUT", desc: "GRADO ALCOHÓLICO 8.0 IBU 56", price: "$5.000", img: "427457_1740364394.webp", tags: ["barra"] },
+      { name: "CERVEZA KUNSTMANN GRAN TOROBAYO", desc: "500 CC", price: "$5.000", img: "427496_1740405023.webp", tags: ["barra"] },
+      { name: "CERVEZA HEINEKEN", desc: "330 CC", price: "$3.000", img: "427501_1740405309.webp", tags: ["barra"] },
+      { name: "CERVEZA SOL", desc: "330 CC", price: "$3.000", img: "427503_1740405378.webp", tags: ["barra"] },
+      { name: "CERVEZA KUNSTMANN VARIEDADES", desc: "CERVEZA ARTESANAL VALDIVIANA VARIEDADES DISPONIBLE: TOROBAYO, ARANDANO, MIEL, LAGER Y LAGER SIN ALCOHOL.", price: "$3.500", img: "431550_1741027596.webp", tags: ["barra"] },
+      { name: "CERVEZA ROYAL", desc: "BOTELLIN 330 CC", price: "$3.000", img: "431552_1741027875.webp", tags: [] },
+      { name: "CERVEZA COOR´S", desc: "La cerveza Coors tiene su origen en la ciudad de Golden, Colorado, en los Estados Unidos. Fundada en 1873 por Adolph Coors y Jacob Schueler", price: "$3.000", img: "431556_1741028109.webp", tags: [] },
+      { name: "CERVEZA AUSTRAL CALAFATE", desc: "500 CC", price: "$5.000", img: "438323_1742040270.webp", tags: ["barra"] },
+      { name: "DOLBEK MAQUI 500 CC", desc: "DOLBEK MAQUI 500 CC", price: "$5.000", img: "438325_1742040423.webp", tags: ["barra"] },
+      { name: "ROYAL GOLDEN", desc: "Consulta con tu garzón", price: "$3.000", img: "716787_1777426213_5ZPhYX.webp", tags: [] }
+    ],
+    "aperitivos": [
+      { name: "VIOLETO", desc: "Consulta con tu garzón", price: "$5.500", img: "425399_1739917826.webp", tags: [] },
+      { name: "RAMAZZOTTI MIX", desc: "Ramazotti acompañado de cerveza saborizada puede ser: mango, frutos rojos o maracuyá.", price: "$5.990", img: "425402_1739918152.webp", tags: ["barra"] },
+      { name: "ROSATTO", desc: "ramazzotti rosatto, espumante brut y agua mineral.", price: "$5.990", img: "425406_1739918403.webp", tags: ["barra"] },
+      { name: "APEROL SPRITZ", desc: "APEROL, ESPUMANTE BRUT, AGUA MINERAL.", price: "$5.990", img: "425419_1739918857.webp", tags: ["barra"] },
+      { name: "PISCO SOUR", desc: "PISCO, JUGO DE LIMON, GOMA .", price: "$5.000", img: "433580_1741301409.webp", tags: ["barra"] },
+      { name: "CAIPIRIÑA", desc: "LIMON SUTIL, AGUA MINERAL, CACHACA, GOMA", price: "$5.000", img: "433584_1741302033.webp", tags: [] },
+      { name: "WHISKY SOUR", desc: "whisky, jugo natural de limón y goma", price: "$5.500", img: "438954_1742147334.webp", tags: ["barra"] },
+      { name: "AMARETTO SOUR", desc: "licor de amaretto, jugo natural de limón", price: "$5.500", img: "438957_1742147466.webp", tags: ["barra"] },
+      { name: "LAGUNA AZUL", desc: "vodka, coracao azul, jugo de limón y agua mineral", price: "$5.500", img: "438964_1742147753.webp", tags: ["barra"] },
+      { name: "TEQUILA SUNRISE", desc: "jugo de naranja, tequila, granadina.", price: "$5.000", img: "438969_1742147853.webp", tags: ["barra"] },
+      { name: "PIÑA COLADA", desc: "crema de coco, ron blanco, ron dorado, piña y goma", price: "$6.000", img: "438972_1742148118.webp", tags: ["barra"] },
+      { name: "CLAVO OXIDADO", desc: "whisky, drambui", price: "$7.500", img: "438992_1742150295.webp", tags: ["barra"] },
+      { name: "ORGASMO", desc: "licor de café, crema de whisky y amaretto", price: "$6.500", img: "438994_1742150382.webp", tags: ["barra"] },
+      { name: "RUSO BLANCO", desc: "vodka, crema, goma, y licor de café", price: "$5.500", img: "439002_1742151291.webp", tags: ["barra"] },
+      { name: "RUSO NEGRO", desc: "vodka y licor de café", price: "$5.500", img: "439004_1742151523.webp", tags: [] },
+      { name: "NEGRONI", desc: "gin, campary y vermut rosso", price: "$6.500", img: "439007_1742151745.webp", tags: ["barra"] },
+      { name: "TEQUILA MARGARITA", desc: "tequila, jugo de limon natural, goma, triple sec", price: "$5.500", img: "439011_1742152045.webp", tags: ["barra"] },
+      { name: "TEQUILA BLUE", desc: "tequila, coraco azul, jugo de limon natural, goma", price: "$5.500", img: "439015_1742152241.webp", tags: ["barra"] },
+      { name: "MARTINI", desc: "Consulta con tu garzón", price: "$5.000", img: "439166_1742178109.webp", tags: ["barra"] },
+      { name: "TOM COLLINS", desc: "Consulta con tu garzón", price: "$5.500", img: "439168_1742178254.webp", tags: ["barra"] },
+      { name: "COPA DE SANGRIA", desc: "VINO TINTO, COCTEL DE FRUTA, CANELA , GOMA", price: "$5.000", img: "444040_1742783848.webp", tags: ["barra"] },
+      { name: "TINTO DE VERANO", desc: "Consulta con tu garzón", price: "$5.000", img: "444042_1742783999.webp", tags: ["barra"] },
+      { name: "CHARDONAY SOUR", desc: "Consulta con tu garzón", price: "$5.000", img: "557140_1757554393.webp", tags: [] },
+      { name: "TORRE DE SPRITZ", desc: "COMPARTE CON TUS AMIG@S ESTA TORRE DE 8 SPRITZ", price: "$39.990", img: "557145_1757554717.webp", tags: [] },
+      { name: "CARAJILLO", desc: "LICOR 53, EXPRESO DOBLE", price: "$6.000", img: "697688_1775086417.webp", tags: [] },
+      { name: "CARAJILLO", desc: "CAFE EXPRESSO, LICOR 43", price: "$5.800", img: "725862_1778117185_RXqsfY.webp", tags: [] },
+      { name: "EXPRESSO MARTINI", desc: "CAFE EXPRESSO, LICOR DE CAFE , VODKA, GOMA", price: "$5.800", img: "725864_1778117289_LxFa96.webp", tags: [] },
+      { name: "APEROL SOUR", desc: "Consulta con tu garzón", price: "$5.500", img: "779678_1781218962_H5mCJW.webp", tags: [] },
+      { name: "RAMAZZOTTI SOUR", desc: "Consulta con tu garzón", price: "$5.500", img: "779681_1781219012_k5ENlG.webp", tags: [] },
+      { name: "MANZANA SOUR", desc: "Consulta con tu garzón", price: "$5.500", img: "779684_1781219053_6iOJbM.webp", tags: [] }
+    ],
+    "cocteleria-clasica": [
+      { name: "MOJITO CUBANO SIN ALCOHOL", desc: "hierva buena, sprite, goma, limón sutil", price: "$5.000", img: "439173_1742179767.webp", tags: ["barra"] },
+      { name: "CAIPIRIÑA SIN ALCOHOL", desc: "limón sutil, sprite y goma", price: "$4.000", img: "439176_1742179890.webp", tags: ["barra"] },
+      { name: "LIMONADA", desc: "jugo de limon natural, goma y agua mineral", price: "$3.600", img: "439178_1742180020.webp", tags: ["barra"] },
+      { name: "LIMONADA MENTA JENGIBRE", desc: "jugo de limon natural, menta, jengibre, goma y agua mineral", price: "$4.000", img: "439180_1742180137.webp", tags: [] },
+      { name: "CORONA 0.0", desc: "CORONA 0.0", price: "$3.000", img: "439182_1771883896.webp", tags: [] },
+      { name: "HEINEKEN 0.0", desc: "HEINEKEN 0.0", price: "$2.800", img: "439184_1742180532.webp", tags: [] },
+      { name: "ROYAL 0.0", desc: "ROYAL 0.0", price: "$3.000", img: "439186_1742180599.webp", tags: [] },
+      { name: "PERONI 0.0", desc: "PERONI 0.0", price: "$3.500", img: "439188_1742180672.webp", tags: [] },
+      { name: "KUNSTMANN LAGER 0.0", desc: "KUNSTMANN LAGER 0.0", price: "$3.600", img: "439191_1742180910.webp", tags: [] }
+    ],
+    "cocteleria-de-autor": [
+      { name: "ESCARABAJO", desc: "gin, aperol, jugo de pomelo, goma, infusión de fruto rojos", price: "$5.500", img: "439205_1742214043.webp", tags: ["barra"] },
+      { name: "APEROL ENERGY", desc: "aperol, naranja, energizante, espumante", price: "$6.200", img: "439207_1742214117.webp", tags: ["barra"] },
+      { name: "HAWAI", desc: "ron de mango, maracuyá, jugo de pomelo, goma de pomelo", price: "$5.000", img: "439213_1742214396.webp", tags: ["barra"] },
+      { name: "HONEY AND BUBLES", desc: "jack daniel´s honey, lima, goma, hierva buena, espumante", price: "$5.500", img: "439215_1742214454.webp", tags: ["barra"] },
+      { name: "MARILYN", desc: "gin, goma, albahaca, pulpa de maracuyá, jugo de pomelo", price: "$5.000", img: "439217_1742214530.webp", tags: ["barra"] },
+      { name: "JACK", desc: "bourbon, ron de manzana, goma de canela, lima", price: "$5.500", img: "439222_1742214905.webp", tags: ["barra"] },
+      { name: "SOUR PARADISE", desc: "pisco doble destilado, lima, ramazzoti, red bull yellow", price: "$5.500", img: "439224_1742214968.webp", tags: ["barra"] },
+      { name: "ALICATE", desc: "gin, arándano, pulpa de maracuyá, goma, lima,", price: "$5.500", img: "439226_1742215028.webp", tags: ["barra"] },
+      { name: "RUSO ROSSE", desc: "vodka de frambuesa, pulpa de frambuesa, crema, azúcar", price: "$5.500", img: "439228_1742215078.webp", tags: ["barra"] },
+      { name: "DON´T WORRY", desc: "pisco doble destilado, jengibre, jugo de naranja, miel de palma, pomelo", price: "$5.000", img: "439230_1742215135.webp", tags: ["barra"] },
+      { name: "COCTELERIA XXL", desc: "MOJITO CUBANO XXL", price: "$26.990", img: "557138_1757554347.webp", tags: [] },
+      { name: "CATRINA", desc: "TEQUILA, APEROL,LIMON, GOMA,", price: "$5.600", img: "725857_1778116929_k55Rbp.webp", tags: [] },
+      { name: "SIESTA", desc: "TEQUILA, CAMPARI, JUGO DE POMELO, LIMON, GOMA", price: "$5.600", img: "725859_1778116998_gZeLr8.webp", tags: [] }
+    ],
+    "familia-mojitos": [
+      { name: "MOJITO CUBANO 500 CC", desc: "hierva buena, azucar flor, limon sutil, ron blanco, agua mineral con gas", price: "$5.500", img: "439248_1742216201.webp", tags: ["barra"] },
+      { name: "MOJITO SKY", desc: "HIERVA BUENA, LIMON SUTIL, GOMA, MALIBU, CURACAO BLUE Y AGUA MINERAL.", price: "$6.000", img: "439250_1742216731.webp", tags: ["barra"] },
+      { name: "MOJITO SABORES", desc: "MOJITO MARACUYA", price: "$5.800", img: "439252_1742217079.webp", tags: ["barra"] },
+      { name: "MOJITO CERVEZA", desc: "hierva buena, ron blanco, cerveza , azucar flor, limón sutil", price: "$6.000", img: "439253_1742217009.webp", tags: ["barra"] },
+      { name: "MOJITO JACK DANIEL´S", desc: "HIERVA BUENA, LIMON SUTIL, GOMA, JACK DANIEL´S Y AGUA MINERAL", price: "$8.000", img: "439259_1742217236.webp", tags: ["barra"] }
+    ],
+    "piscos": [
+      { name: "MISTRAL 35°", desc: "CORTO MISTRAL 35°", price: "$4.000", img: "425461_1739920848.webp", tags: ["barra"] },
+      { name: "ALTO DEL CARMEN 35°", desc: "CORTO ALTO DEL CARMEN 35°", price: "$4.000", img: "425478_1739922674.webp", tags: ["barra"] },
+      { name: "MALPASO 35°", desc: "CORTO MALPASO 35°", price: "$4.000", img: "425481_1739923013.webp", tags: ["barra"] },
+      { name: "GOVERNADOR", desc: "CORTO GOVERNADOR 35°", price: "$3.500", img: "425484_1739923357.webp", tags: [] },
+      { name: "MISTRAL DE 40°", desc: "CORTO", price: "$4.500", img: "439329_1742219825.webp", tags: ["barra"] },
+      { name: "MISTRAL 46°", desc: "CORTO", price: "$4.800", img: "439332_1742219887.webp", tags: ["barra"] },
+      { name: "MISTRAL NOBEL 40°", desc: "CORTO", price: "$4.500", img: "439340_1742220035.webp", tags: ["barra"] },
+      { name: "MISTRAL NOBEL MANZANA 40°", desc: "CORTO", price: "$5.000", img: "439342_1742220120.webp", tags: ["barra"] },
+      { name: "MISTRAL BARRICA TOSTADA", desc: "CORTO", price: "$5.000", img: "439346_1742220237.webp", tags: ["barra"] },
+      { name: "MISTRAL NOBEL D.O. 1931", desc: "CORTO", price: "$5.000", img: "439348_1742220291.webp", tags: ["barra"] },
+      { name: "HORCON QUEMADO 1 AÑO", desc: "CORTO", price: "$4.500", img: "439354_1742220539.webp", tags: ["barra"] },
+      { name: "HORCON QUEMADO 2 AÑOS", desc: "CORTO", price: "$5.000", img: "439356_1742220596.webp", tags: ["barra"] },
+      { name: "HORCON QUEMADO 3 AÑOS", desc: "CORTO", price: "$5.500", img: "439358_1742220666.webp", tags: ["barra"] },
+      { name: "A. DEL CARMEN TRASPARENTE 40°", desc: "CORTO", price: "$4.500", img: "440074_1742316732.webp", tags: ["barra"] },
+      { name: "A. DEL CARMEN AZUL 40°", desc: "CORTO", price: "$4.500", img: "440076_1742316778.webp", tags: [] },
+      { name: "A. DEL CARMEN NEGRO 40°", desc: "CORTO", price: "$4.000", img: "440080_1742316895.webp", tags: ["barra"] },
+      { name: "MALPASO 40°", desc: "CORTO", price: "$4.500", img: "440082_1742316968.webp", tags: ["barra"] },
+      { name: "MALPASO PREDRO JIMENEZ", desc: "CORTO", price: "$4.800", img: "440084_1742317054.webp", tags: ["barra"] },
+      { name: "PISCO REPUBLICANO 40° ROBLE", desc: "CORTO", price: "$4.500", img: "440086_1742317171.webp", tags: ["barra"] },
+      { name: "PISCO REPUBLICANO 40° MOSCATEL", desc: "CORTO", price: "$4.500", img: "440088_1742317234.webp", tags: ["barra"] },
+      { name: "MONTE FRAILE 37.5", desc: "CORTO", price: "$3.700", img: "440131_1742320015.webp", tags: [] },
+      { name: "MONTE FRAILE 40°", desc: "CORTO", price: "$5.100", img: "440134_1742320102.webp", tags: [] }
+    ],
+    "gin": [
+      { name: "TANQUERAY", desc: "CORTO", price: "$4.500", img: "439267_1742217957.webp", tags: ["barra"] },
+      { name: "BEEFEATER ORIGINAL", desc: "CORTO", price: "$5.000", img: "439280_1742218313.webp", tags: ["barra"] },
+      { name: "BEEFEATER PINK", desc: "CORTO", price: "$4.500", img: "439284_1742218389.webp", tags: ["barra"] },
+      { name: "HENDRICK´S", desc: "CORTO", price: "$6.800", img: "439291_1742218536.webp", tags: ["barra"] },
+      { name: "BOMBAY", desc: "CORTO", price: "$5.000", img: "439293_1742218598.webp", tags: ["barra"] },
+      { name: "TROPICAL GIN", desc: "TROPICAL GIN DE LA CASA", price: "$6.990", img: "439303_1742219003.webp", tags: ["barra"] },
+      { name: "GIN DE VERANO", desc: "GIN DE VERANO DE LA CASA", price: "$6.990", img: "439305_1742219059.webp", tags: ["barra"] },
+      { name: "TANQUERAY N°10", desc: "CORTO", price: "$6.800", img: "678016_1772829299.webp", tags: [] }
+    ],
+    "vodka": [
+      { name: "STOLICHNAYA", desc: "CON BEBIDA 350 CC", price: "$5.000", img: "442869_1742601182.webp", tags: ["barra"] },
+      { name: "STOLICH NAYA SABORES", desc: "CON BEBIDA 350 CC", price: "$5.300", img: "442874_1742601242.webp", tags: ["barra"] },
+      { name: "STOLICHNAYA FREE GLUTEN", desc: "CON BEBIDA 350 CC", price: "$5.500", img: "442878_1742601364.webp", tags: ["barra"] },
+      { name: "ABSOLUT BLUE", desc: "CON BEBIDA 350 CC", price: "$5.500", img: "442882_1742601422.webp", tags: ["barra"] },
+      { name: "ABSOLUT SABORES", desc: "CON BEBIDA 350 CC", price: "$5.300", img: "442884_1742601472.webp", tags: ["barra"] },
+      { name: "SKYY SABORES", desc: "CON BEBIDA 350 CC", price: "$5.000", img: "442886_1742601526.webp", tags: ["barra"] },
+      { name: "GREY GOOSE", desc: "CON BEBIDA 350 CC", price: "$7.000", img: "442888_1742601673.webp", tags: ["barra"] },
+      { name: "GREY GOOSE SABORES", desc: "CON BEBIDA 350 CC", price: "$7.600", img: "442893_1742601739.webp", tags: ["barra"] },
+      { name: "BELVEDERE CITRUS PREMIUM", desc: "CON BEBIDA 350 CC", price: "$12.000", img: "442898_1742601905.webp", tags: ["barra"] }
+    ],
+    "ron": [
+      { name: "HAVANA ESPECIAL", desc: "CON BEBIDA 350 CC", price: "$5.500", img: "442904_1742602342.webp", tags: ["barra"] },
+      { name: "HAVANA AÑEJO RESERVA", desc: "CON BEBIDA", price: "$6.000", img: "442906_1742602408.webp", tags: ["barra"] },
+      { name: "HAVANA 7 AÑOS", desc: "CON BEBIDA 350 CC", price: "$7.000", img: "442908_1742602455.webp", tags: ["barra"] },
+      { name: "ZACAPA AMBAR 12 AÑOS", desc: "CON BEBIDA 350 CC", price: "$7.500", img: "442922_1742602679.webp", tags: ["barra"] },
+      { name: "MALIBU RUN", desc: "CON BEBIDA", price: "$6.500", img: "442924_1742602723.webp", tags: ["barra"] },
+      { name: "BACARDI SABORES", desc: "CON BEBIDA 350 CC", price: "$5.000", img: "442926_1742602772.webp", tags: ["barra"] }
+    ],
+    "bourbon-y-whisky": [
+      { name: "BULLEIT", desc: "CON BEBIDA 350 CC", price: "$7.500", img: "442938_1742603539.webp", tags: ["barra"] },
+      { name: "JACK DANIEL´S N°7", desc: "CON BEBIDA", price: "$7.900", img: "442941_1742603611.webp", tags: ["barra"] },
+      { name: "JACK DANIEL´S HONNEY", desc: "CON BEBIDA", price: "$7.900", img: "442944_1742603667.webp", tags: ["barra"] },
+      { name: "JACK DANIEL´S APPLE", desc: "CON BEBIDA 350 CC", price: "$7.300", img: "442951_1742603838.webp", tags: ["barra"] },
+      { name: "J.W. RED LABEL", desc: "CON BEBIDA", price: "$6.000", img: "442958_1742603987.webp", tags: ["barra"] },
+      { name: "J.W. BLACK 12 AÑOS", desc: "CON BEBIDA 350 CC", price: "$7.500", img: "442961_1742604124.webp", tags: ["barra"] },
+      { name: "J.W. DOUBLE BLACK", desc: "CON BEBIDA 350 CC", price: "$9.500", img: "442964_1742604209.webp", tags: ["barra"] },
+      { name: "CHIVAS REGAL 18 AÑOS", desc: "CON BEBIDA", price: "$18.990", img: "442967_1742604286.webp", tags: ["barra"] },
+      { name: "BALLANTINE´S", desc: "CON BEBIDA 350 CC", price: "$5.000", img: "442973_1742604405.webp", tags: ["barra"] },
+      { name: "BALLANTINE´S 12 AÑOS", desc: "CON BEBIDA 350 CC", price: "$8.500", img: "442976_1742604467.webp", tags: ["barra"] },
+      { name: "BALLANTINE´S 17 AÑOS", desc: "CON BEBIDA", price: "$18.990", img: "442981_1742604543.webp", tags: ["barra"] },
+      { name: "CHIVAS REGAL 12 AÑOS", desc: "CON BEBIDA", price: "$8.990", img: "442983_1742604654.webp", tags: ["barra"] },
+      { name: "BUCHANAN´S 12 AÑOS DELUX", desc: "CON BEBIDA", price: "$9.000", img: "442988_1742604784.webp", tags: ["barra"] },
+      { name: "JACK DANIEL´S BLACKBERRY", desc: "A LAS ROCAS", price: "$7.500", img: "668297_1771882558.webp", tags: ["barra"] }
+    ],
+    "licores-hervales": [
+      { name: "FERNET BRANCA", desc: "CON BEBIDA", price: "$6.000", img: "442730_1742593373.webp", tags: ["barra"] },
+      { name: "FERNET 1882", desc: "CON BEBIDA 350 CC", price: "$5.000", img: "442850_1742600179.webp", tags: ["barra"] },
+      { name: "FERNET BUHERO NEGRO", desc: "CON BEBIDA 350 CC", price: "$5.500", img: "442853_1742600234.webp", tags: ["barra"] },
+      { name: "JÄGERMEISTER", desc: "CON BEBIDA", price: "$6.500", img: "442856_1742600480.webp", tags: ["barra"] },
+      { name: "BITER ARAUCANO", desc: "CON BEBIDA 350 CC", price: "$5.000", img: "442861_1742600703.webp", tags: ["barra"] }
+    ],
+    "tequila": [
+      { name: "TEQUILA DE LA CASA", desc: "SHOT DE TEQUILA MAS LIMON Y SAL", price: "$3.500", img: "443026_1742605954.webp", tags: ["barra"] },
+      { name: "OLMECA REPOSADO", desc: "SHOT DE TEQUILA MAS LIMON Y SAL", price: "$4.000", img: "443031_1742606009.webp", tags: ["barra"] },
+      { name: "OLMECA PLATA", desc: "SHOT DE TEQUILA MAS LIMON Y SAL", price: "$4.000", img: "443037_1742606103.webp", tags: ["barra"] },
+      { name: "OLMECA CHOCOLATE", desc: "Consulta con tu garzón", price: "$4.000", img: "443040_1742606143.webp", tags: [] },
+      { name: "JIMADOR PLATA", desc: "SHOT DE TEQUILA MAS LIMON Y SAL", price: "$4.200", img: "443044_1742606190.webp", tags: ["barra"] },
+      { name: "JIMADOR REPOSADO", desc: "SHOT DE TEQUILA MAS LIMON Y SAL", price: "$4.200", img: "443048_1742606263.webp", tags: ["barra"] }
+    ]
   }
 };
-
-/* Compat legacy */
-var MENU_DATA = MENU_BY_DEMO['1'].items;

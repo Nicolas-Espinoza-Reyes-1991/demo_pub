@@ -3,20 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <meta name="description" content="Carta digital After Office Resto-Bar — menú optimizado para mesa y código QR.">
-  <meta name="theme-color" content="#0a0a0a">
-  <meta name="robots" content="noindex">
-  <title>Carta Digital · After Office Futrono</title>
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect fill='%230a0a0a' width='32' height='32' rx='4'/%3E%3Ctext x='16' y='21' text-anchor='middle' fill='%23fbbf24' font-family='sans-serif' font-size='14' font-weight='700'%3EAO%3C/text%3E%3C/svg%3E">
+  <meta name="description" content="Menú nocturno After Office Resto-Bar — carta digital para mesa y código QR.">
+  <meta name="theme-color" content="#000000">
+  <title>Menú Nocturno · After Office Futrono</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect fill='%23000' width='32' height='32' rx='4'/%3E%3Ctext x='16' y='21' text-anchor='middle' fill='%2322d3ee' font-family='sans-serif' font-size='14' font-weight='700'%3EAO%3C/text%3E%3C/svg%3E">
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
       theme: {
         extend: {
           fontFamily: {
-            playfair: ['"Playfair Display"', 'Georgia', 'serif'],
             outfit: ['Outfit', 'system-ui', 'sans-serif'],
-            oswald: ['Oswald', 'system-ui', 'sans-serif'],
             lato: ['Lato', 'system-ui', 'sans-serif'],
           },
         },
@@ -25,46 +22,61 @@
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Caveat:wght@400;600&family=Lato:wght@400;700&family=Montserrat:wght@800&family=Oswald:wght@400;600;700&family=Outfit:wght@400;600;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./css/demos.css">
   <link rel="stylesheet" href="./css/ux.css">
   <link rel="stylesheet" href="./css/mobile.css">
+  <link rel="stylesheet" href="./css/sitio.css">
 </head>
-<body class="page-enter carta-page carta-page--classic bg-neutral-950 text-stone-100 font-lato antialiased pb-24">
+<body class="site-neon carta-page carta-page--neon bg-black text-stone-100 font-outfit antialiased pb-24">
 
-  <header class="carta-header">
+  <header class="carta-header carta-header--neon">
     <div class="max-w-lg mx-auto px-4 py-3 flex items-center justify-between gap-3">
-      <a id="carta-back" href="index.html" class="carta-back">← Volver</a>
-      <div id="carta-brand" class="brand-wordmark brand-wordmark--sm brand-wordmark--classic text-center flex-1" aria-label="After Office Futrono">
+      <a id="carta-back" href="index.html#inicio" class="carta-back">← Volver</a>
+      <a id="carta-brand" href="index.html#inicio" class="brand-wordmark brand-wordmark--sm brand-wordmark--neon text-center flex-1" aria-label="After Office Futrono — inicio">
         <span class="brand-wordmark__stack">
           <span class="brand-wordmark__condensed">After</span>
           <span class="brand-wordmark__condensed">Office</span>
         </span>
-      </div>
+      </a>
       <span class="w-12" aria-hidden="true"></span>
     </div>
   </header>
 
   <main class="max-w-lg mx-auto px-4 pt-5 pb-6">
     <div class="carta-hero-mini">
-      <span id="carta-pill" class="carta-hero-mini__pill">Pide desde tu mesa</span>
-      <h1 id="carta-title" class="font-playfair text-2xl text-amber-100 font-bold carta-title">Carta Digital</h1>
-      <p id="carta-subtitle" class="text-stone-500 text-sm mt-1">Coctelería · Cervezas · Burgers · Tablas</p>
+      <span id="carta-pill" class="section-eyebrow carta-hero-mini__pill">Carta nocturna</span>
+      <h1 id="carta-title" class="font-outfit text-2xl sm:text-3xl font-bold carta-title mb-2">
+        <span class="neon-text-cyan">Menú</span> <span class="text-fuchsia-400 neon-text-magenta">Nocturno</span>
+      </h1>
+      <p id="carta-subtitle" class="text-stone-400 text-sm mt-1 font-lato">Carta completa · Comida, tragos, cervezas y más</p>
     </div>
 
     <div class="carta-sticky-tools">
-    <div class="carta-search-wrap mb-3">
-      <input type="search" id="carta-search" class="carta-search" placeholder="Buscar plato o bebida…" autocomplete="off" enterkeyhint="search">
-    </div>
-
-    <div id="carta-tabs" class="carta-tabs mb-0" role="tablist" aria-label="Categorías de la carta"></div>
+      <div class="carta-search-wrap mb-3">
+        <input type="search" id="carta-search" class="carta-search" placeholder="Buscar plato o bebida…" autocomplete="off" enterkeyhint="search">
+      </div>
+      <div class="carta-nav">
+        <label for="carta-category" class="carta-nav__label font-lato">Ir a sección</label>
+        <select id="carta-category" class="carta-category-select font-lato" aria-label="Seleccionar sección del menú"></select>
+        <div class="carta-tabs-wrap" data-carta-tabs-wrap>
+          <button type="button" class="carta-tabs-scroll carta-tabs-scroll--prev" data-carta-scroll="prev" aria-label="Categorías anteriores" hidden>
+            <span aria-hidden="true">‹</span>
+          </button>
+          <div id="carta-tabs" class="carta-tabs" role="tablist" aria-label="Categorías de la carta"></div>
+          <button type="button" class="carta-tabs-scroll carta-tabs-scroll--next" data-carta-scroll="next" aria-label="Más categorías" hidden>
+            <span aria-hidden="true">›</span>
+          </button>
+        </div>
+        <p class="carta-nav__hint font-lato" id="carta-nav-hint"></p>
+      </div>
     </div>
 
     <div id="carta-list" class="carta-list mt-4" role="tabpanel" aria-live="polite"></div>
 
-    <p class="text-center text-stone-600 text-xs mt-8 leading-relaxed">
+    <p class="text-center text-stone-500 text-xs mt-8 leading-relaxed font-lato">
       Precios referenciales · consulta disponibilidad con tu garzón.<br>
-      <a id="carta-foot-link" href="index.html" class="carta-foot-link transition">Volver al demo</a>
+      <a id="carta-foot-link" href="index.html#inicio" class="carta-foot-link btn-cta btn-cta--neon-outline inline-flex mt-4 text-sm">Volver al sitio</a>
     </p>
   </main>
 

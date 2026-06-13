@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es" class="no-js scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="description" content="Conoce la historia de After Office Resto-Bar — el punto de encuentro nocturno de Futrono.">
+  <meta name="theme-color" content="#000000">
+  <title>Nosotros · After Office Resto-Bar</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: { extend: { fontFamily: { outfit: ['Outfit', 'system-ui', 'sans-serif'], lato: ['Lato', 'system-ui', 'sans-serif'] } } },
+    };
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous">
+  <link rel="stylesheet" href="./css/demos.css">
+  <link rel="stylesheet" href="./css/ux.css">
+  <link rel="stylesheet" href="./css/mobile.css">
+  <link rel="stylesheet" href="./css/sitio.css">
+  <script defer src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js"></script>
+</head>
+<body class="site-neon demo-2 font-outfit bg-black text-stone-100 antialiased">
+
+  <header id="site-header" class="site-header demo-header-sticky sticky z-50 bg-black/90 backdrop-blur border-b border-cyan-500/20" style="background-image: linear-gradient(rgba(0,0,0,0.92), rgba(0,0,0,0.92)), repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(34,211,238,0.03) 2px, rgba(34,211,238,0.03) 4px);">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
+      <a href="index.html#inicio" class="brand-wordmark brand-wordmark--sm brand-wordmark--neon shrink-0" aria-label="After Office Futrono — inicio">
+        <span class="brand-wordmark__stack"><span class="brand-wordmark__condensed">After</span><span class="brand-wordmark__condensed">Office</span><span class="brand-wordmark__city">Futrono</span></span>
+      </a>
+      <button type="button" data-mobile-toggle="site-mobile-menu" class="nav-toggle-btn lg:hidden p-2 text-cyan-400" aria-label="Abrir menú" aria-expanded="false" aria-controls="site-mobile-menu">
+        <i data-lucide="menu" class="w-6 h-6 nav-toggle-icon--menu"></i>
+        <i data-lucide="x" class="w-6 h-6 nav-toggle-icon--close"></i>
+      </button>
+      <nav class="hidden lg:flex items-center gap-4 xl:gap-5">
+        <a href="index.html#pub-karaoke" class="site-nav-link text-stone-400">Pub Karaoke</a>
+        <a href="index.html#comida" class="site-nav-link text-stone-400">Comida</a>
+        <a href="index.html#eventos" class="site-nav-link text-stone-400">Eventos</a>
+        <a href="index.html#juego" class="site-nav-link text-stone-400">Juego</a>
+        <a href="index.html#disco" class="site-nav-link text-stone-400">Disco</a>
+        <a href="nosotros.html" class="site-nav-link is-active text-cyan-400" aria-current="page">Nosotros</a>
+        <a href="carta.html" class="site-nav-link text-stone-400">Menú</a>
+        <a href="index.html#contacto" class="site-nav-link text-stone-400">Contacto</a>
+        <a href="index.html#contacto" class="site-nav-link site-nav-link--cta">Reservar</a>
+      </nav>
+    </div>
+    <nav id="site-mobile-menu" class="mobile-nav lg:hidden border-t border-cyan-500/20 text-sm font-lato">
+      <a href="index.html#pub-karaoke" class="text-stone-300">Pub Karaoke</a>
+      <a href="index.html#comida" class="text-stone-300">Comida</a>
+      <a href="index.html#eventos" class="text-stone-300">Eventos</a>
+      <a href="index.html#juego" class="text-stone-300">Juego</a>
+      <a href="index.html#disco" class="text-stone-300">Disco</a>
+      <a href="nosotros.html" class="text-cyan-400 font-semibold" aria-current="page">Nosotros</a>
+      <a href="carta.html" class="text-stone-300">Menú</a>
+      <a href="index.html#contacto" class="mobile-nav__cta">Contacto y Reservas</a>
+    </nav>
+  </header>
+
+  <section class="relative py-16 sm:py-20 md:py-28 overflow-hidden border-b border-cyan-500/10">
+    <div class="absolute inset-0">
+      <img src="./imagenes_sitio/terraza-noche.jpg" alt="" class="w-full h-full object-cover opacity-30" aria-hidden="true">
+      <div class="absolute inset-0 bg-gradient-to-b from-black/70 to-black"></div>
+    </div>
+    <div class="relative max-w-3xl mx-auto px-4 text-center">
+      <span class="section-eyebrow">Nuestra historia</span>
+      <h1 class="text-2xl sm:text-3xl md:text-5xl font-bold mb-4"><span class="neon-text-cyan">Nosotros</span></h1>
+      <p class="text-stone-400 text-base sm:text-lg leading-relaxed px-2">Más de una década haciendo de Futrono el lugar donde la noche cobra vida.</p>
+    </div>
+  </section>
+
+  <main class="max-w-4xl mx-auto px-4 py-12 sm:py-16 md:py-20 space-y-12 sm:space-y-16">
+    <article class="reveal-site">
+      <div class="grid md:grid-cols-2 gap-8 items-center">
+        <div class="rounded-2xl overflow-hidden border border-cyan-500/25 aspect-[4/3]">
+          <img src="./imagenes_sitio/comida-mesa-grupo.jpg" alt="Clientes en el salón de After Office Futrono" class="w-full h-full object-cover" loading="lazy">
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-white mb-4">El after office que se quedó</h2>
+          <p class="text-stone-400 leading-relaxed font-lato">After Office nació con una idea simple: un espacio donde terminar el día con buena música, tragos de autor y comida para compartir. Lo que empezó como un rincón nocturno en Futrono se convirtió en el referente de la zona sur de Los Ríos.</p>
+        </div>
+      </div>
+    </article>
+
+    <article class="reveal-site">
+      <h2 class="text-2xl font-bold neon-text-magenta mb-6 text-center">Lo que nos define</h2>
+      <div class="grid sm:grid-cols-3 gap-5">
+        <div class="zone-card p-6 text-center">
+          <div class="zone-card__icon mx-auto"><i data-lucide="zap" class="w-6 h-6"></i></div>
+          <h3 class="font-semibold text-white mb-2">Energía</h3>
+          <p class="text-stone-500 text-sm font-lato">Karaoke, disco y eventos que encienden cada fin de semana.</p>
+        </div>
+        <div class="zone-card zone-card--magenta p-6 text-center">
+          <div class="zone-card__icon mx-auto"><i data-lucide="glass-water" class="w-6 h-6"></i></div>
+          <h3 class="font-semibold text-white mb-2">Coctelería</h3>
+          <p class="text-stone-500 text-sm font-lato">Tragos neón signature y carta pensada para la noche.</p>
+        </div>
+        <div class="zone-card p-6 text-center">
+          <div class="zone-card__icon mx-auto"><i data-lucide="home" class="w-6 h-6"></i></div>
+          <h3 class="font-semibold text-white mb-2">Comunidad</h3>
+          <p class="text-stone-500 text-sm font-lato">Familias de clientes que vuelven año tras año.</p>
+        </div>
+      </div>
+    </article>
+
+    <article class="reveal-site bg-neutral-900/60 border border-fuchsia-500/15 rounded-2xl p-8 md:p-10">
+      <h2 class="text-xl font-bold text-cyan-400 mb-4">Nuestro espacio hoy</h2>
+      <p class="text-stone-400 font-lato leading-relaxed mb-4">Reunimos en un solo local todo lo que buscas en una noche completa: pub karaoke con escenario propio, carta de comida nocturna, zona de juegos, pista disco con DJ y un equipo que conoce a cada cliente por su nombre.</p>
+      <p class="text-stone-400 font-lato leading-relaxed">Estamos en <strong class="text-stone-200">Gaston Guarda Parades 54, Futrono</strong>, abiertos de lunes a sábado desde las 17:00. Domingos descansamos para recargar energía.</p>
+    </article>
+
+    <div class="text-center reveal-site flex flex-col sm:flex-row items-center justify-center gap-3">
+      <a href="index.html#inicio" class="btn-cta btn-cta--neon inline-flex w-full sm:w-auto justify-center"><i data-lucide="arrow-left" class="w-5 h-5"></i> Volver al inicio</a>
+      <a href="index.html#contacto" class="btn-cta btn-cta--neon-outline inline-flex w-full sm:w-auto justify-center"><i data-lucide="calendar" class="w-5 h-5"></i> Reservar ahora</a>
+    </div>
+  </main>
+
+  <footer class="py-12 border-t border-stone-900 bg-black">
+    <div class="max-w-6xl mx-auto px-4 text-center">
+      <div class="brand-wordmark brand-wordmark--sm brand-wordmark--neon mb-3 mx-auto inline-block" aria-hidden="true">
+        <span class="brand-wordmark__stack"><span class="brand-wordmark__condensed">After</span><span class="brand-wordmark__condensed">Office</span><span class="brand-wordmark__city">Futrono</span></span>
+      </div>
+      <p class="text-stone-600 text-xs">© After Office Resto-Bar · Futrono</p>
+      <p class="footer-credit footer-credit--neon">Desarrollado por <a href="https://www.adkiniq.cl" target="_blank" rel="noopener noreferrer">Adkiniq</a></p>
+    </div>
+  </footer>
+
+  <nav class="site-mobile-bar md:hidden is-visible" aria-label="Acciones rápidas">
+    <a href="index.html#inicio"><i data-lucide="home" class="site-mobile-bar__icon"></i> Inicio</a>
+    <a href="carta.html"><i data-lucide="utensils" class="site-mobile-bar__icon"></i> Menú</a>
+    <a href="index.html#contacto" class="site-mobile-bar__primary"><i data-lucide="sparkles" class="site-mobile-bar__icon"></i> Reservar</a>
+    <a href="https://wa.me/56993015918" target="_blank" rel="noopener noreferrer"><i data-lucide="message-circle" class="site-mobile-bar__icon"></i> WhatsApp</a>
+  </nav>
+
+  <div class="wa-fab hidden md:block">
+    <span class="wa-fab__tooltip font-lato">Escríbenos por WhatsApp</span>
+    <a href="https://wa.me/56993015918" class="wa-fab__btn" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.435 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+    </a>
+  </div>
+
+  <script src="./js/sitio.js"></script>
+</body>
+</html>

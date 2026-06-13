@@ -1,8 +1,8 @@
 (function (global) {
   'use strict';
 
-  var PRIMARY = './imagenes_resto/';
-  var FALLBACK = './imagenes_bar/';
+  var PRIMARY = './imagenes_carta/';
+  var FALLBACK = './imagenes_sitio/';
   var PLACEHOLDER = 'data:image/svg+xml,' + encodeURIComponent(
     '<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300">' +
     '<rect fill="#1c1917" width="400" height="300"/>' +
