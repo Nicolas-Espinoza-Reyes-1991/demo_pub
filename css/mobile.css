@@ -254,9 +254,28 @@
     padding-bottom: 0.35rem;
   }
   .carta-tab { scroll-snap-align: center; }
-  .carta-tabs-scroll {
-    min-width: 44px;
+  .carta-sticky-tools--compact .carta-search {
     min-height: 44px;
+    font-size: 16px !important;
+    padding-top: 0.625rem;
+    padding-bottom: 0.625rem;
+  }
+  .carta-sections-btn {
+    min-height: 44px;
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+  .carta-tabs-scroll {
+    min-width: 36px;
+    min-height: 36px;
+  }
+  .carta-sheet__panel {
+    max-height: min(85dvh, 520px);
+  }
+  .carta-sheet__item {
+    min-height: 48px;
+    padding-top: 0.875rem;
+    padding-bottom: 0.875rem;
   }
   .carta-page--classic .carta-sticky-tools {
     border-bottom: 1px solid rgba(245, 158, 11, 0.12);
@@ -274,9 +293,9 @@
     padding-bottom: 0.875rem;
   }
   .carta-tab {
-    min-height: 44px;
-    padding: 0.625rem 1.125rem;
-    font-size: 0.875rem;
+    min-height: 36px;
+    padding: 0.45rem 0.85rem;
+    font-size: 0.8125rem;
   }
   .carta-item {
     padding: 1rem;
