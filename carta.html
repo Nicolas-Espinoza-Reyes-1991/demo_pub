@@ -26,7 +26,7 @@
   <link rel="stylesheet" href="./css/demos.css">
   <link rel="stylesheet" href="./css/ux.css">
   <link rel="stylesheet" href="./css/mobile.css">
-  <link rel="stylesheet" href="./css/sitio.css">
+  <link rel="stylesheet" href="./css/sitio.css?v=neon-pulse">
 </head>
 <body class="site-neon carta-page carta-page--neon bg-black text-stone-100 font-outfit antialiased pb-24">
 
@@ -54,6 +54,9 @@
 
     <div class="carta-sticky-tools carta-sticky-tools--compact">
       <div class="carta-search-wrap">
+        <span class="carta-search-icon" aria-hidden="true">
+          <svg class="carta-search-icon__svg" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+        </span>
         <input type="search" id="carta-search" class="carta-search" placeholder="Buscar plato o bebida…" autocomplete="off" enterkeyhint="search">
       </div>
       <div class="carta-nav-row" id="carta-nav-row">
@@ -66,9 +69,8 @@
             <span aria-hidden="true">›</span>
           </button>
         </div>
-        <button type="button" id="carta-sections-btn" class="carta-sections-btn font-lato" aria-haspopup="dialog" aria-expanded="false" aria-controls="carta-sections-sheet">
-          <svg class="carta-sections-btn__icon" viewBox="0 0 24 24" aria-hidden="true" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
-          <span class="carta-sections-btn__text">Secciones</span>
+        <button type="button" id="carta-sections-btn" class="carta-sections-btn" aria-haspopup="dialog" aria-expanded="false" aria-controls="carta-sections-sheet" aria-label="Ver todas las secciones">
+          <svg class="carta-sections-btn__icon" viewBox="0 0 24 24" aria-hidden="true" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
         </button>
       </div>
     </div>
@@ -102,6 +104,6 @@
 
   <script defer src="./js/images.js"></script>
   <script defer src="./js/menu-data.js"></script>
-  <script defer src="./js/carta.js"></script>
+  <script defer src="./js/carta.js?v=neon-pulse"></script>
 </body>
 </html>

@@ -217,6 +217,33 @@
     updateTabsScrollState();
   }
 
+  function initNeonPulse() {
+    var searchSvg = document.querySelector('.carta-search-icon__svg');
+    var sectionsBtn = document.getElementById('carta-sections-btn');
+    var sectionsIcon = sectionsBtn ? sectionsBtn.querySelector('.carta-sections-btn__icon') : null;
+    var targets = [searchSvg, sectionsBtn, sectionsIcon].filter(Boolean);
+    if (!targets.length) return;
+
+    var phases = ['carta-neon-p0', 'carta-neon-p1', 'carta-neon-p2'];
+    var index = 0;
+
+    function setPhase(i) {
+      var sheetOpen = sectionsBtn && sectionsBtn.getAttribute('aria-expanded') === 'true';
+      targets.forEach(function (el) {
+        if (sheetOpen && (el === sectionsBtn || el === sectionsIcon)) return;
+        phases.forEach(function (cls) { el.classList.remove(cls); });
+        el.classList.add(phases[i]);
+      });
+    }
+
+    setPhase(0);
+    setInterval(function () {
+      if (sectionsBtn && sectionsBtn.getAttribute('aria-expanded') === 'true') return;
+      index = (index + 1) % phases.length;
+      setPhase(index);
+    }, 750);
+  }
+
   function initSectionSheet(setActiveFn) {
     var sheet = document.getElementById('carta-sections-sheet');
     var openBtn = document.getElementById('carta-sections-btn');
@@ -355,6 +382,7 @@
 
     initTabsScroll();
     initSectionSheet(setActive);
+    initNeonPulse();
 
     if (window.AOImages) AOImages.initImages(document);
     refresh();

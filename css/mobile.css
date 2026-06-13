@@ -248,6 +248,7 @@
     padding: 0.65rem 1rem 0.75rem;
     background: linear-gradient(180deg, rgba(10, 10, 10, 0.98) 75%, rgba(10, 10, 10, 0) 100%);
     backdrop-filter: blur(10px);
+    overflow: visible;
   }
   .carta-tabs {
     scroll-snap-type: x mandatory;
@@ -261,16 +262,19 @@
     padding-bottom: 0.625rem;
   }
   .carta-sections-btn {
-    min-height: 44px;
-    padding-left: 0.75rem;
-    padding-right: 0.75rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    min-width: 2.5rem;
+    min-height: 2.5rem;
   }
   .carta-tabs-scroll {
     min-width: 36px;
     min-height: 36px;
   }
   .carta-sheet__panel {
-    max-height: min(85dvh, 520px);
+    max-height: min(88dvh, 100%);
+    width: 100%;
+    max-width: 100%;
   }
   .carta-sheet__item {
     min-height: 48px;
