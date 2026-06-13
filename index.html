@@ -21,9 +21,9 @@
   <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous">
   <link rel="stylesheet" href="./css/demos.css">
-  <link rel="stylesheet" href="./css/ux.css?v=hero-banner-clarity">
+  <link rel="stylesheet" href="./css/ux.css?v=hero-no-copa">
   <link rel="stylesheet" href="./css/mobile.css">
-  <link rel="stylesheet" href="./css/sitio.css?v=mobile-scroll-fix">
+  <link rel="stylesheet" href="./css/sitio.css?v=evento-flyer-auto2">
   <script defer src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js"></script>
 </head>
 <body class="site-neon demo-2 font-outfit bg-black text-stone-100 antialiased">
@@ -82,10 +82,10 @@
   <section id="inicio" class="hero-section relative min-h-[88vh] sm:min-h-[92vh] flex items-center justify-center overflow-hidden bg-black px-4 py-20">
     <div class="hero-bg hero-bg--carousel" aria-hidden="true">
       <div class="hero-bg__slide is-active hero-bg__slide--lit">
-        <img src="./imagenes_sitio/hero-banner-01.jpeg" alt="" class="hero-bg__img hero-bg__img--focus-bar" fetchpriority="high" decoding="async">
+        <img src="./imagenes_sitio/hero-banner-02.jpeg" alt="" class="hero-bg__img hero-bg__img--focus-bar" fetchpriority="high" decoding="async">
       </div>
       <div class="hero-bg__slide hero-bg__slide--lit">
-        <img src="./imagenes_sitio/hero-banner-02.jpeg" alt="" class="hero-bg__img hero-bg__img--focus-mid" decoding="async">
+        <img src="./imagenes_sitio/hero-banner-01.jpeg" alt="" class="hero-bg__img hero-bg__img--focus-mid" decoding="async">
       </div>
       <div class="hero-bg__slide">
         <img src="./imagenes_sitio/hero-banner-03.jpeg" alt="" class="hero-bg__img hero-bg__img--focus-stage" decoding="async">
@@ -481,28 +481,40 @@
   </div>
 
   <!-- Popup evento de la semana -->
-  <div id="event-popup" class="event-popup" hidden aria-hidden="true">
+  <div id="event-popup" class="event-popup event-popup--flyer" hidden aria-hidden="true">
     <div class="event-popup__backdrop" data-event-popup-close tabindex="-1" aria-hidden="true"></div>
-    <div class="event-popup__dialog" role="dialog" aria-modal="true" aria-labelledby="event-popup-title" aria-describedby="event-popup-desc">
-      <button type="button" class="event-popup__close" data-event-popup-close aria-label="Cerrar aviso del evento">
-        <i data-lucide="x" class="w-5 h-5"></i>
-      </button>
-      <div class="event-popup__media">
-        <img src="./imagenes_sitio/evento-neon-friday.jpg" alt="Fuchsia Friday en vivo en After Office Futrono" width="480" height="270" loading="eager" decoding="async">
+    <div class="event-popup__dialog event-popup__dialog--flyer" role="dialog" aria-modal="true" aria-labelledby="event-popup-title" aria-describedby="event-popup-desc">
+      <div class="event-popup__toolbar">
         <span class="event-popup__badge">Esta semana</span>
+        <button type="button" class="event-popup__close" data-event-popup-close aria-label="Cerrar aviso del evento">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
       </div>
-      <div class="event-popup__body">
-        <p class="event-popup__eyebrow font-lato">Viernes · Live set</p>
-        <h2 id="event-popup-title" class="event-popup__title">Fuchsia Friday · DJ Vortex</h2>
-        <p id="event-popup-desc" class="event-popup__desc font-lato">Música electrónica y house en vivo desde las 23:00. Dress code neón, 2×1 en gin tonic hasta medianoche y entrada liberada antes de las 23:00.</p>
-        <p class="event-popup__meta font-lato">
-          <i data-lucide="calendar" class="w-4 h-4 inline-block align-text-bottom text-cyan-400"></i>
-          Vie 13 Jun · 23:00 – 04:00
-          <span class="event-popup__meta-sep">·</span>
-          <i data-lucide="map-pin" class="w-4 h-4 inline-block align-text-bottom text-fuchsia-400"></i>
-          After Office, Futrono
-        </p>
-        <div class="event-popup__actions">
+      <div class="event-popup__flyer">
+        <img class="event-popup__flyer-img" src="./imagenes_sitio/evento-semana-marita.png" alt="Flyer — Marita en After Office Futrono, viernes 12 de junio 21:30" width="1080" height="1350" loading="eager" decoding="async">
+      </div>
+      <div class="event-popup__body event-popup__body--flyer">
+        <p class="event-popup__eyebrow font-lato">Viernes · Artista invitada</p>
+        <h2 id="event-popup-title" class="event-popup__title">Marita en vivo</h2>
+        <ul class="event-popup__facts event-popup__facts--grid font-lato" id="event-popup-desc">
+          <li class="event-popup__fact">
+            <i data-lucide="calendar" class="event-popup__fact-icon"></i>
+            <span><strong>Vie 12 Jun</strong> · 21:30 hrs</span>
+          </li>
+          <li class="event-popup__fact">
+            <i data-lucide="map-pin" class="event-popup__fact-icon"></i>
+            <span>Gastón Guarda 54</span>
+          </li>
+          <li class="event-popup__fact">
+            <i data-lucide="mic-2" class="event-popup__fact-icon"></i>
+            <span>Karaoke y premios</span>
+          </li>
+          <li class="event-popup__fact">
+            <i data-lucide="disc-3" class="event-popup__fact-icon"></i>
+            <span>DJ Alex Groove</span>
+          </li>
+        </ul>
+        <div class="event-popup__actions event-popup__actions--row">
           <a href="#contacto" class="event-popup__cta event-popup__cta--primary" data-event-popup-close>Reservar mesa</a>
           <a href="#eventos" class="event-popup__cta event-popup__cta--ghost" data-event-popup-close>Ver agenda</a>
         </div>
@@ -511,6 +523,6 @@
     </div>
   </div>
 
-  <script src="./js/sitio.js?v=mobile-scroll-fix"></script>
+  <script src="./js/sitio.js?v=evento-flyer-auto2"></script>
 </body>
 </html>

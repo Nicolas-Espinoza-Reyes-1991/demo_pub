@@ -263,9 +263,36 @@
     return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
   }
 
+  function bindEventFlyerFit(popup) {
+    var dialog = popup.querySelector('.event-popup__dialog--flyer');
+    var img = popup.querySelector('.event-popup__flyer-img');
+    if (!dialog || !img) return;
+
+    function syncFlyerLayout() {
+      var nw = img.naturalWidth;
+      var nh = img.naturalHeight;
+      if (!nw || !nh) return;
+
+      var ratio = nw / nh;
+      var isLandscape = ratio >= 1.05;
+      var isWide = ratio >= 0.72;
+      var widthCap = isLandscape ? 'min(28rem, 94vw)' : isWide ? 'min(22rem, 92vw)' : 'min(20rem, 92vw)';
+
+      dialog.style.width = widthCap;
+      dialog.style.maxWidth = widthCap;
+    }
+
+    if (img.complete) syncFlyerLayout();
+    else img.addEventListener('load', syncFlyerLayout, { once: true });
+
+    window.addEventListener('resize', syncFlyerLayout, { passive: true });
+  }
+
   function initEventPopup() {
     var popup = document.getElementById('event-popup');
     if (!popup) return;
+
+    bindEventFlyerFit(popup);
 
     var storageKey = 'ao-event-popup-dismissed';
     var sessionKey = 'ao-event-popup-seen';
