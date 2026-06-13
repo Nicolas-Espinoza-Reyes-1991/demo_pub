@@ -263,7 +263,8 @@
     var target = document.getElementById('carta-' + sectionId);
     if (!target) return;
     var top = target.getBoundingClientRect().top + window.scrollY - getStickyOffset();
-    window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
+    var coarse = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
+    window.scrollTo({ top: Math.max(0, top), behavior: coarse ? 'auto' : 'smooth' });
   }
 
   function updateSearchUI(query) {
@@ -277,7 +278,16 @@
     if (!nav) return;
     var activeBtn = nav.querySelector('.carta-tab--active');
     if (!activeBtn) return;
-    activeBtn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+    var navRect = nav.getBoundingClientRect();
+    var btnRect = activeBtn.getBoundingClientRect();
+    var targetLeft = nav.scrollLeft + (btnRect.left - navRect.left) - (navRect.width / 2) + (btnRect.width / 2);
+    targetLeft = Math.max(0, Math.min(targetLeft, nav.scrollWidth - nav.clientWidth));
+    var coarse = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
+    if (!coarse && nav.scrollTo) {
+      nav.scrollTo({ left: targetLeft, behavior: 'smooth' });
+    } else {
+      nav.scrollLeft = targetLeft;
+    }
   }
 
   function updateTabsScrollState() {

@@ -1060,6 +1060,16 @@ body.nav-open .site-section-nav-wrap { z-index: 30; }
 @media (max-width: 767px) {
   html { -webkit-text-size-adjust: 100%; }
 
+  html.scroll-smooth {
+    scroll-behavior: auto;
+  }
+
+  html,
+  body.site-neon {
+    overflow-x: clip;
+    overscroll-behavior-y: none;
+  }
+
   .site-neon {
     --site-header-h: 3.625rem;
     --site-section-nav-h: 3.125rem;
@@ -1084,6 +1094,8 @@ body.nav-open .site-section-nav-wrap { z-index: 30; }
   .site-section-nav {
     padding: 0.5rem 1.5rem;
     gap: 0.4rem;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: none;
   }
 
   .site-section-nav a {
@@ -1444,6 +1456,20 @@ body.nav-open .site-section-nav-wrap { z-index: 30; }
 
 body.event-popup-open {
   overflow: hidden;
+}
+
+@media (max-width: 767px) {
+  body.event-popup-open {
+    overflow: visible;
+  }
+
+  .event-popup.is-open {
+    overscroll-behavior: contain;
+  }
+
+  .event-popup.is-open .event-popup__backdrop {
+    touch-action: none;
+  }
 }
 
 body.event-popup-open .site-mobile-bar,

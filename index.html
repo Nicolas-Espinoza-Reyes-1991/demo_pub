@@ -8,7 +8,7 @@
   <title>After Office Resto-Bar · Futrono</title>
   <meta property="og:title" content="After Office Resto-Bar · Futrono">
   <meta property="og:description" content="Pub karaoke · Comida · Eventos · Juego · Disco. Noche · Música · Drinks.">
-  <meta property="og:image" content="./imagenes_sitio/hero-interior.jpg">
+  <meta property="og:image" content="./imagenes_sitio/hero-banner-01.jpeg">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect fill='%23000' width='32' height='32' rx='4'/%3E%3Ctext x='16' y='21' text-anchor='middle' fill='%2322d3ee' font-family='sans-serif' font-size='14' font-weight='700'%3EAO%3C/text%3E%3C/svg%3E">
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -21,9 +21,9 @@
   <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous">
   <link rel="stylesheet" href="./css/demos.css">
-  <link rel="stylesheet" href="./css/ux.css?v=hero-dark-fix">
+  <link rel="stylesheet" href="./css/ux.css?v=hero-banner-clarity">
   <link rel="stylesheet" href="./css/mobile.css">
-  <link rel="stylesheet" href="./css/sitio.css?v=responsive-scale-up">
+  <link rel="stylesheet" href="./css/sitio.css?v=mobile-scroll-fix">
   <script defer src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js"></script>
 </head>
 <body class="site-neon demo-2 font-outfit bg-black text-stone-100 antialiased">
@@ -81,14 +81,14 @@
   <!-- BANNER -->
   <section id="inicio" class="hero-section relative min-h-[88vh] sm:min-h-[92vh] flex items-center justify-center overflow-hidden bg-black px-4 py-20">
     <div class="hero-bg hero-bg--carousel" aria-hidden="true">
-      <div class="hero-bg__slide is-active">
-        <img src="./imagenes_sitio/hero-interior.jpg" alt="" class="hero-bg__img" fetchpriority="high" decoding="async">
+      <div class="hero-bg__slide is-active hero-bg__slide--lit">
+        <img src="./imagenes_sitio/hero-banner-01.jpeg" alt="" class="hero-bg__img hero-bg__img--focus-bar" fetchpriority="high" decoding="async">
       </div>
       <div class="hero-bg__slide hero-bg__slide--lit">
-        <img src="./imagenes_sitio/disco-pista-neon.jpg" alt="" class="hero-bg__img" decoding="async">
+        <img src="./imagenes_sitio/hero-banner-02.jpeg" alt="" class="hero-bg__img hero-bg__img--focus-mid" decoding="async">
       </div>
-      <div class="hero-bg__slide hero-bg__slide--lit">
-        <img src="./imagenes_sitio/karaoke-live.jpg" alt="" class="hero-bg__img" decoding="async">
+      <div class="hero-bg__slide">
+        <img src="./imagenes_sitio/hero-banner-03.jpeg" alt="" class="hero-bg__img hero-bg__img--focus-stage" decoding="async">
       </div>
     </div>
     <div class="absolute inset-0 z-[1] bg-gradient-to-b from-black/60 via-black/45 to-black"></div>
@@ -511,6 +511,6 @@
     </div>
   </div>
 
-  <script src="./js/sitio.js?v=hero-carousel-fix"></script>
+  <script src="./js/sitio.js?v=mobile-scroll-fix"></script>
 </body>
 </html>
