@@ -26,9 +26,20 @@
   <link rel="stylesheet" href="./css/demos.css">
   <link rel="stylesheet" href="./css/ux.css">
   <link rel="stylesheet" href="./css/mobile.css">
-  <link rel="stylesheet" href="./css/sitio.css?v=img-motion-unified">
+  <link rel="preload" href="./imagenes_sitio/loader-logo.jpeg" as="image">
+  <link rel="stylesheet" href="./css/sitio.css?v=site-loader">
 </head>
-<body class="site-neon carta-page carta-page--neon bg-black text-stone-100 font-outfit antialiased pb-8">
+<body class="site-neon carta-page carta-page--neon bg-black text-stone-100 font-outfit antialiased pb-8 site-loading">
+
+  <div id="site-loader" class="site-loader" aria-live="polite" aria-busy="true" aria-label="Cargando After Office">
+    <div class="site-loader__inner">
+      <img src="./imagenes_sitio/loader-logo.jpeg" alt="After Office Futrono" class="site-loader__logo" width="380" height="475" decoding="sync" fetchpriority="high">
+      <div class="site-loader__bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Progreso de carga">
+        <span class="site-loader__bar-fill"></span>
+      </div>
+      <p class="site-loader__text">Cargando</p>
+    </div>
+  </div>
 
   <main class="carta-main mx-auto pb-6">
     <div class="carta-hero-mini">
@@ -117,6 +128,7 @@
     </div>
   </div>
 
+  <script src="./js/site-loader.js?v=1"></script>
   <script defer src="./js/images.js"></script>
   <script defer src="./js/menu-data.js?v=juegos-sin-precio"></script>
   <script defer src="./js/carta.js?v=img-motion-unified"></script>

@@ -23,10 +23,21 @@
   <link rel="stylesheet" href="./css/demos.css">
   <link rel="stylesheet" href="./css/ux.css?v=hero-no-copa">
   <link rel="stylesheet" href="./css/mobile.css">
-  <link rel="stylesheet" href="./css/sitio.css?v=img-motion-unified">
+  <link rel="preload" href="./imagenes_sitio/loader-logo.jpeg" as="image">
+  <link rel="stylesheet" href="./css/sitio.css?v=site-loader">
   <script defer src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js"></script>
 </head>
-<body class="site-neon demo-2 font-outfit bg-black text-stone-100 antialiased">
+<body class="site-neon demo-2 font-outfit bg-black text-stone-100 antialiased site-loading">
+
+  <div id="site-loader" class="site-loader" aria-live="polite" aria-busy="true" aria-label="Cargando After Office">
+    <div class="site-loader__inner">
+      <img src="./imagenes_sitio/loader-logo.jpeg" alt="After Office Futrono" class="site-loader__logo" width="380" height="475" decoding="sync" fetchpriority="high">
+      <div class="site-loader__bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Progreso de carga">
+        <span class="site-loader__bar-fill"></span>
+      </div>
+      <p class="site-loader__text">Cargando</p>
+    </div>
+  </div>
 
   <header id="site-header" class="site-header demo-header-sticky sticky z-50 bg-black/90 backdrop-blur border-b border-cyan-500/20" style="background-image: linear-gradient(rgba(0,0,0,0.92), rgba(0,0,0,0.92)), repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(34,211,238,0.03) 2px, rgba(34,211,238,0.03) 4px);">
     <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
@@ -409,20 +420,20 @@
           <span class="font-semibold text-sm">WhatsApp</span>
           <span class="text-xs text-stone-500">+56 9 9301 5918</span>
         </a>
-        <a href="https://instagram.com/" target="_blank" rel="noopener noreferrer" class="social-link social-link--ig">
+        <a href="https://www.instagram.com/afterofficefutrono" target="_blank" rel="noopener noreferrer" class="social-link social-link--ig">
           <span class="social-link__icon"><i class="fa-brands fa-instagram"></i></span>
           <span class="font-semibold text-sm">Instagram</span>
-          <span class="text-xs text-stone-500">@afteroffice.futrono</span>
+          <span class="text-xs text-stone-500">@afterofficefutrono</span>
         </a>
-        <a href="https://facebook.com/" target="_blank" rel="noopener noreferrer" class="social-link social-link--fb">
+        <a href="https://web.facebook.com/verano.futrono.2025" target="_blank" rel="noopener noreferrer" class="social-link social-link--fb">
           <span class="social-link__icon"><i class="fa-brands fa-facebook-f"></i></span>
           <span class="font-semibold text-sm">Facebook</span>
           <span class="text-xs text-stone-500">After Office Futrono</span>
         </a>
-        <a href="https://tiktok.com/" target="_blank" rel="noopener noreferrer" class="social-link social-link--tt">
+        <a href="https://www.tiktok.com/@after.office.rest" target="_blank" rel="noopener noreferrer" class="social-link social-link--tt">
           <span class="social-link__icon"><i class="fa-brands fa-tiktok"></i></span>
           <span class="font-semibold text-sm">TikTok</span>
-          <span class="text-xs text-stone-500">Noches en vivo</span>
+          <span class="text-xs text-stone-500">@after.office.rest</span>
         </a>
       </div>
 
@@ -523,6 +534,7 @@
     </div>
   </div>
 
+  <script src="./js/site-loader.js?v=1"></script>
   <script src="./js/sitio.js?v=evento-flyer-auto2"></script>
 </body>
 </html>

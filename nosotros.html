@@ -19,10 +19,21 @@
   <link rel="stylesheet" href="./css/demos.css">
   <link rel="stylesheet" href="./css/ux.css">
   <link rel="stylesheet" href="./css/mobile.css">
-  <link rel="stylesheet" href="./css/sitio.css?v=img-motion-unified">
+  <link rel="preload" href="./imagenes_sitio/loader-logo.jpeg" as="image">
+  <link rel="stylesheet" href="./css/sitio.css?v=site-loader">
   <script defer src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js"></script>
 </head>
-<body class="site-neon demo-2 font-outfit bg-black text-stone-100 antialiased">
+<body class="site-neon demo-2 font-outfit bg-black text-stone-100 antialiased site-loading">
+
+  <div id="site-loader" class="site-loader" aria-live="polite" aria-busy="true" aria-label="Cargando After Office">
+    <div class="site-loader__inner">
+      <img src="./imagenes_sitio/loader-logo.jpeg" alt="After Office Futrono" class="site-loader__logo" width="380" height="475" decoding="sync" fetchpriority="high">
+      <div class="site-loader__bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Progreso de carga">
+        <span class="site-loader__bar-fill"></span>
+      </div>
+      <p class="site-loader__text">Cargando</p>
+    </div>
+  </div>
 
   <header id="site-header" class="site-header demo-header-sticky sticky z-50 bg-black/90 backdrop-blur border-b border-cyan-500/20" style="background-image: linear-gradient(rgba(0,0,0,0.92), rgba(0,0,0,0.92)), repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(34,211,238,0.03) 2px, rgba(34,211,238,0.03) 4px);">
     <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
@@ -139,6 +150,7 @@
     </a>
   </div>
 
+  <script src="./js/site-loader.js?v=1"></script>
   <script src="./js/sitio.js?v=mobile-scroll-fix"></script>
 </body>
 </html>
