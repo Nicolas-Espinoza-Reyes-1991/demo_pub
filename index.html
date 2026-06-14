@@ -23,8 +23,9 @@
   <link rel="stylesheet" href="./css/demos.css">
   <link rel="stylesheet" href="./css/ux.css?v=hero-no-copa">
   <link rel="stylesheet" href="./css/mobile.css">
+  <link rel="preload" href="./imagenes_carta/logo-after-office.webp" as="image">
   <link rel="preload" href="./imagenes_sitio/loader-logo.jpeg" as="image">
-  <link rel="stylesheet" href="./css/sitio.css?v=site-loader">
+  <link rel="stylesheet" href="./css/sitio.css?v=hero-logo">
   <script defer src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js"></script>
 </head>
 <body class="site-neon demo-2 font-outfit bg-black text-stone-100 antialiased site-loading">
@@ -110,17 +111,21 @@
         <span class="hero-badge hero-badge--neon">Futrono · Los Ríos</span>
       </div>
       <p class="brand-tagline brand-tagline--neon brand-tagline--center">Noche · Música · Drinks</p>
-      <h1 class="brand-wordmark brand-wordmark--lg brand-wordmark--neon brand-wordmark--center mb-5">
-        <span class="brand-wordmark__stack">
-          <span class="brand-wordmark__condensed">After</span>
-          <span class="brand-wordmark__condensed">Office</span>
-          <span class="brand-wordmark__city">Resto-Bar</span>
-        </span>
+      <h1 class="hero-brand">
+        <img
+          class="hero-brand__img"
+          src="./imagenes_carta/logo-after-office.webp"
+          alt="After Office Resto-Bar Futrono"
+          width="360"
+          height="132"
+          decoding="async"
+          fetchpriority="high"
+        >
       </h1>
       <p class="text-stone-300 text-base sm:text-xl mb-8 max-w-2xl mx-auto leading-relaxed">Pub karaoke, cocina de noche, pista de baile y zona de juegos. Todo en un solo lugar para vivir la noche al máximo.</p>
       <div class="flex flex-col sm:flex-row items-center justify-center gap-3">
         <a href="#contacto" class="btn-cta btn-cta--neon w-full sm:w-auto"><i data-lucide="sparkles" class="w-5 h-5"></i> Reservar mesa</a>
-        <a href="carta.html" class="btn-cta btn-cta--neon-outline w-full sm:w-auto"><i data-lucide="martini" class="w-5 h-5"></i> Ver menú</a>
+        <a href="carta.html" class="btn-cta btn-cta--menu-spotlight w-full sm:w-auto"><i data-lucide="martini" class="w-5 h-5"></i> Ver menú</a>
       </div>
     </div>
     <div class="hero-scroll-hint"><span>Desliza</span><i data-lucide="chevron-down" class="w-5 h-5"></i></div>
