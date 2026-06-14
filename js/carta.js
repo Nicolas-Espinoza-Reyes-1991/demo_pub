@@ -471,65 +471,6 @@
     window.__cartaProductOpen = function () { return !modal.hidden; };
   }
 
-  function initClickCaret() {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-    var layer = document.createElement('div');
-    layer.className = 'carta-click-caret-layer';
-    layer.setAttribute('aria-hidden', 'true');
-    document.body.appendChild(layer);
-
-    var activeCaret = null;
-    var hideTimer = null;
-
-    function modalOpen() {
-      var productModal = document.getElementById('carta-product-modal');
-      var sheet = document.getElementById('carta-sections-sheet');
-      return (productModal && !productModal.hidden) || (sheet && !sheet.hidden);
-    }
-
-    function isBlocked(target) {
-      if (!target) return true;
-      if (modalOpen()) return true;
-      return !!target.closest('input, textarea, select');
-    }
-
-    function hideCaret(caret) {
-      if (caret && caret.parentNode) caret.parentNode.removeChild(caret);
-      if (activeCaret === caret) activeCaret = null;
-    }
-
-    function showCaret(clientX, clientY) {
-      if (activeCaret) hideCaret(activeCaret);
-      if (hideTimer) {
-        clearTimeout(hideTimer);
-        hideTimer = null;
-      }
-
-      var pad = 6;
-      var x = Math.max(pad, Math.min(clientX, window.innerWidth - pad));
-      var y = Math.max(pad, Math.min(clientY, window.innerHeight - pad));
-
-      var caret = document.createElement('span');
-      caret.className = 'carta-click-caret';
-      caret.style.left = x + 'px';
-      caret.style.top = y + 'px';
-      layer.appendChild(caret);
-      activeCaret = caret;
-
-      hideTimer = setTimeout(function () {
-        caret.classList.add('is-fading');
-        setTimeout(function () { hideCaret(caret); }, 380);
-      }, 2200);
-    }
-
-    document.addEventListener('pointerdown', function (e) {
-      if (e.button !== 0) return;
-      if (isBlocked(e.target)) return;
-      showCaret(e.clientX, e.clientY);
-    });
-  }
-
   function initSectionSheet(setActiveFn) {
     var sheet = document.getElementById('carta-sections-sheet');
     var openBtn = document.getElementById('carta-sections-btn');
@@ -661,7 +602,6 @@
     initTabsScroll();
     initSectionSheet(setActive);
     initProductModal();
-    initClickCaret();
     initNeonPulse();
 
     document.body.classList.add('carta-page-ready');

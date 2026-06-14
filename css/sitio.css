@@ -3054,6 +3054,7 @@ body.carta-modal-open .wa-fab--carta {
   position: relative;
   transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
   -webkit-tap-highlight-color: transparent;
+  caret-color: transparent;
 }
 
 .site-neon.carta-page .carta-item:focus-visible {
@@ -3340,44 +3341,6 @@ body.carta-modal-open .wa-fab--carta {
   .site-neon.carta-page .carta-item:hover {
     transform: none;
     box-shadow: 0 0 0 1px rgba(34, 211, 238, 0.05);
-  }
-}
-
-/* —— Cursor parpadeante al clic (carta) —— */
-.carta-click-caret-layer {
-  position: fixed;
-  inset: 0;
-  z-index: 10070;
-  pointer-events: none;
-  overflow: hidden;
-}
-
-.carta-click-caret {
-  position: fixed;
-  width: 2px;
-  height: 1.125rem;
-  margin-left: -1px;
-  background: rgba(255, 255, 255, 0.95);
-  box-shadow: 0 0 6px rgba(255, 255, 255, 0.55), 0 0 10px rgba(34, 211, 238, 0.35);
-  transform: translateY(-50%);
-  animation: carta-click-caret-blink 1s step-end infinite;
-  pointer-events: none;
-}
-
-.carta-click-caret.is-fading {
-  opacity: 0;
-  transition: opacity 0.35s ease;
-}
-
-@keyframes carta-click-caret-blink {
-  0%, 45% { opacity: 1; }
-  50%, 100% { opacity: 0; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .carta-click-caret {
-    animation: none;
-    opacity: 0.85;
   }
 }
 
