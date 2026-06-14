@@ -7,8 +7,8 @@
   var barFill = loader.querySelector('.site-loader__bar-fill');
   var bar = loader.querySelector('.site-loader__bar');
   var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var MIN_MS = reducedMotion ? 350 : 850;
-  var MAX_MS = 5200;
+  var MIN_MS = reducedMotion ? 200 : 450;
+  var MAX_MS = 3200;
   var startedAt = Date.now();
   var hidden = false;
   var finishScheduled = false;
@@ -36,18 +36,15 @@
   }
 
   function getCriticalImages() {
-    var nodes = document.querySelectorAll(
-      '.site-loader__logo, img[fetchpriority="high"], .hero-bg__slide img, img:not([loading="lazy"])'
-    );
-    var seen = new Set();
     var list = [];
+    var logo = document.querySelector('.site-loader__logo');
+    if (logo) list.push(logo);
 
-    nodes.forEach(function (img) {
-      if (img.closest('#event-popup')) return;
-      if (seen.has(img)) return;
-      seen.add(img);
-      list.push(img);
-    });
+    var activeHero = document.querySelector('.hero-bg__slide.is-active img');
+    if (activeHero) list.push(activeHero);
+
+    var heroBrand = document.querySelector('.hero-brand__img');
+    if (heroBrand) list.push(heroBrand);
 
     return list;
   }

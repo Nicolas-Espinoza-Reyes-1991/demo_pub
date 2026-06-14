@@ -417,6 +417,15 @@ body.site-loading {
   }
 }
 
+@media (max-width: 767px) {
+  .site-neon .site-img-motion,
+  .site-neon .carta-preview-card__img,
+  .site-neon .juego-tile__img,
+  .site-neon.carta-page .carta-item__img-wrap img {
+    animation: none;
+  }
+}
+
 .zone-card {
   position: relative;
   border-radius: 1rem;
@@ -1230,6 +1239,12 @@ body.site-loading {
   align-items: center;
   justify-content: center;
   font-size: 1.15rem;
+}
+
+.social-link__icon svg {
+  width: 1.15rem;
+  height: 1.15rem;
+  display: block;
 }
 
 .social-link--wa .social-link__icon { background: #25d366; color: #fff; }

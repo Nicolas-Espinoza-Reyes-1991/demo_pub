@@ -420,7 +420,7 @@
       modal.classList.remove('is-closing');
       lockPageScroll();
 
-      if (window.AOImages && imgEl) AOImages.initImages(modal);
+      if (window.AOImages && imgEl) AOImages.loadImageImmediate(imgEl);
 
       requestAnimationFrame(function () {
         modal.classList.add('is-open');

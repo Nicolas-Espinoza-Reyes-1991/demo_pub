@@ -196,8 +196,6 @@
   }
 
   /* Galería mosaico */
-  .gallery-mosaic__item { min-height: 120px; }
-
   /* Secciones más aireadas */
   .demo-panel section { padding-left: 0; padding-right: 0; }
   .demo-panel section > .max-w-6xl,
