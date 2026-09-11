@@ -45,25 +45,26 @@ body { overflow-x: clip; }
 }
 
 
-/* Static map placeholder replacing the live Google Maps iframe — the
-   no-API-key embed (maps.google.com/...&output=embed) is slow once
-   triggered, so this loads instantly and just opens Maps in a new tab. */
-.site-map-static {
-  background-color: rgba(23, 23, 23, 0.85);
-  background-image:
-    linear-gradient(rgba(34, 211, 238, 0.08) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(34, 211, 238, 0.08) 1px, transparent 1px);
-  background-size: 28px 28px;
-  transition: background-color 0.2s ease;
-}
-.site-map-static:hover {
-  background-color: rgba(23, 23, 23, 1);
+/* Static map card replacing the live Google Maps iframe — the no-API-key
+   embed (maps.google.com/...&output=embed) is slow once triggered. This is
+   a real OpenStreetMap tile image (fetched once, self-hosted as WebP, see
+   imagenes_sitio/mapa-ubicacion.webp), so it loads instantly and just opens
+   Maps in a new tab on click. The image was cropped so the venue's exact
+   coordinates land dead-center — the pin below is positioned to match. */
+.site-map-static__overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.55) 0%, transparent 45%);
+  pointer-events: none;
 }
 .site-map-static__pin {
+  left: 50%;
+  bottom: 50%;
+  transform: translate(-50%, 50%);
   transition: transform 0.2s ease;
 }
 .site-map-static:hover .site-map-static__pin {
-  transform: translateY(-3px);
+  transform: translate(-50%, calc(50% - 4px));
 }
 
 .wa-fab {

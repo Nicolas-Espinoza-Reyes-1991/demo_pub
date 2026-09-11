@@ -47,7 +47,7 @@
     ]
   }
   </script>
-  <link rel="stylesheet" href="./css/tailwind.css?v=1">
+  <link rel="stylesheet" href="./css/tailwind.css?v=2">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
@@ -507,15 +507,13 @@
           <i data-lucide="navigation" class="w-4 h-4"></i> Cómo llegar
         </a>
       </div>
-      <a href="https://www.google.com/maps/dir/?api=1&destination=AFTER+OFFICE+RESTO-BAR+Gaston+Guarda+Parades+54+Futrono+Los+Rios" target="_blank" rel="noopener noreferrer" class="site-map-static mt-4 flex items-center justify-center rounded-2xl overflow-hidden border border-cyan-500/20 h-[300px] sm:h-[320px] w-full group">
-        <div class="text-center px-6">
-          <i data-lucide="map-pin" class="w-10 h-10 text-cyan-400 mx-auto mb-3 site-map-static__pin"></i>
-          <p class="text-white font-bold text-lg mb-1">Gaston Guarda Parades 54</p>
-          <p class="text-stone-400 text-sm mb-4">Futrono, Los Ríos, Chile</p>
-          <span class="inline-flex items-center gap-2 text-cyan-400 font-semibold text-sm group-hover:text-cyan-300 transition">
-            <i data-lucide="navigation" class="w-4 h-4"></i> Abrir en Google Maps
-          </span>
-        </div>
+      <a href="https://www.google.com/maps/dir/?api=1&destination=AFTER+OFFICE+RESTO-BAR+Gaston+Guarda+Parades+54+Futrono+Los+Rios" target="_blank" rel="noopener noreferrer" class="site-map-static relative flex items-end justify-center mt-4 rounded-2xl overflow-hidden border border-cyan-500/20 h-[300px] sm:h-[320px] w-full group">
+        <img src="./imagenes_sitio/mapa-ubicacion.webp" alt="Mapa de ubicación — Gaston Guarda Parades 54, Futrono" class="absolute inset-0 w-full h-full object-cover" loading="lazy" width="900" height="500">
+        <div class="site-map-static__overlay"></div>
+        <i data-lucide="map-pin" class="site-map-static__pin absolute w-10 h-10 text-cyan-400 drop-shadow-[0_0_8px_rgba(34,211,238,0.9)]"></i>
+        <span class="relative z-10 m-4 inline-flex items-center gap-2 bg-black/80 backdrop-blur px-4 py-2 rounded-full text-cyan-300 font-semibold text-sm border border-cyan-500/30 group-hover:bg-black group-hover:text-cyan-200 transition">
+          <i data-lucide="navigation" class="w-4 h-4"></i> Abrir en Google Maps
+        </span>
       </a>
     </div>
   </section>
