@@ -1,0 +1,23 @@
+name = "after-office"
+main = "src/index.js"
+compatibility_date = "2025-09-01"
+
+[assets]
+directory = "../public"
+binding = "ASSETS"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "after-office-db"
+database_id = "0bf5be6f-aacf-42d0-9b36-4a07f3fe8a83"
+
+[[kv_namespaces]]
+binding = "RATE_LIMIT"
+id = "82cedb87ea6141fd97ac586600f0a88d"
+
+[[kv_namespaces]]
+binding = "IMAGES_KV"
+id = "1bd70ce5f46d4a9eb68a0f071f083812"
+
+[triggers]
+crons = ["0 6 * * *"]

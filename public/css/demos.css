@@ -1,0 +1,386 @@
+/* After Office — estilos compartidos (pre-logo) */
+
+html { scroll-behavior: smooth; }
+body { overflow-x: clip; }
+
+:root {
+  --switcher-h: 6.25rem;
+}
+
+.demo-header-sticky {
+  top: var(--switcher-h);
+}
+
+.font-lato { font-family: 'Lato', system-ui, sans-serif; }
+
+.font-outfit { font-family: 'Outfit', system-ui, sans-serif; }
+.neon-text-cyan {
+  color: #22d3ee;
+  text-shadow: 0 0 10px rgba(34, 211, 238, 0.8), 0 0 30px rgba(34, 211, 238, 0.4);
+}
+.neon-text-magenta {
+  text-shadow: 0 0 10px rgba(217, 70, 239, 0.8), 0 0 30px rgba(217, 70, 239, 0.4);
+}
+.neon-border {
+  box-shadow: 0 0 15px rgba(34, 211, 238, 0.3), inset 0 0 15px rgba(217, 70, 239, 0.1);
+}
+
+.card-hover {
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+.card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.35);
+}
+
+@media (max-width: 639px) {
+  [data-menu-panel] .card-hover.flex {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  [data-menu-panel] .card-hover.flex img {
+    width: 100%;
+    height: 9rem;
+  }
+}
+
+.demo-map {
+  width: 100%;
+  height: 220px;
+  border: 0;
+}
+@media (min-width: 640px) {
+  .demo-map { height: 280px; }
+}
+
+.wa-fab {
+  position: fixed;
+  bottom: max(1rem, env(safe-area-inset-bottom, 0px));
+  right: max(1rem, env(safe-area-inset-right, 0px));
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.5rem;
+}
+.wa-fab__btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.75rem;
+  height: 3.75rem;
+  border-radius: 50%;
+  background: #25D366;
+  box-shadow: 0 4px 20px rgba(37, 211, 102, 0.45);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  animation: waPulse 2.5s ease-in-out infinite;
+}
+.wa-fab__btn:hover {
+  transform: scale(1.08);
+  box-shadow: 0 6px 28px rgba(37, 211, 102, 0.6);
+}
+.wa-fab__btn svg { width: 2rem; height: 2rem; fill: #fff; }
+.wa-fab__tooltip {
+  background: #1c1917;
+  color: #fafaf9;
+  font-size: 0.75rem;
+  padding: 0.35rem 0.75rem;
+  border-radius: 0.375rem;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 0.2s, transform 0.2s;
+  pointer-events: none;
+  white-space: nowrap;
+  border: 1px solid #44403c;
+}
+.wa-fab:hover .wa-fab__tooltip {
+  opacity: 1;
+  transform: translateY(0);
+}
+@keyframes waPulse {
+  0%, 100% { box-shadow: 0 4px 20px rgba(37, 211, 102, 0.45); }
+  50% { box-shadow: 0 4px 30px rgba(37, 211, 102, 0.75), 0 0 0 8px rgba(37, 211, 102, 0.12); }
+}
+
+img { max-width: 100%; }
+
+img[data-src]:not([src]) {
+  background: #1c1917;
+  min-height: 1px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .card-hover:hover { transform: none; }
+  .wa-fab__btn { animation: none; }
+}
+
+/* ——— Identidad tipográfica (sin logo imagen) ——— */
+.brand-wordmark {
+  display: inline-block;
+  line-height: 1;
+  text-decoration: none;
+  color: inherit;
+}
+
+.brand-wordmark__stack {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.brand-wordmark__condensed {
+  font-family: 'Bebas Neue', sans-serif;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  line-height: 0.82;
+  display: block;
+}
+
+.brand-wordmark__city {
+  font-family: 'Montserrat', system-ui, sans-serif;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.28em;
+  line-height: 1;
+  display: block;
+  margin-top: 0.12em;
+  padding-left: 0.08em;
+}
+
+.brand-wordmark--sm .brand-wordmark__condensed { font-size: 1.2rem; }
+.brand-wordmark--sm .brand-wordmark__city { font-size: 0.52rem; margin-top: 0.35em; }
+
+@media (max-width: 380px) {
+  .brand-tagline {
+    letter-spacing: 0.22em;
+    font-size: 0.62rem;
+  }
+  .brand-tagline--center {
+    max-width: 18rem;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .brand-wordmark--sm .brand-wordmark__condensed { font-size: 1.05rem; }
+  .brand-wordmark--sm .brand-wordmark__city { font-size: 0.48rem; }
+}
+
+.brand-tagline--center {
+  text-align: center;
+}
+
+.brand-wordmark--neon { color: #ffffff; }
+.brand-wordmark--neon.brand-wordmark--sm .brand-wordmark__condensed,
+.brand-wordmark--neon.brand-wordmark--sm .brand-wordmark__city {
+  text-shadow: 0 0 12px rgba(34, 211, 238, 0.35);
+}
+
+/* Larger, centered treatments of the same wordmark for hero-style spots
+   (site hero, carta.html mini-hero) that used to show the image logo. */
+.brand-wordmark--md .brand-wordmark__stack,
+.brand-wordmark--lg .brand-wordmark__stack {
+  align-items: center;
+}
+.brand-wordmark--md .brand-wordmark__condensed { font-size: clamp(1.6rem, 6vw, 2.1rem); }
+.brand-wordmark--md .brand-wordmark__city { font-size: clamp(0.55rem, 2vw, 0.68rem); margin-top: 0.35em; }
+.brand-wordmark--lg .brand-wordmark__condensed {
+  font-size: clamp(2.75rem, 13vw, 4.75rem);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+.brand-wordmark--lg .brand-wordmark__city { font-size: clamp(0.85rem, 3.2vw, 1.3rem); margin-top: 0.4em; }
+
+.brand-wordmark--neon.brand-wordmark--md .brand-wordmark__condensed,
+.brand-wordmark--neon.brand-wordmark--md .brand-wordmark__city,
+.brand-wordmark--neon.brand-wordmark--lg .brand-wordmark__condensed,
+.brand-wordmark--neon.brand-wordmark--lg .brand-wordmark__city {
+  text-shadow: 0 0 16px rgba(34, 211, 238, 0.4), 0 0 30px rgba(217, 70, 239, 0.16);
+}
+
+.brand-tagline {
+  font-family: 'Lato', system-ui, sans-serif;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.38em;
+  font-weight: 400;
+  margin-bottom: 1rem;
+}
+
+@media (min-width: 768px) {
+  .brand-tagline { font-size: 0.8rem; }
+}
+
+.brand-tagline--neon {
+  color: #22d3ee;
+  text-shadow: 0 0 10px rgba(34, 211, 238, 0.45);
+}
+
+/* Crédito desarrollo */
+.footer-credit {
+  font-family: 'Lato', system-ui, sans-serif;
+  font-size: 0.625rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-top: 0.75rem;
+  opacity: 0.5;
+  transition: opacity 0.3s ease;
+}
+.footer-credit:hover { opacity: 0.82; }
+.footer-credit a {
+  text-decoration: none;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  transition: color 0.25s ease, text-shadow 0.25s ease;
+}
+.footer-credit__logo {
+  display: inline-block;
+  height: 0.95rem;
+  width: auto;
+  vertical-align: -0.18em;
+  /* The source logo has dark navy text, invisible on this black footer —
+     force it to white so it reads at this tiny, low-opacity size. */
+  filter: brightness(0) invert(1);
+}
+/* —— Carta digital (QR / mesa) —— */
+.carta-page { min-height: 100dvh; }
+.carta-back {
+  font-family: 'Lato', system-ui, sans-serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(168, 162, 158, 0.9);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+.carta-back:hover { color: #fbbf24; }
+
+.carta-search {
+  width: 100%;
+  padding: 0.75rem 1rem 0.75rem 2.5rem;
+  background: rgba(23, 23, 23, 0.95);
+  border: 1px solid rgba(245, 158, 11, 0.25);
+  border-radius: 9999px;
+  color: #fafaf9;
+  font-family: 'Lato', system-ui, sans-serif;
+  font-size: 0.9375rem;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+.carta-search:focus { border-color: #f59e0b; }
+.carta-search-wrap { position: relative; }
+.carta-search-wrap::before {
+  content: '⌕';
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: rgba(245, 158, 11, 0.6);
+  font-size: 1rem;
+  pointer-events: none;
+}
+
+.carta-tabs {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  padding-bottom: 0.25rem;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+.carta-tabs::-webkit-scrollbar { display: none; }
+.carta-tab {
+  flex-shrink: 0;
+  padding: 0.5rem 1rem;
+  font-family: 'Lato', system-ui, sans-serif;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: rgba(168, 162, 158, 0.95);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: color 0.2s, background 0.2s, border-color 0.2s;
+}
+.carta-tab--active {
+  color: #fcd34d;
+  background: rgba(245, 158, 11, 0.12);
+  border-color: rgba(245, 158, 11, 0.45);
+}
+
+.carta-list { display: flex; flex-direction: column; gap: 0.75rem; }
+.carta-item {
+  display: flex;
+  gap: 0.875rem;
+  padding: 0.875rem;
+  background: rgba(23, 23, 23, 0.75);
+  border: 1px solid rgba(245, 158, 11, 0.15);
+  border-radius: 0.75rem;
+  transition: border-color 0.2s ease;
+}
+.carta-item:active { border-color: rgba(245, 158, 11, 0.4); }
+.carta-item__img-wrap {
+  flex-shrink: 0;
+  width: 5.5rem;
+  height: 5.5rem;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  background: #1c1917;
+}
+.carta-item__img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.carta-item__title {
+  font-size: 1.0625rem;
+  color: #fef3c7;
+  line-height: 1.25;
+  margin-bottom: 0.25rem;
+}
+.carta-item__desc {
+  font-size: 0.8125rem;
+  color: rgba(168, 162, 158, 0.95);
+  line-height: 1.4;
+}
+.carta-item__foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+.carta-item__price {
+  font-family: 'Lato', system-ui, sans-serif;
+  font-weight: 700;
+  color: #fbbf24;
+  font-size: 0.9375rem;
+}
+.carta-item__tags {
+  font-size: 0.6875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: rgba(120, 113, 108, 0.95);
+}
+.carta-empty {
+  text-align: center;
+  padding: 2rem 1rem;
+  color: rgba(168, 162, 158, 0.8);
+}
+
+/* Tema carta activo (neón) */
+.carta-page--neon { background: #000; }
+.carta-page--neon .carta-title { color: #22d3ee; text-shadow: 0 0 12px rgba(34, 211, 238, 0.4); }
+.carta-page--neon .carta-search { background: rgba(10, 10, 10, 0.95); border-color: rgba(34, 211, 238, 0.3); color: #fafaf9; }
+.carta-page--neon .carta-search:focus { border-color: #22d3ee; box-shadow: 0 0 12px rgba(34, 211, 238, 0.2); }
+.carta-page--neon .carta-search-wrap::before { color: rgba(34, 211, 238, 0.7); }
+.carta-page--neon .carta-tab { color: rgba(168, 162, 158, 0.95); }
+.carta-page--neon .carta-tab--active { color: #22d3ee; background: rgba(34, 211, 238, 0.1); border-color: rgba(34, 211, 238, 0.45); text-shadow: 0 0 8px rgba(34, 211, 238, 0.35); }
+.carta-page--neon .carta-item { background: rgba(10, 10, 10, 0.9); border-color: rgba(217, 70, 239, 0.2); }
+.carta-page--neon .carta-item__title { color: #e879f9; }
+.carta-page--neon .carta-item__price { color: #22d3ee; }
+.carta-page--neon .carta-back:hover { color: #22d3ee; }
+.carta-page--neon .carta-foot-link { color: rgba(34, 211, 238, 0.75); }
+.carta-page--neon .carta-foot-link:hover { color: #22d3ee; }
+.carta-page--neon .wa-fab__btn { background: linear-gradient(135deg, #06b6d4, #d946ef); }
+

@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+
+Sitemap: https://after-office.nicolas-1991espinoza.workers.dev/sitemap.xml

@@ -1,0 +1,235 @@
+/* After Office — capa UX / conversión */
+
+.hero-section { position: relative; }
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+.hero-bg--carousel {
+  background: #000;
+  z-index: 0;
+}
+.hero-bg--carousel::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: rgba(0, 0, 0, 0.09);
+  pointer-events: none;
+}
+.hero-bg__slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity var(--hero-fade-ms, 1.4s) ease-in-out;
+  will-change: opacity;
+  pointer-events: none;
+}
+.hero-bg--carousel-reduced .hero-bg__slide {
+  transition: none;
+}
+.hero-bg__slide.is-active {
+  opacity: 1;
+  z-index: 1;
+}
+.hero-bg--carousel .hero-bg__slide.is-active {
+  opacity: 0.62;
+}
+.hero-bg--carousel .hero-bg__slide--lit.is-active {
+  opacity: 0.48;
+}
+.hero-bg__img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-width: 100%;
+  min-height: 100%;
+  object-fit: cover;
+  object-position: center center;
+  transform-origin: center center;
+}
+.hero-bg--carousel .hero-bg__img--focus-bar {
+  object-position: center 42%;
+}
+.hero-bg--carousel .hero-bg__img--focus-mid {
+  object-position: center 48%;
+}
+.hero-bg--carousel .hero-bg__img--focus-stage {
+  object-position: center 38%;
+}
+@media (max-width: 640px) {
+  .hero-bg--carousel .hero-bg__img--focus-bar {
+    object-position: center 46%;
+  }
+  .hero-bg--carousel .hero-bg__img--focus-mid {
+    object-position: center 52%;
+  }
+  .hero-bg--carousel .hero-bg__img--focus-stage {
+    object-position: center 42%;
+  }
+}
+.hero-bg:not(.hero-bg--carousel) .hero-bg__img {
+  opacity: 0.55;
+}
+.hero-bg--carousel .hero-bg__img {
+  opacity: 1 !important;
+}
+.hero-bg__slide.is-active .hero-bg__img {
+  animation: heroKenBurns 18s ease-in-out infinite alternate;
+}
+@keyframes heroKenBurns {
+  from { transform: scale(1) translate(0, 0); }
+  to { transform: scale(1.08) translate(-1%, -1%); }
+}
+@media (hover: none) and (pointer: coarse) {
+  .hero-bg__slide.is-active .hero-bg__img { animation: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-bg__slide { transition: none; }
+  .hero-bg__slide.is-active .hero-bg__img { animation: none; }
+  .hero-badge--pulse .hero-badge__dot { animation: none; }
+}
+
+.hero-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.85rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border-radius: 9999px;
+  backdrop-filter: blur(8px);
+}
+.hero-badge__dot {
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.hero-badge--pulse .hero-badge__dot { animation: pulseDot 2s ease-in-out infinite; }
+@keyframes pulseDot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.85); }
+}
+.hero-badge--neon {
+  background: rgba(34, 211, 238, 0.12);
+  border: 1px solid rgba(34, 211, 238, 0.4);
+  color: #22d3ee;
+}
+.hero-badge--neon .hero-badge__dot { background: #d946ef; box-shadow: 0 0 10px #d946ef; }
+
+.hero-scroll-hint {
+  position: absolute;
+  bottom: 1.25rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: 'Lato', system-ui, sans-serif;
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(168, 162, 158, 0.65);
+  animation: scrollBounce 2.5s ease-in-out infinite;
+}
+@keyframes scrollBounce {
+  0%, 100% { transform: translateX(-50%) translateY(0); opacity: 0.7; }
+  50% { transform: translateX(-50%) translateY(6px); opacity: 1; }
+}
+
+.btn-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.875rem 1.75rem;
+  font-family: 'Lato', system-ui, sans-serif;
+  font-weight: 700;
+  font-size: 0.9375rem;
+  text-decoration: none;
+  border-radius: 0.625rem;
+  border: 2px solid transparent;
+  transition: transform 0.2s ease, box-shadow 0.25s ease, background 0.25s ease;
+  text-align: center;
+}
+.btn-cta:active { transform: scale(0.98); }
+.btn-cta--neon {
+  background: linear-gradient(135deg, #22d3ee 0%, #06b6d4 100%);
+  color: #000;
+  border-radius: 9999px;
+  box-shadow: 0 0 30px rgba(34, 211, 238, 0.4);
+}
+.btn-cta--neon:hover {
+  box-shadow: 0 0 40px rgba(34, 211, 238, 0.55);
+  transform: translateY(-2px);
+}
+.btn-cta--neon-outline {
+  background: rgba(0, 0, 0, 0.5);
+  color: #22d3ee;
+  border-color: rgba(34, 211, 238, 0.5);
+  border-radius: 9999px;
+  backdrop-filter: blur(8px);
+}
+.btn-cta--neon-outline:hover {
+  background: rgba(34, 211, 238, 0.1);
+  transform: translateY(-2px);
+}
+
+.trust-bar {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+  padding: 1.25rem 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+@media (min-width: 640px) {
+  .trust-bar { grid-template-columns: repeat(4, 1fr); padding: 1.5rem 1rem; }
+}
+.trust-bar__item { text-align: center; padding: 0.75rem 0.5rem; border-radius: 0.75rem; transition: background 0.2s ease; }
+.trust-bar__item:hover { background: rgba(255, 255, 255, 0.03); }
+.trust-bar__value {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.65rem;
+  letter-spacing: 0.04em;
+  line-height: 1;
+  margin-bottom: 0.25rem;
+}
+.trust-bar__label {
+  font-family: 'Lato', system-ui, sans-serif;
+  font-size: 0.6875rem;
+  color: rgba(168, 162, 158, 0.9);
+  line-height: 1.35;
+}
+.trust-bar--neon { background: linear-gradient(180deg, rgba(34, 211, 238, 0.06) 0%, transparent 100%); }
+.trust-bar--neon .trust-bar__value { color: #22d3ee; text-shadow: 0 0 12px rgba(34, 211, 238, 0.35); }
+
+@media (max-width: 767px) {
+  .wa-fab { bottom: calc(4.5rem + env(safe-area-inset-bottom, 0px)); }
+}
+
+.carta-hero-mini__pill {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border-radius: 9999px;
+  margin-bottom: 0.5rem;
+}
+.carta-page--neon .carta-hero-mini__pill { background: rgba(34, 211, 238, 0.12); color: #22d3ee; border: 1px solid rgba(34, 211, 238, 0.3); }
+
+.carta-item { transition: transform 0.2s ease, box-shadow 0.2s ease; }
+.carta-item:hover { transform: translateX(4px); }
+.carta-page--neon .carta-item:hover { box-shadow: -4px 0 0 0 rgba(34, 211, 238, 0.6); }
