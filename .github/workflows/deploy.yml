@@ -1,0 +1,23 @@
+name: Deploy to Cloudflare
+
+# Publishes the Worker (worker/ + public/) to production every time main is
+# updated on GitHub. This is the ONLY thing that makes a git push actually
+# reach the live site — pushing code alone never deploys anything.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: {}
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Deploy with Wrangler
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          workingDirectory: worker
+          command: deploy
