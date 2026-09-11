@@ -5,6 +5,12 @@ compatibility_date = "2025-09-01"
 [assets]
 directory = "../public"
 binding = "ASSETS"
+# Without this, Cloudflare serves any request matching a real file straight
+# from the static-assets layer and never invokes fetch() below — meaning the
+# security headers/CSP added there (for /admin and the public site alike)
+# silently never applied to actual page loads, only to the handful of routes
+# that aren't real files (/api/*, /js/menu-data.js, etc).
+run_worker_first = true
 
 [[d1_databases]]
 binding = "DB"

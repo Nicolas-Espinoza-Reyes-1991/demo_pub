@@ -8,13 +8,9 @@
   <title>Nosotros · After Office Resto-Bar</title>
   <meta property="og:title" content="Nosotros · After Office Resto-Bar">
   <meta property="og:description" content="Más de una década haciendo de Futrono el lugar donde la noche cobra vida.">
-  <meta property="og:image" content="/imagenes_sitio/nosotros-after-office.jpeg">
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: { extend: { fontFamily: { outfit: ['Outfit', 'system-ui', 'sans-serif'], lato: ['Lato', 'system-ui', 'sans-serif'] } } },
-    };
-  </script>
+  <meta property="og:image" content="/imagenes_sitio/nosotros-after-office.webp">
+  <link rel="stylesheet" href="./css/tailwind.css?v=1">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect fill='%23000' width='32' height='32' rx='4'/%3E%3Ctext x='16' y='21' text-anchor='middle' fill='%2322d3ee' font-family='sans-serif' font-size='14' font-weight='700'%3EAO%3C/text%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
@@ -23,7 +19,6 @@
   <link rel="stylesheet" href="./css/mobile.css">
   <link rel="preload" href="./imagenes_sitio/loader-logo.jpeg" as="image">
   <link rel="stylesheet" href="./css/sitio.css?v=perf-load">
-  <script defer src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js"></script>
 </head>
 <body class="site-neon demo-2 font-outfit bg-black text-stone-100 antialiased site-loading">
 
@@ -72,7 +67,7 @@
 
   <section class="relative py-16 sm:py-20 md:py-28 overflow-hidden border-b border-cyan-500/10">
     <div class="absolute inset-0">
-      <img src="./imagenes_sitio/terraza-noche.jpg" alt="" class="site-img-motion w-full h-full object-cover opacity-30" aria-hidden="true">
+      <img src="./imagenes_sitio/terraza-noche.webp" alt="" class="site-img-motion w-full h-full object-cover opacity-30" aria-hidden="true">
       <div class="absolute inset-0 bg-gradient-to-b from-black/70 to-black"></div>
     </div>
     <div class="relative max-w-3xl mx-auto px-4 text-center">
@@ -86,7 +81,7 @@
     <article class="reveal-site">
       <div class="grid md:grid-cols-2 gap-8 items-center">
         <div class="site-img-frame rounded-2xl overflow-hidden border border-cyan-500/25 aspect-[4/3]">
-          <img src="./imagenes_sitio/nosotros-after-office.jpeg" alt="Collage de momentos en After Office Futrono — clientes, barra y noches en el local" class="site-img-motion w-full h-full object-cover object-center" loading="lazy">
+          <img src="./imagenes_sitio/nosotros-after-office.webp" alt="Collage de momentos en After Office Futrono — clientes, barra y noches en el local" class="site-img-motion w-full h-full object-cover object-center" loading="lazy">
         </div>
         <div>
           <h2 class="text-2xl font-bold text-white mb-4">El after office que se quedó</h2>
@@ -153,6 +148,7 @@
   </div>
 
   <script src="./js/site-loader.js?v=perf-load"></script>
+  <script src="./js/icons.js"></script>
   <script src="./js/sitio.js?v=mobile-scroll-fix"></script>
 </body>
 </html>

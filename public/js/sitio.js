@@ -2,7 +2,7 @@
   'use strict';
 
   function createIcons() {
-    if (window.lucide && window.lucide.createIcons) window.lucide.createIcons();
+    if (window.AOIcons) window.AOIcons.createIcons();
   }
 
   function isOpenNow() {

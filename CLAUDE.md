@@ -4,11 +4,12 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this is
 
-Marketing site + admin panel for **After Office Resto-Bar**, a nightlife pub/bar in Futrono, Chile, running on **Cloudflare Workers** (static assets + a small API) with a **D1** database and a **KV** namespace. The public pages (`public/index.html`, `public/carta.html`, `public/nosotros.html`) are still plain HTML/CSS/JS — Tailwind via CDN, custom styling in `public/css/*.css`, vanilla JS IIFEs in `public/js/*.js` — but the menu and the "event of the week" popup are no longer hardcoded: they're edited through `/admin` and served dynamically from D1.
+Marketing site + admin panel for **After Office Resto-Bar**, a nightlife pub/bar in Futrono, Chile, running on **Cloudflare Workers** (static assets + a small API) with a **D1** database and two **KV** namespaces. The public pages (`public/index.html`, `public/carta.html`, `public/nosotros.html`) are plain HTML/CSS/JS — no framework, no bundler — but content that used to be hardcoded is now edited through `/admin` and served dynamically from D1: the menu, the "event of the week" popup, the landing page's "Comida & tragos" featured picks, and table reservations.
 
 Repo layout:
 - `public/` — everything Cloudflare serves as static assets: the three HTML pages, `css/`, `js/`, `imagenes_*/`, and `admin/` (the admin panel's login/dashboard HTML+CSS+JS — no secrets in it, all data comes from `/api/*`).
 - `worker/` — the Cloudflare Worker: `wrangler.toml`, `schema.sql`, and `src/` (router + auth + D1 helpers + `/api/*` handlers).
+- `build/` — one-off/reusable tooling that isn't part of the deployed site: the Tailwind CLI config used to (re)generate `public/css/tailwind.css`, and a WebP conversion script. Nothing here ships to Cloudflare.
 
 ## Running it locally
 
@@ -25,59 +26,95 @@ npx wrangler d1 execute after-office-db --local --file=./schema.sql
 
 (plus INSERTs for `menu_categories`/`menu_items`/`popup_config`/`admin_users` — there's no committed seed file since the admin password hash shouldn't be checked into git; regenerate one locally if needed).
 
-The old `python -m http.server 8080` / `ABRIR-SITIO.bat` / `ABRIR-CARTA.bat` workflow still opens the static pages, but the menu (`carta.html`) and popup will be empty/broken under it since `js/menu-data.js` and `js/popup-data.js` are no longer static files — the Worker generates them per-request. Use `wrangler dev` for anything menu- or popup-related.
+There is no lint, build, or automated test command for the Worker/site logic itself. The one build step that exists is regenerating the compiled Tailwind CSS (see below) — it's checked in, so you only need to re-run it after changing which Tailwind utility classes are used, not on every edit.
 
-There is no lint, build, or automated test command in this repo.
+## `wrangler.toml`: `run_worker_first = true`
+
+This is load-bearing, not optional. Without it, Cloudflare serves any request that matches a real file straight from the static-assets layer and **never invokes `fetch()` in `worker/src/index.js`** — which means security headers/CSP, and anything else added in that handler, silently never apply to actual page loads (they'd still apply to the handful of routes that aren't real files, like `/api/*`, which made this easy to miss). If security headers ever seem to stop working after a config change, check this flag first.
 
 ## Public site (`public/`)
 
-Three top-level HTML pages, each self-contained (own `<head>`, own Tailwind CDN config, own script includes):
+Three top-level HTML pages, each self-contained (own `<head>`, own script includes):
 
-- `index.html` — landing page (hero, Pub Karaoke, Comida & Tragos preview, Eventos, Juego, Disco, Contacto/reservation form) split into `<section id="...">` blocks scrolled to by a sticky in-page nav (`.site-section-nav`). Loads `js/popup-data.js` (Worker-generated) before `sitio.js`.
+- `index.html` — landing page (hero, Pub Karaoke, Comida & Tragos preview, Eventos, Juego, Disco, Contacto/reservation form) split into `<section id="...">` blocks scrolled to by a sticky in-page nav (`.site-section-nav`). Loads `js/popup-data.js` and `js/featured-data.js` (both Worker-generated) before `sitio.js`.
 - `carta.html` — the digital menu. Markup is mostly empty containers (`#carta-tabs`, `#carta-list`, product modal, sections sheet); `js/carta.js` renders it all from `window.MENU`, unchanged from before — it has no idea the data now comes from D1 instead of a static file.
 - `nosotros.html` — "About us", static content, same header/footer/nav chrome as `index.html`.
 
 Cross-page navigation is plain `<a href="carta.html">` etc. (the Worker's static-asset serving redirects `/carta.html` → `/carta`, so links still work, just via one extra redirect hop). No router.
+
+### CSS/JS build — no more Tailwind CDN
+
+The public pages used to load Tailwind via `cdn.tailwindcss.com` (the Play CDN) and icons via `unpkg.com/lucide`. Both were replaced for performance (Play CDN is explicitly not meant for production — it ships the whole JIT engine and recompiles on every load) and are now self-hosted:
+
+- **`public/css/tailwind.css`** is a compiled, purged stylesheet generated by the Tailwind v3 CLI (matching the exact version the CDN used to serve, `3.4.17`, so utility behavior is unchanged). It's a checked-in build artifact, not hand-edited. Regenerate it after adding/removing Tailwind utility classes anywhere in `public/*.html` or `public/js/*.js`:
+  ```bash
+  cd build
+  npx tailwindcss@3.4.17 -i ./tailwind-input.css -o ../public/css/tailwind.css --config ./tailwind.config.js --minify
+  ```
+  `build/tailwind.config.js`'s `content` array is what gets scanned — if you add Tailwind classes in a new file, add its path there too. There is no automated check that the build is up to date; if the site looks unstyled after an edit, this is why.
+- **`public/js/icons.js`** (`window.AOIcons`) replaces `lucide.createIcons()`. It's a hand-maintained map of icon name → inline SVG path data (extracted directly from the real `lucide@0.469.0` runtime so shapes are pixel-identical), covering every icon used in the markup plus a curated set of extras for the popup's admin-editable "fact icon" field (see below). `sitio.js`'s `createIcons()` calls `window.AOIcons.createIcons()` instead of `window.lucide.createIcons()` — same call sites, same behavior, including re-scanning the DOM for newly-injected `[data-lucide]` elements (used by dynamic popup facts). **If you reference a new icon name that isn't in `ICON_PATHS`, it silently falls back to `sparkles`** rather than rendering nothing — check `icons.js` before assuming an icon "doesn't exist."
+- `carta.html` never used Lucide — it already has its own small hand-written inline SVGs, unchanged.
 
 ### JS (`public/js/`)
 
 Self-invoking functions attached to `document`/`window`, loaded via plain `<script>` tags — no modules, no bundling:
 
 - `site-loader.js` — full-screen loading overlay (`#site-loader`) until critical images finish loading or a timeout hits.
-- `sitio.js` — mobile nav, sticky header offsets, "open now" badge (`isOpenNow()`), scroll-spy nav, hero carousel, reservation form (still a **fake submit** — no backend wired to it), lazy Google Maps iframe, and the event popup. `populatePopupFromData()` (top of `initEventPopup()`) reads `window.POPUP` — set by the Worker-generated `js/popup-data.js` — and fills in title/eyebrow/badge/image/facts/CTAs before deciding whether to show it (`POPUP.enabled`); if `window.POPUP` is absent it falls back to whatever's hardcoded in the HTML.
-- `images.js` (`window.AOImages`) — lazy image loader. `resolveImage()`: a bare filename resolves against `./imagenes_carta/` (legacy behavior); a value containing `/` (e.g. a future `/media/...` R2 URL) is used as-is.
+- `icons.js` — see above.
+- `sitio.js` — mobile nav, sticky header offsets, "open now" badge (`isOpenNow()`), scroll-spy nav, hero carousel, the reservation form (wired to `POST /api/reservations` — real, not a fake submit; see Reservations below), lazy Google Maps iframe, and the event popup. `populatePopupFromData()` (top of `initEventPopup()`) reads `window.POPUP` — set by the Worker-generated `js/popup-data.js` — and fills in title/eyebrow/badge/image/facts/CTAs before deciding whether to show it (`POPUP.enabled`); if `window.POPUP` is absent it falls back to whatever's hardcoded in the HTML. `initFeaturedMenu()` similarly reads `window.FEATURED` (from `js/featured-data.js`) to replace the "Comida & tragos" preview cards — a group with nothing marked featured yet is left as whatever's hardcoded, so the section never goes empty before the owner curates picks in `/admin`.
+- `images.js` (`window.AOImages`) — lazy image loader. `resolveImage()`: a bare filename resolves against `./imagenes_carta/` (legacy behavior); a value containing `/` (e.g. a `/media/...` KV-backed upload) is used as-is.
 - `carta.js` — renders `carta.html` from `window.MENU` (tabs/search/product modal). **Unmodified** by the admin-panel work — it just doesn't know `menu-data.js` is now dynamic.
-- There is no `menu-data.js` file anymore — `worker/src/index.js` intercepts `GET /js/menu-data.js` and `GET /js/popup-data.js` and generates `var MENU = {...}` / `var POPUP = {...}` from D1 on every request (`Cache-Control: no-store`). Don't add a static file back at those paths — Cloudflare serves static assets before the Worker runs, so a static file there would permanently shadow the dynamic route.
+- There is no `menu-data.js`/`popup-data.js`/`featured-data.js` file on disk — `worker/src/index.js` intercepts `GET /js/menu-data.js`, `GET /js/popup-data.js`, and `GET /js/featured-data.js`, generating `var MENU/POPUP/FEATURED = {...}` from D1 on every request (`Cache-Control: no-store`). Don't add a static file back at those paths.
 
 ### CSS layering
 
-Four stylesheets loaded in a fixed order — later files override earlier ones, preserve this order:
+Five stylesheets loaded in a fixed order — later files override earlier ones, preserve this order:
 
-1. `css/demos.css` — oldest/base shared styles
-2. `css/ux.css` — "capa UX / conversión"
-3. `css/mobile.css` — mobile overrides, wrapped in `@media (max-width: 767px)`
-4. `css/sitio.css` (~3.6k lines) — the active "Demo 2 Neón" theme
+1. `css/tailwind.css` — compiled Tailwind utilities (see above)
+2. `css/demos.css` — oldest/base shared styles, also defines the `.brand-wordmark` text logo (see Branding below)
+3. `css/ux.css` — "capa UX / conversión"
+4. `css/mobile.css` — mobile overrides, wrapped in `@media (max-width: 767px)`
+5. `css/sitio.css` (~3.6k lines) — the active "Demo 2 Neón" theme
 
-`site-neon` body class + `--site-header-h`/`--site-section-nav-h`/`--site-sticky-top` custom properties (computed in `sitio.js`'s `initStickyOffsets()`) drive sticky offsetting. Bump the `?v=...` cache-busting query strings on `<link>`/`<script>` tags when editing CSS/JS.
+`site-neon` body class + `--site-header-h`/`--site-section-nav-h`/`--site-sticky-top` custom properties (computed in `sitio.js`'s `initStickyOffsets()`) drive sticky offsetting. Bump the `?v=...` cache-busting query strings on `<link>`/`<script>` tags when editing CSS/JS by hand (not needed for `tailwind.css`, which gets a content-based rebuild instead).
+
+### Branding: text wordmark, not a logo image
+
+The site used to show an image logo (cocktail-glass icon + "AFTER OFFICE" text, `imagenes_carta/logo-after-office.webp`) in the hero, the carta mini-header, and the admin panel. Per the client, it was replaced everywhere with a text-based wordmark — the same treatment the navbar always used — so there is no image logo anywhere in the current site. `.brand-wordmark` (base styles in `css/demos.css`) has three size modifiers: `--sm` (navbar/footer), `--md` (carta.html mini-header), `--lg` (index.html hero). The admin panel has its own separate implementation (`.admin-wordmark` in `admin.css`, since admin doesn't load the public site's CSS) with `--header` and `--login` modifiers. Don't reintroduce the image file — it's been deleted.
 
 ### Images
 
-- `imagenes_sitio/` — hero/event/loader images for the landing/about pages.
-- `imagenes_carta/` — menu product photos, referenced by bare filename from D1 (`menu_items.image`), resolved by `AOImages` at runtime.
+- `imagenes_sitio/` — hero/event/loader images for the landing/about pages. All converted to **WebP** (quality 75, capped at 1600px wide) — the originals were unoptimized JPEGs/PNG at 2-4x the necessary size. `build/convert-to-webp.py` is the script used; re-run it (adjusting the `FILES` list) if new heavy images get added here. `loader-logo.jpeg` is the one exception (small, low priority, left alone).
+- `imagenes_carta/` — menu product photos, referenced by bare filename from D1 (`menu_items.image`), resolved by `AOImages` at runtime. Already WebP.
 - `imagenes_bar/` — legacy, unreferenced by any code; kept at the user's request rather than deleted.
 - `imagenes_resto` (repo root, **not** under `public/`) — a symlink to `imagenes_bar` from the project's old path, currently broken and not part of the deployed site.
+- `public/_headers` — Cloudflare Pages-style header rules (yes, Workers Static Assets supports this too, confirmed via `wrangler dev`'s "Parsed N valid header rules" log line). Gives `imagenes_sitio/*`, `imagenes_carta/*`, and `tailwind.css` a 7-day immutable `Cache-Control`, since everything else defaults to `max-age=0, must-revalidate` (always revalidated) under Workers Static Assets.
 
 ## Admin panel (`public/admin/` + `worker/src/`)
 
-Login-protected panel to edit the carta (categories + products) and the event popup, backed by D1. See `worker/src/` for the implementation:
+Login-protected panel to edit the carta (categories + products, each with an optional "featured" flag for the landing page), the event popup, and table reservations — all backed by D1. See `worker/src/` for the implementation:
 
-- `auth.js` — password hashing/verification, session cookies, rate limiting. **`PBKDF2_ITERATIONS` is capped at 100,000** — Cloudflare Workers' WebCrypto throws `NotSupportedError` above that (this passes silently in `wrangler dev`'s local emulation, which doesn't enforce the cap, so a too-high value only fails in production — if login mysteriously fails only after deploying, check this first). Sessions are stateless signed cookies (`HttpOnly; Secure; SameSite=Strict`) carrying `{uid, tv, exp}`; `tv` (token_version) is checked against the DB on every request so a password change invalidates all other sessions. Mutating API calls also require an `X-Admin-Request: 1` header (CSRF defense-in-depth alongside `SameSite=Strict`). Failed logins are rate-limited via the `RATE_LIMIT` KV namespace (5 attempts / 15 min per IP+username).
-- `db.js` — D1 query helpers for menu/popup/users, always parameterized (`.bind()`).
-- `api/auth.js`, `api/menu.js`, `api/popup.js` — the `/api/*` routes. `index.js` is the top-level router: it special-cases `/js/menu-data.js`, `/js/popup-data.js`, and `/api/*`, adds security headers (a stricter CSP for `/admin/*`), and falls through to `env.ASSETS.fetch(request)` for everything else.
+- `auth.js` — password hashing/verification, session cookies, rate limiting. **`PBKDF2_ITERATIONS` is capped at 100,000** — Cloudflare Workers' WebCrypto throws `NotSupportedError` above that (this passes silently in `wrangler dev`'s local emulation, which doesn't enforce the cap, so a too-high value only fails in production — if login mysteriously fails only after deploying, check this first). Sessions are stateless signed cookies (`HttpOnly; Secure; SameSite=Strict`) carrying `{uid, tv, exp}`; `tv` (token_version) is checked against the DB on every request so a password change invalidates all other sessions. Mutating API calls also require an `X-Admin-Request: 1` header (CSRF defense-in-depth alongside `SameSite=Strict`). Failed logins are rate-limited via the `RATE_LIMIT` KV namespace (5 attempts / 15 min per IP+username); the same KV/helper is reused to rate-limit public reservation submissions (key prefix `resv:`).
+- `db.js` — D1 query helpers for menu/popup/users/reservations, always parameterized (`.bind()`).
+- `api/auth.js`, `api/menu.js`, `api/popup.js`, `api/images.js`, `api/reservations.js` — the `/api/*` routes. `index.js` is the top-level router: it special-cases `/js/menu-data.js`, `/js/popup-data.js`, `/js/featured-data.js`, `/media/*`, and `/api/*`, adds security headers (a stricter CSP for `/admin/*`, a slightly more permissive one for the rest of the public site — both meaningless without `run_worker_first = true`, see above), and falls through to `env.ASSETS.fetch(request)` for everything else.
 
-D1 schema is in `worker/schema.sql`: `admin_users`, `menu_categories`, `menu_items`, `popup_config` (single row, `id = 1`). There's no `package.json`-tracked seed script for menu content — it was migrated once from the old `js/menu-data.js` via a one-off script, not part of the regular workflow.
+### Images: Workers KV, not R2
 
-Image uploads for new menu items / popup flyers aren't wired up yet — the image field is still a plain filename/path, matching the pre-admin behavior. Adding upload support means enabling R2 on the account, creating a bucket, adding a `/api/images/upload` route storing to it, and serving it back via a `/media/<key>` route in `index.html`'s Worker `fetch` handler.
+Menu-item photos and the popup flyer, when uploaded through `/admin`, are stored in the `IMAGES_KV` namespace and served back via `GET /media/<key>` (`worker/src/index.js` → `serveMedia()`). **This was a deliberate choice over R2**: R2 requires a credit card on file even to stay within the free tier, which was a hard no for this client (no budget, and no willingness to put a personal card at risk for a client project). KV's free tier simply errors out when exceeded rather than billing. `api/images.js` handles upload/delete and a daily orphan-sweep (`scheduled()` in `index.js`, cron `0 6 * * *`) that removes anything uploaded but never attached to a saved item/popup after an hour — this is what keeps storage from accumulating abandoned uploads (picked a photo, then cancelled the form, etc.).
+
+### Reservations
+
+`venue_tables` / `reservations` / `blocked_dates` tables in D1 (see `schema.sql`). Key design decisions, since they're not obvious from the code alone:
+- A reservation holds a table for **the entire night**, not a time slot — unlike a lunch/dinner restaurant, this bar doesn't turn tables over multiple times per evening, so availability is keyed on `(table_id, reservation_date)` only. A `UNIQUE` index on that pair (scoped to `status IN ('pendiente','confirmada')`) is what actually prevents double-booking — the app-level availability check alone can't guarantee that under concurrent requests.
+- Minimum 1-day lead time is enforced server-side (`worker/src/api/reservations.js`, computed against the current date in `America/Santiago`, not UTC) — same-day booking is rejected on purpose so staff always has time to know a table is taken before service starts.
+- No-shows are handled manually (admin marks a reservation `no_show`), not by an automatic timer — releasing a table automatically on a clock is unreliable and risks double-booking a still-occupied table on a busy night.
+- `blocked_dates` lets the admin close a date entirely (private event/venue rental) without deactivating every table.
+
+### Featured items ("Comida & tragos" picks)
+
+`menu_items.featured_group` (`''` | `'comida'` | `'trago'`) lets the admin pick up to 3 items per group to show on the landing page, independent of which menu category they're actually in. The 3-per-group cap is enforced with a `COUNT` check in `api/menu.js` (SQLite has no clean way to express "at most N rows with this value" as a constraint), not in the schema.
+
+D1 schema is in `worker/schema.sql`. There's no `package.json`-tracked seed script for menu content — it was migrated once from the old `js/menu-data.js` via a one-off script, not part of the regular workflow.
 
 ## Secrets / environment
 
@@ -93,7 +130,16 @@ Image uploads for new menu items / popup flyers aren't wired up yet — the imag
 
 Cloudflare Worker (`workers.dev` subdomain currently; a custom domain — `afterofficefutrono.cl`, registered at NIC Chile — is not connected yet). Deploy with `cd worker && npx wrangler deploy`. `.htaccess` at the repo root is a leftover from a prior Apache-hosting deploy and has no effect on Cloudflare.
 
+D1 schema changes need to be applied to **both** databases explicitly — `wrangler deploy` only ships the Worker code, it does not run migrations:
+```bash
+npx wrangler d1 execute after-office-db --local --file=./migration.sql   # local dev
+npx wrangler d1 execute after-office-db --remote --file=./migration.sql # production
+```
+
+Once index.js references a new D1 column, both `wrangler dev` (locally) and production need that column to exist or the relevant query throws — this bit us once when a deploy shipped admin UI for a new column before the production migration had run.
+
 ## Known repo quirks
 
-- `node_modules/` (Playwright) and `.wrangler/` are gitignored but may still exist on disk from ad-hoc testing — not project dependencies.
+- `node_modules/` (Playwright, at the repo root) and `.wrangler/` are gitignored but may still exist on disk from ad-hoc testing — not project dependencies.
 - `imagenes_bar/` (~70MB) is unreferenced by any code but was intentionally kept rather than deleted.
+- The repo's git history predates the whole Cloudflare Workers migration (`worker/`, `public/`, everything above) by several weeks — make sure that work is actually committed and pushed, not just sitting on disk and deployed.

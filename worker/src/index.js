@@ -17,6 +17,18 @@ const ADMIN_CSP =
   "font-src 'self' https://fonts.gstatic.com; " +
   "img-src 'self' data:; connect-src 'self'; frame-ancestors 'none'; base-uri 'none'; form-action 'self'";
 
+// Public site: no external scripts at all now that Tailwind/Lucide were
+// replaced with self-hosted equivalents. style-src needs 'unsafe-inline' for
+// a handful of static style="" attributes (header texture, hidden form
+// state) — much lower risk than allowing it on script-src.
+const PUBLIC_CSP =
+  "default-src 'self'; script-src 'self'; " +
+  "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; " +
+  "font-src 'self' https://fonts.gstatic.com; " +
+  "img-src 'self' data:; connect-src 'self'; " +
+  "frame-src https://maps.google.com https://www.google.com; " +
+  "frame-ancestors 'none'; base-uri 'self'; form-action 'self'";
+
 function withHeaders(response, extra) {
   const headers = new Headers(response.headers);
   for (const [key, value] of Object.entries({ ...BASE_HEADERS, ...extra })) headers.set(key, value);
@@ -84,7 +96,7 @@ export default {
         return withHeaders(await env.ASSETS.fetch(request), { 'Content-Security-Policy': ADMIN_CSP });
       }
 
-      return env.ASSETS.fetch(request);
+      return withHeaders(await env.ASSETS.fetch(request), { 'Content-Security-Policy': PUBLIC_CSP });
     } catch (err) {
       console.error(err);
       return new Response('Error interno.', { status: 500 });
