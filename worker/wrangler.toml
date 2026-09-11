@@ -15,15 +15,15 @@ run_worker_first = true
 [[d1_databases]]
 binding = "DB"
 database_name = "after-office-db"
-database_id = "0bf5be6f-aacf-42d0-9b36-4a07f3fe8a83"
+database_id = "113907fe-2a31-4f07-8ae5-de6ab47a5bd5"
 
 [[kv_namespaces]]
 binding = "RATE_LIMIT"
-id = "82cedb87ea6141fd97ac586600f0a88d"
+id = "3313b0392cc74d289c9fff33c7f77159"
 
 [[kv_namespaces]]
 binding = "IMAGES_KV"
-id = "1bd70ce5f46d4a9eb68a0f071f083812"
+id = "6e3dfbbe9a234e64bfe1bcec503f33fd"
 
 [triggers]
 crons = ["0 6 * * *"]
