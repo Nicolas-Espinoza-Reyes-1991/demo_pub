@@ -128,7 +128,7 @@ D1 schema is in `worker/schema.sql`. There's no `package.json`-tracked seed scri
 
 ## Deployment
 
-Cloudflare Worker (`workers.dev` subdomain currently; a custom domain — `afterofficefutrono.cl`, registered at NIC Chile — is not connected yet).
+Cloudflare Worker, live at the custom domain `afterofficefutrono.cl` (and `www.afterofficefutrono.cl`) — registered at NIC Chile, DNS delegated to Cloudflare (`gloria.ns.cloudflare.com` / `rustam.ns.cloudflare.com`), Custom Domain added under Workers & Pages → after-office → Domains. The `workers.dev` subdomain is disabled.
 
 **Deploys are automatic**: the Worker is connected to this GitHub repo via Cloudflare's native Git integration (dashboard → Workers & Pages → after-office → Settings → Builds). Every push to `main` triggers a build with root directory `worker` and runs `npx wrangler deploy` — Cloudflare manages its own API token for this internally, nothing is stored as a GitHub secret. **Pushing to `main` now deploys to production** — there's no separate staging step, so treat a push to main the same as running `wrangler deploy` by hand. Non-main branches get a preview build (`npx wrangler versions upload`, doesn't touch production) if `Builds for non-production branches` stays enabled.
 
