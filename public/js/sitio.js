@@ -137,24 +137,6 @@
     }
   }
 
-  function initLazyMap() {
-    var frame = document.querySelector('iframe.demo-map[data-src]');
-    if (!frame) return;
-    if ('IntersectionObserver' in window) {
-      var obs = new IntersectionObserver(function (entries) {
-        entries.forEach(function (e) {
-          if (e.isIntersecting) {
-            frame.setAttribute('src', frame.dataset.src);
-            obs.unobserve(frame);
-          }
-        });
-      }, { rootMargin: '200px' });
-      obs.observe(frame);
-    } else {
-      frame.setAttribute('src', frame.dataset.src);
-    }
-  }
-
   function initReveal() {
     var els = document.querySelectorAll('.reveal-site');
     if (!els.length || !('IntersectionObserver' in window)) {
@@ -592,7 +574,6 @@
     initStickyOffsets();
     initMobileNav();
     initMobileBar();
-    initLazyMap();
     initReveal();
     initSectionNav();
     initFeaturedMenu();

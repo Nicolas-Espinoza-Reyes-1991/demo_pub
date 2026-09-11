@@ -44,13 +44,26 @@ body { overflow-x: clip; }
   }
 }
 
-.demo-map {
-  width: 100%;
-  height: 220px;
-  border: 0;
+
+/* Static map placeholder replacing the live Google Maps iframe — the
+   no-API-key embed (maps.google.com/...&output=embed) is slow once
+   triggered, so this loads instantly and just opens Maps in a new tab. */
+.site-map-static {
+  background-color: rgba(23, 23, 23, 0.85);
+  background-image:
+    linear-gradient(rgba(34, 211, 238, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(34, 211, 238, 0.08) 1px, transparent 1px);
+  background-size: 28px 28px;
+  transition: background-color 0.2s ease;
 }
-@media (min-width: 640px) {
-  .demo-map { height: 280px; }
+.site-map-static:hover {
+  background-color: rgba(23, 23, 23, 1);
+}
+.site-map-static__pin {
+  transition: transform 0.2s ease;
+}
+.site-map-static:hover .site-map-static__pin {
+  transform: translateY(-3px);
 }
 
 .wa-fab {

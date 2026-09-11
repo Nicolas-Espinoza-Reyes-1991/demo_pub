@@ -1300,8 +1300,6 @@ body.nav-open .site-section-nav-wrap { z-index: 30; }
 
 .reveal-site.is-visible { opacity: 1; transform: none; }
 
-.site-map-frame { min-height: 14rem; }
-
 /* —— Tablet —— */
 @media (min-width: 768px) and (max-width: 1023px) {
   .site-neon .site-nav-link { font-size: 0.75rem; }
@@ -1451,8 +1449,6 @@ body.nav-open .site-section-nav-wrap { z-index: 30; }
     min-height: 3.25rem;
     font-size: 1rem;
   }
-
-  .site-map-frame { min-height: 12rem; height: 14rem !important; }
 
   /* Sin FAB duplicado en móvil */
   .site-neon .wa-fab { display: none; }
