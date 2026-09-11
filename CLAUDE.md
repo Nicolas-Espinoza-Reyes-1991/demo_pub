@@ -128,7 +128,13 @@ D1 schema is in `worker/schema.sql`. There's no `package.json`-tracked seed scri
 
 ## Deployment
 
-Cloudflare Worker (`workers.dev` subdomain currently; a custom domain — `afterofficefutrono.cl`, registered at NIC Chile — is not connected yet). Deploy with `cd worker && npx wrangler deploy`. `.htaccess` at the repo root is a leftover from a prior Apache-hosting deploy and has no effect on Cloudflare.
+Cloudflare Worker (`workers.dev` subdomain currently; a custom domain — `afterofficefutrono.cl`, registered at NIC Chile — is not connected yet).
+
+**Deploys are automatic**: the Worker is connected to this GitHub repo via Cloudflare's native Git integration (dashboard → Workers & Pages → after-office → Settings → Builds). Every push to `main` triggers a build with root directory `worker` and runs `npx wrangler deploy` — Cloudflare manages its own API token for this internally, nothing is stored as a GitHub secret. **Pushing to `main` now deploys to production** — there's no separate staging step, so treat a push to main the same as running `wrangler deploy` by hand. Non-main branches get a preview build (`npx wrangler versions upload`, doesn't touch production) if `Builds for non-production branches` stays enabled.
+
+To deploy manually instead (e.g. to test something before committing), `cd worker && npx wrangler deploy` still works exactly as before — the two aren't exclusive, whichever runs last wins.
+
+`.htaccess` at the repo root is a leftover from a prior Apache-hosting deploy and has no effect on Cloudflare.
 
 D1 schema changes need to be applied to **both** databases explicitly — `wrangler deploy` only ships the Worker code, it does not run migrations:
 ```bash
