@@ -179,7 +179,15 @@ async function handleUpdateTable(request, env, id) {
 }
 
 async function handleDeleteTable(env, id) {
-  const result = await env.DB.prepare('DELETE FROM venue_tables WHERE id = ?').bind(id).run();
+  let result;
+  try {
+    result = await env.DB.prepare('DELETE FROM venue_tables WHERE id = ?').bind(id).run();
+  } catch (err) {
+    if (String(err && err.message).includes('FOREIGN KEY')) {
+      return json({ error: 'No se puede eliminar: esta mesa tiene reservas asociadas. Desactívala en vez de eliminarla, o borra primero sus reservas.' }, { status: 409 });
+    }
+    throw err;
+  }
   if (!result.meta.changes) return json({ error: 'Mesa no encontrada.' }, { status: 404 });
   return json({ ok: true });
 }
