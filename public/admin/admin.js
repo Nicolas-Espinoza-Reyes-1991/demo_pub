@@ -772,6 +772,66 @@
     return Promise.all([loadTables(), loadReservations(todayStr()), loadBlocks()]);
   }
 
+  // ---------- Business hours ----------
+  function loadHours() {
+    return api('/api/hours').then(function (data) {
+      state.hours = data;
+      renderHoursForm();
+    });
+  }
+
+  function renderHoursLines(containerId, lines) {
+    var list = document.getElementById(containerId);
+    list.innerHTML = (lines || []).map(function (line) {
+      return (
+        '<div class="hours-row">' +
+          '<input type="text" class="hours-line" maxlength="120" value="' + escapeHtml(line) + '">' +
+          '<button type="button" class="btn btn--small btn--icon btn--danger" data-action="remove-hours-line" title="Quitar">' + ICON.trash + '</button>' +
+        '</div>'
+      );
+    }).join('');
+  }
+
+  function renderHoursForm() {
+    var h = state.hours;
+    document.getElementById('hours-verano-start').value = h.veranoStart || '';
+    document.getElementById('hours-verano-end').value = h.veranoEnd || '';
+    renderHoursLines('hours-verano-list', h.veranoSchedule);
+    renderHoursLines('hours-invierno-list', h.inviernoSchedule);
+  }
+
+  document.querySelectorAll('[data-hours-add]').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var list = document.getElementById('hours-' + btn.getAttribute('data-hours-add') + '-list');
+      var div = document.createElement('div');
+      div.className = 'hours-row';
+      div.innerHTML =
+        '<input type="text" class="hours-line" maxlength="120" placeholder="Ej: Viernes y sábado · 20:00 – 04:00">' +
+        '<button type="button" class="btn btn--small btn--icon btn--danger" data-action="remove-hours-line" title="Quitar">' + ICON.trash + '</button>';
+      list.appendChild(div);
+    });
+  });
+
+  ['hours-verano-list', 'hours-invierno-list'].forEach(function (id) {
+    document.getElementById(id).addEventListener('click', function (e) {
+      var btn = e.target.closest('[data-action="remove-hours-line"]');
+      if (btn) btn.closest('.hours-row').remove();
+    });
+  });
+
+  document.getElementById('btn-save-hours').addEventListener('click', function () {
+    var body = {
+      veranoStart: document.getElementById('hours-verano-start').value.trim(),
+      veranoEnd: document.getElementById('hours-verano-end').value.trim(),
+      veranoSchedule: Array.prototype.map.call(document.querySelectorAll('#hours-verano-list .hours-line'), function (i) { return i.value.trim(); }).filter(Boolean),
+      inviernoSchedule: Array.prototype.map.call(document.querySelectorAll('#hours-invierno-list .hours-line'), function (i) { return i.value.trim(); }).filter(Boolean),
+    };
+
+    api('/api/hours', { method: 'PUT', body: body })
+      .then(function () { toast('Horario actualizado.'); loadHours(); })
+      .catch(function (err) { toast(err.message, 'error'); });
+  });
+
   // ---------- Account ----------
   document.getElementById('btn-change-password').addEventListener('click', function () {
     var currentPassword = document.getElementById('current-password').value;
@@ -923,6 +983,7 @@
     .then(loadMenu)
     .then(loadPopup)
     .then(loadReservationsTab)
+    .then(loadHours)
     .catch(function (err) {
       if (err.message !== 'No autenticado') toast(err.message, 'error');
     });

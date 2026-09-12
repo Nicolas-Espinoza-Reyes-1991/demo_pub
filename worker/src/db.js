@@ -96,6 +96,21 @@ export async function getPopup(db) {
   return popupRowToJson(row);
 }
 
+export function hoursRowToJson(row) {
+  if (!row) return null;
+  return {
+    veranoStart: row.verano_start,
+    veranoEnd: row.verano_end,
+    veranoSchedule: JSON.parse(row.verano_schedule || '[]'),
+    inviernoSchedule: JSON.parse(row.invierno_schedule || '[]'),
+  };
+}
+
+export async function getBusinessHours(db) {
+  const row = await db.prepare('SELECT * FROM business_hours WHERE id = 1').first();
+  return hoursRowToJson(row);
+}
+
 export async function getUserByUsername(db, username) {
   return db.prepare('SELECT id, username, password_hash, token_version FROM admin_users WHERE username = ?')
     .bind(username)

@@ -1,9 +1,10 @@
-import { getMenu, getPopup, getFeaturedItems } from './db.js';
+import { getMenu, getPopup, getFeaturedItems, getBusinessHours } from './db.js';
 import { handleAuthRoute } from './api/auth.js';
 import { handleMenuRoute } from './api/menu.js';
 import { handlePopupRoute } from './api/popup.js';
 import { handleImagesRoute, findOrphanKeys } from './api/images.js';
 import { handleReservationsRoute } from './api/reservations.js';
+import { handleHoursRoute } from './api/hours.js';
 
 const BASE_HEADERS = {
   'X-Frame-Options': 'DENY',
@@ -29,6 +30,27 @@ const PUBLIC_CSP =
   "frame-src https://maps.google.com https://www.google.com; " +
   "frame-ancestors 'none'; base-uri 'self'; form-action 'self'";
 
+// "MM-DD" (no year) comparison, since the season range repeats every year and
+// can wrap across Dec 31 -> Jan 1 (e.g. verano "10-01" to "03-31").
+function isDateInRange(mmdd, startMmdd, endMmdd) {
+  if (startMmdd <= endMmdd) return mmdd >= startMmdd && mmdd <= endMmdd;
+  return mmdd >= startMmdd || mmdd <= endMmdd;
+}
+
+function pickActiveSchedule(hours) {
+  const parts = new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'America/Santiago',
+    month: '2-digit',
+    day: '2-digit',
+  }).formatToParts(new Date());
+  const map = {};
+  for (const p of parts) map[p.type] = p.value;
+  const todayMmdd = `${map.month}-${map.day}`;
+
+  const isVerano = isDateInRange(todayMmdd, hours.veranoStart, hours.veranoEnd);
+  return { season: isVerano ? 'verano' : 'invierno', lines: isVerano ? hours.veranoSchedule : hours.inviernoSchedule };
+}
+
 function withHeaders(response, extra) {
   const headers = new Headers(response.headers);
   for (const [key, value] of Object.entries({ ...BASE_HEADERS, ...extra })) headers.set(key, value);
@@ -41,6 +63,7 @@ async function routeApi(request, env, url) {
   if (url.pathname.startsWith('/api/popup')) return handlePopupRoute(request, env, url);
   if (url.pathname.startsWith('/api/images')) return handleImagesRoute(request, env, url);
   if (url.pathname.startsWith('/api/reservations')) return handleReservationsRoute(request, env, url);
+  if (url.pathname.startsWith('/api/hours')) return handleHoursRoute(request, env, url);
   return new Response(JSON.stringify({ error: 'No encontrado.' }), {
     status: 404,
     headers: { 'Content-Type': 'application/json; charset=utf-8' },
@@ -80,6 +103,14 @@ export default {
       if (url.pathname === '/js/featured-data.js') {
         const featured = await getFeaturedItems(env.DB);
         return new Response(`var FEATURED = ${JSON.stringify(featured)};`, {
+          headers: { 'Content-Type': 'application/javascript; charset=utf-8', 'Cache-Control': 'no-store' },
+        });
+      }
+
+      if (url.pathname === '/js/hours-data.js') {
+        const hours = await getBusinessHours(env.DB);
+        const payload = hours ? pickActiveSchedule(hours) : null;
+        return new Response(`var HOURS = ${JSON.stringify(payload)};`, {
           headers: { 'Content-Type': 'application/javascript; charset=utf-8', 'Cache-Control': 'no-store' },
         });
       }

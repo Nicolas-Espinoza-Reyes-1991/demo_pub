@@ -417,6 +417,13 @@
     createIcons();
   }
 
+  function initBusinessHours() {
+    var el = document.getElementById('atencion-horario');
+    var data = window.HOURS;
+    if (!el || !data || !data.lines || !data.lines.length) return;
+    el.innerHTML = data.lines.map(function (line) { return escapeHtml(line); }).join('<br>');
+  }
+
   function initEventPopup() {
     var popup = document.getElementById('event-popup');
     if (!popup) return;
@@ -577,6 +584,7 @@
     initReveal();
     initSectionNav();
     initFeaturedMenu();
+    initBusinessHours();
     initForm();
     initHashScroll();
     initEventPopup();

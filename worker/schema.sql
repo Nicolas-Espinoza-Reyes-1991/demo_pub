@@ -43,6 +43,20 @@ CREATE TABLE popup_config (
   updated_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
 
+-- Lets the admin edit the "Atención presencial" hours shown on the landing
+-- page without a deploy — the venue runs a different schedule in
+-- winter/summer. verano_start/verano_end are "MM-DD" (no year, since the
+-- range repeats every year and can wrap across Dec 31 -> Jan 1); whichever
+-- schedule doesn't match "today" (America/Santiago) is winter by default.
+CREATE TABLE business_hours (
+  id INTEGER PRIMARY KEY CHECK (id = 1),
+  verano_start TEXT NOT NULL DEFAULT '10-01',
+  verano_end TEXT NOT NULL DEFAULT '03-31',
+  verano_schedule TEXT NOT NULL DEFAULT '[]', -- JSON array of display lines
+  invierno_schedule TEXT NOT NULL DEFAULT '[]',
+  updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
 -- Reservation system: a reservation holds a table for the whole night (bars
 -- don't turn tables over by time slot the way lunch/dinner restaurants do),
 -- so availability is keyed on (table, date) rather than (table, date, time).

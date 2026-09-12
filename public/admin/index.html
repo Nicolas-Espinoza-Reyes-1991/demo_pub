@@ -335,6 +335,52 @@
       </section>
 
       <section id="panel-cuenta" class="admin-panel">
+        <div class="card" style="max-width:30rem;">
+          <div class="card__head">
+            <span class="card__icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </span>
+            <div class="card__head-text">
+              <h2>Horario de atención</h2>
+              <p class="card__hint">Se muestra en "Visítanos" del sitio. El sitio elige automáticamente el horario de invierno o de verano según la fecha de hoy.</p>
+            </div>
+          </div>
+
+          <div class="field-row">
+            <div class="field">
+              <label for="hours-verano-start">Inicio del verano (mes-día)</label>
+              <input type="text" id="hours-verano-start" placeholder="10-01 = 1 de octubre" maxlength="5">
+            </div>
+            <div class="field">
+              <label for="hours-verano-end">Fin del verano (mes-día)</label>
+              <input type="text" id="hours-verano-end" placeholder="03-31 = 31 de marzo" maxlength="5">
+            </div>
+          </div>
+
+          <h2 style="margin-top:1.25rem;">Horario de verano</h2>
+          <p class="card__hint" style="margin-bottom:0.75rem;">Una línea por renglón, tal como se ve en el sitio.</p>
+          <div id="hours-verano-list"></div>
+          <button type="button" class="btn btn--small" data-hours-add="verano">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Agregar línea
+          </button>
+
+          <h2 style="margin-top:1.5rem;">Horario de invierno</h2>
+          <p class="card__hint" style="margin-bottom:0.75rem;">Se muestra el resto del año, fuera del rango de verano.</p>
+          <div id="hours-invierno-list"></div>
+          <button type="button" class="btn btn--small" data-hours-add="invierno">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Agregar línea
+          </button>
+
+          <div class="form-actions" style="margin-top:1.5rem;">
+            <button type="button" class="btn btn--primary" id="btn-save-hours">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+              Guardar horario
+            </button>
+          </div>
+        </div>
+
         <div class="card" style="max-width:26rem;">
           <div class="card__head">
             <span class="card__icon">

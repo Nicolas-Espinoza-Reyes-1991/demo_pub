@@ -418,6 +418,14 @@ a { color: var(--cyan); }
 }
 @media (max-width: 560px) { .fact-row { grid-template-columns: 1fr; } }
 
+.hours-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  align-items: center;
+}
+
 /* ---------- Image dropzone ---------- */
 .image-dropzone {
   display: flex;
