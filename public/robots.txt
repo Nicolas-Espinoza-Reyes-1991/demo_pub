@@ -2,5 +2,7 @@ User-agent: *
 Allow: /
 Disallow: /admin/
 Disallow: /api/
+Disallow: /confirmar.html
+Disallow: /confirmar
 
 Sitemap: https://afterofficefutrono.cl/sitemap.xml

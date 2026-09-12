@@ -171,28 +171,87 @@ export async function findAvailableTable(db, date, partySize) {
     .first();
 }
 
-export async function insertReservation(db, { tableId, name, phone, partySize, date, arrivalTime, notes }) {
+// table_id starts NULL: the customer picks it themselves after confirming
+// attendance by email (see api/reservations.js handleConfirmPost). Two rows
+// with table_id NULL never collide with the (table_id, reservation_date)
+// UNIQUE index — SQLite treats each NULL as distinct — so nothing here needs
+// to reserve a table up front.
+export async function insertReservation(db, { name, phone, email, partySize, date, arrivalTime, notes }) {
   const result = await db
     .prepare(
-      `INSERT INTO reservations (table_id, customer_name, phone, party_size, reservation_date, arrival_time, notes)
-       VALUES (?, ?, ?, ?, ?, ?, ?)`
+      `INSERT INTO reservations (table_id, customer_name, phone, email, party_size, reservation_date, arrival_time, notes)
+       VALUES (NULL, ?, ?, ?, ?, ?, ?, ?)`
     )
-    .bind(tableId, name, phone, partySize, date, arrivalTime, notes)
+    .bind(name, phone, email, partySize, date, arrivalTime, notes)
     .run();
   return result.meta.last_row_id;
+}
+
+export async function getReservationById(db, id) {
+  return db.prepare('SELECT * FROM reservations WHERE id = ?').bind(id).first();
+}
+
+// Every active table for the reservation's date, flagged with whether it's
+// already taken (by a *different* reservation) so the confirmation page can
+// grey those out. `excludeReservationId` lets a reservation re-open its own
+// picker (e.g. the customer went back) without seeing its own not-yet-set
+// row block anything — harmless since table_id is still NULL at that point,
+// but kept for clarity/future-proofing.
+export async function getTablesWithAvailability(db, date, excludeReservationId) {
+  const { results } = await db
+    .prepare(
+      `SELECT t.id, t.name, t.capacity,
+              EXISTS (
+                SELECT 1 FROM reservations r
+                WHERE r.table_id = t.id AND r.reservation_date = ?
+                  AND r.status IN ('pendiente', 'confirmada') AND r.id != ?
+              ) AS taken
+       FROM venue_tables t
+       WHERE t.active = 1
+       ORDER BY t.sort_order, t.id`
+    )
+    .bind(date, excludeReservationId || 0)
+    .all();
+  return results.map((t) => ({ id: t.id, name: t.name, capacity: t.capacity, taken: !!t.taken }));
+}
+
+export async function confirmReservationTable(db, id, tableId) {
+  return db
+    .prepare(
+      `UPDATE reservations SET table_id = ?, status = 'confirmada', confirmed_at = datetime('now')
+       WHERE id = ? AND status = 'pendiente' AND table_id IS NULL`
+    )
+    .bind(tableId, id)
+    .run();
+}
+
+// Reservations nobody ever confirmed by email — auto-cancelled by the daily
+// cron so they don't sit "pendiente" forever cluttering the admin list. Safe
+// to run anytime: table_id is still NULL on these, so they were never
+// actually holding a table hostage.
+export async function cancelUnconfirmedReservations(db, olderThanHours) {
+  const result = await db
+    .prepare(
+      `UPDATE reservations SET status = 'cancelada'
+       WHERE status = 'pendiente' AND table_id IS NULL
+         AND created_at < datetime('now', ?)`
+    )
+    .bind(`-${olderThanHours} hours`)
+    .run();
+  return result.meta.changes;
 }
 
 export async function getReservationsForAdmin(db, date) {
   const query = date
     ? db.prepare(
-        `SELECT r.id, r.customer_name, r.phone, r.party_size, r.reservation_date, r.arrival_time, r.notes,
+        `SELECT r.id, r.customer_name, r.phone, r.email, r.party_size, r.reservation_date, r.arrival_time, r.notes,
                 r.status, r.created_at, t.id AS table_id, t.name AS table_name
          FROM reservations r LEFT JOIN venue_tables t ON t.id = r.table_id
          WHERE r.reservation_date = ?
          ORDER BY r.created_at DESC`
       ).bind(date)
     : db.prepare(
-        `SELECT r.id, r.customer_name, r.phone, r.party_size, r.reservation_date, r.arrival_time, r.notes,
+        `SELECT r.id, r.customer_name, r.phone, r.email, r.party_size, r.reservation_date, r.arrival_time, r.notes,
                 r.status, r.created_at, t.id AS table_id, t.name AS table_name
          FROM reservations r LEFT JOIN venue_tables t ON t.id = r.table_id
          ORDER BY r.reservation_date DESC, r.created_at DESC

@@ -70,15 +70,19 @@ CREATE TABLE venue_tables (
 
 CREATE TABLE reservations (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
+  -- NULL until the customer confirms attendance by email and picks a table
+  -- themselves (see worker/src/api/reservations.js handleConfirmGet/Post).
   table_id INTEGER REFERENCES venue_tables(id),
   customer_name TEXT NOT NULL,
   phone TEXT NOT NULL,
+  email TEXT NOT NULL DEFAULT '',
   party_size INTEGER NOT NULL,
   reservation_date TEXT NOT NULL, -- YYYY-MM-DD
   arrival_time TEXT NOT NULL DEFAULT '', -- HH:MM, informational only
   notes TEXT NOT NULL DEFAULT '',
   status TEXT NOT NULL DEFAULT 'pendiente', -- pendiente | confirmada | no_show | cancelada
-  created_at TEXT NOT NULL DEFAULT (datetime('now'))
+  created_at TEXT NOT NULL DEFAULT (datetime('now')),
+  confirmed_at TEXT
 );
 
 -- A table can only be double-booked if this index allows it: a second insert

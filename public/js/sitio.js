@@ -224,17 +224,40 @@
     return 'https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodeURIComponent(text);
   }
 
-  function showReservationMessage(toast, message, isError) {
-    if (!toast) return;
-    toast.textContent = message;
-    toast.classList.toggle('text-cyan-400', !isError);
-    toast.classList.toggle('text-red-400', !!isError);
-    toast.classList.remove('hidden');
+  var ALERT_ICON_OK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>';
+  var ALERT_ICON_ERROR = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>';
+
+  function initSiteAlert() {
+    var alertEl = document.getElementById('site-alert');
+    if (!alertEl) return;
+    alertEl.querySelectorAll('[data-site-alert-close]').forEach(function (el) {
+      el.addEventListener('click', function () { hideSiteAlert(); });
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && !alertEl.hidden) hideSiteAlert();
+    });
+  }
+
+  function hideSiteAlert() {
+    var alertEl = document.getElementById('site-alert');
+    if (!alertEl) return;
+    alertEl.hidden = true;
+    alertEl.setAttribute('aria-hidden', 'true');
+  }
+
+  function showSiteAlert(message, isError) {
+    var alertEl = document.getElementById('site-alert');
+    if (!alertEl) return;
+    document.getElementById('site-alert-message').textContent = message;
+    var icon = document.getElementById('site-alert-icon');
+    icon.className = 'site-alert__icon site-alert__icon--' + (isError ? 'error' : 'ok');
+    icon.innerHTML = isError ? ALERT_ICON_ERROR : ALERT_ICON_OK;
+    alertEl.hidden = false;
+    alertEl.removeAttribute('aria-hidden');
   }
 
   function initForm() {
     document.querySelectorAll('[data-reservation-form]').forEach(function (form) {
-      var toast = form.querySelector('[data-reservation-toast]');
       var waLink = form.querySelector('[data-reservation-whatsapp]');
       var btn = form.querySelector('button[type="submit"]');
       var dateInput = form.querySelector('[name="date"]');
@@ -250,26 +273,25 @@
 
       form.addEventListener('submit', function (e) {
         e.preventDefault();
-        showReservationMessage(toast, '', false);
-        toast.classList.add('hidden');
         if (waLink) waLink.style.display = 'none';
         if (btn) { btn.disabled = true; btn.textContent = 'Enviando...'; }
 
         var data = new FormData(form);
         var name = String(data.get('name') || '').trim();
         var phone = String(data.get('phone') || '').trim();
+        var email = String(data.get('email') || '').trim();
         var date = String(data.get('date') || '').trim();
         var partySize = parseInt(data.get('partySize'), 10);
 
         fetch('/api/reservations', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ name: name, phone: phone, date: date, partySize: partySize }),
+          body: JSON.stringify({ name: name, phone: phone, email: email, date: date, partySize: partySize }),
         })
           .then(function (res) { return res.json().then(function (body) { return { ok: res.ok, body: body }; }); })
           .then(function (result) {
             if (result.ok) {
-              showReservationMessage(toast, '¡Reserva recibida! Te esperamos — mesa asignada: ' + result.body.tableName + '.', false);
+              showSiteAlert(result.body.message || 'Solicitud recibida. Revisa tu correo para confirmar tu asistencia.', false);
               if (waLink) {
                 waLink.href = buildWhatsappHref(
                   'Hola, soy ' + name + '. Acabo de reservar para ' + partySize + ' personas el ' + date + '. ¡Gracias!'
@@ -278,7 +300,7 @@
               }
               form.reset();
             } else {
-              showReservationMessage(toast, result.body.error || 'No pudimos procesar tu reserva.', true);
+              showSiteAlert(result.body.error || 'No pudimos procesar tu reserva.', true);
               if (result.body.fallbackWhatsapp && waLink) {
                 waLink.href = buildWhatsappHref(
                   'Hola, quiero reservar para ' + (partySize || '') + ' personas el ' + date + '. ¿Me ayudan a coordinar?'
@@ -288,7 +310,7 @@
             }
           })
           .catch(function () {
-            showReservationMessage(toast, 'Error de conexión. Intenta de nuevo o escríbenos por WhatsApp.', true);
+            showSiteAlert('Error de conexión. Intenta de nuevo o escríbenos por WhatsApp.', true);
             if (waLink) {
               waLink.href = buildWhatsappHref('Hola, quiero reservar una mesa en After Office.');
               waLink.style.display = 'flex';
@@ -585,6 +607,7 @@
     initSectionNav();
     initFeaturedMenu();
     initBusinessHours();
+    initSiteAlert();
     initForm();
     initHashScroll();
     initEventPopup();

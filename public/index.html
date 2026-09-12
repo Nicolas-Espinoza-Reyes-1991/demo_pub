@@ -106,7 +106,7 @@
     ]
   }
   </script>
-  <link rel="stylesheet" href="./css/tailwind.css?v=3">
+  <link rel="stylesheet" href="./css/tailwind.css?v=4">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
@@ -567,6 +567,7 @@
           <form data-reservation-form class="space-y-4">
             <input type="text" name="name" placeholder="Nombre" required maxlength="120" class="w-full px-4 py-3 bg-neutral-900 border border-cyan-500/30 rounded-lg text-white placeholder-stone-600 focus:border-cyan-400 focus:outline-none">
             <input type="tel" name="phone" placeholder="WhatsApp / teléfono" required maxlength="20" autocomplete="tel" class="w-full px-4 py-3 bg-neutral-900 border border-fuchsia-500/30 rounded-lg text-white placeholder-stone-600 focus:border-fuchsia-400 focus:outline-none">
+            <input type="email" name="email" placeholder="Correo (para confirmar tu asistencia)" required maxlength="200" autocomplete="email" class="w-full px-4 py-3 bg-neutral-900 border border-cyan-500/30 rounded-lg text-white placeholder-stone-600 focus:border-cyan-400 focus:outline-none">
             <input type="date" name="date" required class="w-full px-4 py-3 bg-neutral-900 border border-cyan-500/30 rounded-lg text-white focus:outline-none">
             <select name="partySize" class="w-full px-4 py-3 bg-neutral-900 border border-fuchsia-500/30 rounded-lg text-white">
               <option value="2">2 personas</option>
@@ -577,7 +578,6 @@
               <option value="12">Más de 10 personas</option>
             </select>
             <button type="submit" data-label="Enviar reserva" class="w-full py-3 bg-gradient-to-r from-cyan-500 to-fuchsia-500 text-black font-bold rounded-lg hover:opacity-90 transition">Enviar reserva</button>
-            <p data-reservation-toast class="hidden text-center text-cyan-400 text-sm"></p>
             <a data-reservation-whatsapp href="#" target="_blank" rel="noopener noreferrer" style="display:none" class="items-center justify-center gap-2 w-full py-3 border border-cyan-500/40 text-cyan-300 font-bold rounded-lg hover:bg-cyan-500/10 transition">
               <i data-lucide="message-circle" class="w-4 h-4"></i> Confirmar / escribir por WhatsApp
             </a>
@@ -649,6 +649,18 @@
         </div>
         <button type="button" class="event-popup__dismiss font-lato" data-event-popup-dismiss>Ocultar por hoy</button>
       </div>
+    </div>
+  </div>
+
+  <!-- Aviso genérico (resultado de la reserva, etc.) -->
+  <div id="site-alert" class="site-alert" hidden aria-hidden="true">
+    <div class="site-alert__backdrop" data-site-alert-close tabindex="-1" aria-hidden="true"></div>
+    <div class="site-alert__card" role="alertdialog" aria-modal="true" aria-labelledby="site-alert-message">
+      <button type="button" class="site-alert__close" data-site-alert-close aria-label="Cerrar">
+        <i data-lucide="x" class="w-4 h-4"></i>
+      </button>
+      <span class="site-alert__icon" id="site-alert-icon" aria-hidden="true"></span>
+      <p id="site-alert-message" class="site-alert__message"></p>
     </div>
   </div>
 

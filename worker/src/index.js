@@ -1,4 +1,4 @@
-import { getMenu, getPopup, getFeaturedItems, getBusinessHours } from './db.js';
+import { getMenu, getPopup, getFeaturedItems, getBusinessHours, cancelUnconfirmedReservations } from './db.js';
 import { handleAuthRoute } from './api/auth.js';
 import { handleMenuRoute } from './api/menu.js';
 import { handlePopupRoute } from './api/popup.js';
@@ -144,5 +144,11 @@ export default {
       await env.IMAGES_KV.delete(key);
     }
     console.log(`Scheduled cleanup: deleted ${orphans.length} orphaned image(s).`);
+
+    // Reservations nobody confirmed by email within the link's own 48h
+    // window (see CONFIRM_TOKEN_TTL_HOURS in api/reservations.js) — the
+    // token is already unusable by then, this just tidies up the DB row.
+    const cancelled = await cancelUnconfirmedReservations(env.DB, 48);
+    console.log(`Scheduled cleanup: auto-cancelled ${cancelled} unconfirmed reservation(s).`);
   },
 };

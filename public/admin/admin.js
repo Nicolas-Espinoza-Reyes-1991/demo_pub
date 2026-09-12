@@ -39,12 +39,24 @@
 
   function toast(message, type) {
     var el = document.getElementById('toast');
-    el.innerHTML = (type === 'error' ? ICON.alert : ICON.check) + '<span>' + escapeHtml(message) + '</span>';
-    el.className = 'admin-toast admin-toast--' + (type || 'ok');
+    var isError = type === 'error';
+    el.innerHTML =
+      '<div class="admin-toast__card admin-toast__card--' + (isError ? 'error' : 'ok') + '">' +
+        (isError ? ICON.alert : ICON.check) +
+        '<span>' + escapeHtml(message) + '</span>' +
+      '</div>';
     el.hidden = false;
     clearTimeout(toast._t);
     toast._t = setTimeout(function () { el.hidden = true; }, 3500);
   }
+
+  // Clicking the backdrop dismisses early; clicking the card itself doesn't.
+  document.getElementById('toast').addEventListener('click', function (e) {
+    if (e.target.id === 'toast') {
+      e.currentTarget.hidden = true;
+      clearTimeout(toast._t);
+    }
+  });
 
   function api(path, options) {
     options = options || {};
@@ -647,7 +659,7 @@
         r.reservation_date,
         r.arrival_time ? r.arrival_time + ' hrs' : null,
         r.party_size + ' personas',
-        r.table_name ? 'Mesa: ' + r.table_name : 'Sin mesa asignada',
+        r.table_name ? 'Mesa: ' + r.table_name : 'Esperando confirmación del cliente',
       ].filter(Boolean);
       var options = Object.keys(STATUS_LABEL).map(function (s) {
         return '<option value="' + s + '"' + (s === r.status ? ' selected' : '') + '>' + STATUS_LABEL[s] + '</option>';
@@ -658,7 +670,7 @@
           '<div>' +
             '<div class="item-row__title">' + escapeHtml(r.customer_name) + '</div>' +
             '<div class="item-row__meta">' + escapeHtml(metaParts.join(' · ')) + '</div>' +
-            '<div class="item-row__meta"><a href="tel:' + escapeHtml(r.phone) + '">' + escapeHtml(r.phone) + '</a>' + (r.notes ? ' · ' + escapeHtml(r.notes) : '') + '</div>' +
+            '<div class="item-row__meta"><a href="tel:' + escapeHtml(r.phone) + '">' + escapeHtml(r.phone) + '</a>' + (r.email ? ' · <a href="mailto:' + escapeHtml(r.email) + '">' + escapeHtml(r.email) + '</a>' : '') + (r.notes ? ' · ' + escapeHtml(r.notes) : '') + '</div>' +
           '</div>' +
           '<div class="item-row__actions">' +
             '<select class="mini-select" data-action="status">' + options + '</select>' +

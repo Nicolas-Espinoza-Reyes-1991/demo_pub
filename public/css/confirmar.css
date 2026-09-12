@@ -1,0 +1,102 @@
+/* Confirmar reserva — selector visual de mesas */
+
+.confirm-spinner {
+  display: inline-block;
+  width: 1rem;
+  height: 1rem;
+  margin-right: 0.5rem;
+  border: 2px solid rgba(34, 211, 238, 0.25);
+  border-top-color: #22d3ee;
+  border-radius: 50%;
+  vertical-align: -0.15em;
+  animation: confirm-spin 0.7s linear infinite;
+}
+@keyframes confirm-spin { to { transform: rotate(360deg); } }
+
+.confirm-btn-outline:not([hidden]) {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  border: 1px solid rgba(34, 211, 238, 0.4);
+  border-radius: 0.6rem;
+  color: #22d3ee;
+  font-weight: 700;
+  text-decoration: none;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+.confirm-btn-outline:hover { border-color: #22d3ee; background: rgba(34, 211, 238, 0.08); }
+
+.tables-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(6.5rem, 1fr));
+  gap: 0.85rem;
+}
+
+.table-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 1rem 0.5rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 2px solid rgba(34, 211, 238, 0.3);
+  border-radius: 1rem;
+  color: #f5f5f4;
+  font-family: 'Lato', system-ui, sans-serif;
+  cursor: pointer;
+  transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease, opacity 0.15s ease;
+}
+
+.table-tile:hover:not(:disabled) {
+  transform: translateY(-2px);
+  border-color: #22d3ee;
+  box-shadow: 0 8px 20px rgba(34, 211, 238, 0.25);
+}
+
+.table-tile:focus-visible {
+  outline: 2px solid #22d3ee;
+  outline-offset: 2px;
+}
+
+.table-tile__icon {
+  width: 2.75rem;
+  height: 2.75rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 4;
+  color: #22d3ee;
+}
+
+.table-tile__name {
+  font-weight: 700;
+  font-size: 0.85rem;
+  text-align: center;
+}
+
+.table-tile__capacity {
+  font-size: 0.7rem;
+  color: #9c9aa5;
+}
+
+.table-tile__badge {
+  font-size: 0.6rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #f87171;
+}
+
+.table-tile--selected {
+  border-color: #d946ef;
+  background: linear-gradient(135deg, rgba(34, 211, 238, 0.18), rgba(217, 70, 239, 0.18));
+  box-shadow: 0 0 0 3px rgba(217, 70, 239, 0.25);
+}
+.table-tile--selected .table-tile__icon { color: #d946ef; }
+
+.table-tile--unavailable {
+  opacity: 0.38;
+  cursor: not-allowed;
+  border-color: rgba(255, 255, 255, 0.12);
+}
+.table-tile--unavailable .table-tile__icon { color: #6b6975; }

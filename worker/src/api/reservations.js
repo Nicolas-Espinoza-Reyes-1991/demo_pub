@@ -1,13 +1,17 @@
-import { requireSession, hasAdminHeader, checkRateLimit, recordLoginAttempt } from '../auth.js';
+import { requireSession, hasAdminHeader, checkRateLimit, recordLoginAttempt, createSessionToken, verifySessionToken } from '../auth.js';
 import {
   getActiveTables,
   getTablesForAdmin,
   isDateBlocked,
   findAvailableTable,
   insertReservation,
+  getReservationById,
+  getTablesWithAvailability,
+  confirmReservationTable,
   getReservationsForAdmin,
   getBlockedDates,
 } from '../db.js';
+import { sendEmail, customerConfirmationEmailHtml, ownerNotificationEmailHtml } from '../email.js';
 
 function json(data, init) {
   return new Response(JSON.stringify(data), {
@@ -23,6 +27,28 @@ function cleanString(value, maxLen) {
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 const TIME_RE = /^([01]\d|2[0-3]):[0-5]\d$/;
 const PHONE_RE = /^[0-9+\s()-]{6,20}$/;
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+// How long a "confirm your attendance" email link stays valid. Baked into
+// the signed token itself (see below), not stored in the DB — an expired
+// token is rejected purely on its own signature/exp, no lookup needed. The
+// daily cron (see index.js scheduled()) separately cancels the reservation
+// row once it's been unconfirmed this long, so the two stay in sync.
+const CONFIRM_TOKEN_TTL_HOURS = 48;
+
+async function createConfirmToken(env, reservationId) {
+  return createSessionToken(env.SESSION_SECRET, {
+    p: 'resv_confirm', // distinguishes this from an admin session token
+    rid: reservationId,
+    exp: Date.now() + CONFIRM_TOKEN_TTL_HOURS * 60 * 60 * 1000,
+  });
+}
+
+async function verifyConfirmToken(env, token) {
+  const payload = await verifySessionToken(env.SESSION_SECRET, token);
+  if (!payload || payload.p !== 'resv_confirm' || !Number.isInteger(payload.rid)) return null;
+  return payload.rid;
+}
 
 // The venue is closed Mondays and Sundays (see nosotros.html / index.html
 // copy) — kept as a constant here rather than an admin-editable setting
@@ -71,6 +97,7 @@ async function handleCreateReservation(request, env) {
 
   const name = cleanString(body.name, 120);
   const phone = cleanString(body.phone, 20);
+  const email = cleanString(body.email, 200).toLowerCase();
   const date = cleanString(body.date, 10);
   const arrivalTime = cleanString(body.arrivalTime, 5);
   const notes = cleanString(body.notes, 300);
@@ -78,6 +105,7 @@ async function handleCreateReservation(request, env) {
 
   if (!name) return json({ error: 'Cuéntanos tu nombre.' }, { status: 400 });
   if (!PHONE_RE.test(phone)) return json({ error: 'Ingresa un teléfono válido.' }, { status: 400 });
+  if (!EMAIL_RE.test(email)) return json({ error: 'Ingresa un correo válido — lo necesitamos para confirmar tu asistencia.' }, { status: 400 });
   if (!DATE_RE.test(date)) return json({ error: 'Ingresa una fecha válida.' }, { status: 400 });
   if (arrivalTime && !TIME_RE.test(arrivalTime)) return json({ error: 'Hora de llegada inválida.' }, { status: 400 });
   if (!Number.isInteger(partySize) || partySize < 1 || partySize > 60) {
@@ -104,36 +132,121 @@ async function handleCreateReservation(request, env) {
     }, { status: 409 });
   }
 
-  // Try a few times in case of a genuine race with another reservation
-  // landing on the same table between the SELECT and the INSERT — the
-  // UNIQUE index in the schema is what actually guarantees no double-booking;
-  // this loop just gives a concurrent request a graceful second attempt
-  // instead of a raw DB-constraint error.
-  let lastError = null;
-  for (let attempt = 0; attempt < 3; attempt++) {
-    const table = await findAvailableTable(env.DB, date, partySize);
-    if (!table) {
-      await recordLoginAttempt(env, rateLimitKey);
-      return json({
-        error: 'No tenemos mesas disponibles para esa fecha y ese grupo. Escríbenos y te ayudamos a coordinar.',
-        fallbackWhatsapp: true,
-      }, { status: 409 });
-    }
-    try {
-      const id = await insertReservation(env.DB, { tableId: table.id, name, phone, partySize, date, arrivalTime, notes });
-      return json({ ok: true, id, tableName: table.name });
-    } catch (err) {
-      lastError = err;
-      // UNIQUE constraint race: another request just took this table. Loop
-      // and pick the next available one.
-    }
+  // Just a feasibility check here — no table is actually held yet. The
+  // customer picks their own table visually after confirming by email (see
+  // handleConfirmGet/Post below), so there's nothing to race against at this
+  // step: table_id stays NULL until confirmation.
+  const someTableFits = await findAvailableTable(env.DB, date, partySize);
+  if (!someTableFits) {
+    await recordLoginAttempt(env, rateLimitKey);
+    return json({
+      error: 'No tenemos mesas disponibles para esa fecha y ese grupo. Escríbenos y te ayudamos a coordinar.',
+      fallbackWhatsapp: true,
+    }, { status: 409 });
   }
 
-  console.error('Reservation insert failed after retries', lastError);
+  const id = await insertReservation(env.DB, { name, phone, email, partySize, date, arrivalTime, notes });
+
+  const confirmUrl = `${new URL(request.url).origin}/confirmar.html?token=${await createConfirmToken(env, id)}`;
+  const [customerEmailOk] = await Promise.all([
+    sendEmail(env, {
+      to: email,
+      subject: 'Confirma tu asistencia — After Office Futrono',
+      html: customerConfirmationEmailHtml({ name, date, partySize, confirmUrl }),
+    }),
+    env.OWNER_EMAIL
+      ? sendEmail(env, {
+          to: env.OWNER_EMAIL,
+          subject: `Nueva reserva pendiente — ${name} (${partySize} personas, ${date})`,
+          html: ownerNotificationEmailHtml({ name, phone, email, date, partySize, notes }),
+        })
+      : Promise.resolve(false),
+  ]);
+
   return json({
-    error: 'No pudimos confirmar la reserva justo ahora. Escríbenos directamente.',
-    fallbackWhatsapp: true,
-  }, { status: 500 });
+    ok: true,
+    id,
+    emailSent: customerEmailOk,
+    message: customerEmailOk
+      ? 'Solicitud recibida. Revisa tu correo para confirmar tu asistencia y elegir tu mesa.'
+      : 'Solicitud recibida, pero no pudimos enviarte el correo de confirmación. Escríbenos por WhatsApp para coordinar tu mesa.',
+  });
+}
+
+async function handleConfirmGet(env, token) {
+  const reservationId = await verifyConfirmToken(env, token);
+  if (!reservationId) return json({ error: 'Este enlace no es válido o ya expiró.' }, { status: 400 });
+
+  const reservation = await getReservationById(env.DB, reservationId);
+  if (!reservation) return json({ error: 'No encontramos esa reserva.' }, { status: 404 });
+
+  if (reservation.status !== 'pendiente' || reservation.table_id != null) {
+    return json({
+      error: reservation.status === 'cancelada'
+        ? 'Esta reserva ya no está vigente (fue cancelada).'
+        : 'Esta reserva ya fue confirmada anteriormente.',
+    }, { status: 409 });
+  }
+
+  if (await isDateBlocked(env.DB, reservation.reservation_date)) {
+    return json({ error: 'Esa fecha ya no está disponible. Escríbenos por WhatsApp y vemos otra fecha.', fallbackWhatsapp: true }, { status: 409 });
+  }
+
+  const tables = await getTablesWithAvailability(env.DB, reservation.reservation_date, reservation.id);
+  return json({
+    name: reservation.customer_name,
+    date: reservation.reservation_date,
+    partySize: reservation.party_size,
+    tables,
+  });
+}
+
+async function handleConfirmPost(env, token, rawTableId, request) {
+  const ip = request.headers.get('CF-Connecting-IP') || 'unknown';
+  const rateLimitKey = `resvconfirm:${ip}`;
+  if (!(await checkRateLimit(env, rateLimitKey))) {
+    return json({ error: 'Demasiados intentos. Espera unos minutos e intenta de nuevo.' }, { status: 429 });
+  }
+
+  const reservationId = await verifyConfirmToken(env, token);
+  if (!reservationId) return json({ error: 'Este enlace no es válido o ya expiró.' }, { status: 400 });
+
+  const tableId = Number.parseInt(rawTableId, 10);
+  if (!Number.isInteger(tableId)) return json({ error: 'Elige una mesa.' }, { status: 400 });
+
+  const reservation = await getReservationById(env.DB, reservationId);
+  if (!reservation) return json({ error: 'No encontramos esa reserva.' }, { status: 404 });
+  if (reservation.status !== 'pendiente' || reservation.table_id != null) {
+    await recordLoginAttempt(env, rateLimitKey);
+    return json({ error: 'Esta reserva ya fue confirmada o cancelada.' }, { status: 409 });
+  }
+  if (await isDateBlocked(env.DB, reservation.reservation_date)) {
+    return json({ error: 'Esa fecha ya no está disponible. Escríbenos por WhatsApp y vemos otra fecha.', fallbackWhatsapp: true }, { status: 409 });
+  }
+
+  const table = await env.DB.prepare('SELECT id, name, capacity FROM venue_tables WHERE id = ? AND active = 1').bind(tableId).first();
+  if (!table) {
+    await recordLoginAttempt(env, rateLimitKey);
+    return json({ error: 'Esa mesa ya no está disponible. Elige otra.' }, { status: 409 });
+  }
+  if (table.capacity < reservation.party_size) {
+    return json({ error: `Esa mesa es para hasta ${table.capacity} personas y ustedes son ${reservation.party_size}. Elige una mesa más grande.` }, { status: 400 });
+  }
+
+  let result;
+  try {
+    result = await confirmReservationTable(env.DB, reservationId, tableId);
+  } catch (err) {
+    if (String(err && err.message).includes('UNIQUE')) {
+      return json({ error: 'Justo alguien más tomó esa mesa. Elige otra de las disponibles.' }, { status: 409 });
+    }
+    throw err;
+  }
+  if (!result.meta.changes) {
+    return json({ error: 'Esta reserva ya fue confirmada o cancelada.' }, { status: 409 });
+  }
+
+  return json({ ok: true, tableName: table.name });
 }
 
 async function requireAdmin(request, env) {
@@ -245,6 +358,21 @@ export async function handleReservationsRoute(request, env, url) {
 
   // Public: anyone can submit a reservation request, no session needed.
   if (!sub && request.method === 'POST') return handleCreateReservation(request, env);
+
+  // Public: gated by the signed, expiring token from the confirmation email
+  // (see createConfirmToken above) instead of an admin session.
+  if (sub === 'confirm') {
+    if (request.method === 'GET') {
+      const token = url.searchParams.get('token');
+      if (!token) return json({ error: 'Falta el token de confirmación.' }, { status: 400 });
+      return handleConfirmGet(env, token);
+    }
+    if (request.method === 'POST') {
+      const body = await request.json().catch(() => ({}));
+      if (!body.token) return json({ error: 'Falta el token de confirmación.' }, { status: 400 });
+      return handleConfirmPost(env, body.token, body.tableId, request);
+    }
+  }
 
   // Everything else is admin-only.
   const session = await requireAdmin(request, env);
