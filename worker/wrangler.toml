@@ -1,4 +1,4 @@
-name = "after-office"
+name = "demo-pub"
 main = "src/index.js"
 compatibility_date = "2025-09-01"
 
