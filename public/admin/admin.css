@@ -67,25 +67,13 @@ a { color: var(--cyan); }
 
 .admin-header__brand { display: flex; align-items: center; gap: 0.6rem; }
 
-/* Text-based business wordmark — replaces the old image logo everywhere in
-   the admin (header + login), matching the same treatment used site-wide. */
+/* Business logo (image) in the admin header + login. */
 .admin-wordmark {
   display: inline-flex;
-  flex-direction: column;
-  line-height: 0.88;
-  font-family: 'Outfit', sans-serif;
-  text-transform: uppercase;
-  color: var(--text);
+  align-items: center;
 }
-.admin-wordmark__name { font-weight: 700; letter-spacing: 0.01em; }
-.admin-wordmark__city {
-  font-weight: 600;
-  letter-spacing: 0.26em;
-  color: var(--text-dim);
-  margin-top: 0.4em;
-}
-.admin-wordmark--header .admin-wordmark__name { font-size: 1rem; }
-.admin-wordmark--header .admin-wordmark__city { font-size: 0.55rem; }
+.admin-wordmark__img { display: block; width: auto; }
+.admin-wordmark--header .admin-wordmark__img { height: 1.9rem; }
 
 .admin-header__badge {
   font-size: 0.62rem;
@@ -98,14 +86,10 @@ a { color: var(--cyan); }
   color: transparent;
 }
 
-.admin-wordmark--login { align-items: center; margin-bottom: 0.7rem; }
-.admin-wordmark--login .admin-wordmark__name {
-  font-size: 2.2rem;
-  text-shadow: 0 0 18px rgba(34, 211, 238, 0.35);
-}
-.admin-wordmark--login .admin-wordmark__city {
-  font-size: 0.72rem;
-  margin-top: 0.45em;
+.admin-wordmark--login { justify-content: center; margin-bottom: 0.7rem; }
+.admin-wordmark--login .admin-wordmark__img {
+  height: 4.5rem;
+  filter: drop-shadow(0 0 18px rgba(34, 211, 238, 0.35));
 }
 
 .admin-header__user { display: flex; align-items: center; gap: 0.75rem; font-size: 0.85rem; color: var(--text-dim); }

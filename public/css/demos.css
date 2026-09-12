@@ -129,42 +129,19 @@ img[data-src]:not([src]) {
   .wa-fab__btn { animation: none; }
 }
 
-/* ——— Identidad tipográfica (sin logo imagen) ——— */
+/* ——— Identidad: logo imagen (After Office / Futrono) ——— */
 .brand-wordmark {
-  display: inline-block;
+  display: inline-flex;
   line-height: 1;
   text-decoration: none;
   color: inherit;
 }
 
-.brand-wordmark__stack {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-}
-
-.brand-wordmark__condensed {
-  font-family: 'Bebas Neue', sans-serif;
-  font-weight: 400;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  line-height: 0.82;
+.brand-wordmark__img {
   display: block;
+  height: 2.75rem;
+  width: auto;
 }
-
-.brand-wordmark__city {
-  font-family: 'Montserrat', system-ui, sans-serif;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.28em;
-  line-height: 1;
-  display: block;
-  margin-top: 0.12em;
-  padding-left: 0.08em;
-}
-
-.brand-wordmark--sm .brand-wordmark__condensed { font-size: 1.2rem; }
-.brand-wordmark--sm .brand-wordmark__city { font-size: 0.52rem; margin-top: 0.35em; }
 
 @media (max-width: 380px) {
   .brand-tagline {
@@ -176,40 +153,31 @@ img[data-src]:not([src]) {
     margin-left: auto;
     margin-right: auto;
   }
-  .brand-wordmark--sm .brand-wordmark__condensed { font-size: 1.05rem; }
-  .brand-wordmark--sm .brand-wordmark__city { font-size: 0.48rem; }
+  .brand-wordmark--sm .brand-wordmark__img { height: 2.3rem; }
 }
 
 .brand-tagline--center {
   text-align: center;
 }
 
-.brand-wordmark--neon { color: #ffffff; }
-.brand-wordmark--neon.brand-wordmark--sm .brand-wordmark__condensed,
-.brand-wordmark--neon.brand-wordmark--sm .brand-wordmark__city {
-  text-shadow: 0 0 12px rgba(34, 211, 238, 0.35);
+.brand-wordmark--neon .brand-wordmark__img {
+  filter: drop-shadow(0 0 10px rgba(34, 211, 238, 0.4));
 }
 
-/* Larger, centered treatments of the same wordmark for hero-style spots
-   (site hero, carta.html mini-hero) that used to show the image logo. */
-.brand-wordmark--md .brand-wordmark__stack,
-.brand-wordmark--lg .brand-wordmark__stack {
-  align-items: center;
+/* Larger, centered treatments of the same logo for hero-style spots
+   (site hero, carta.html mini-hero). */
+.brand-wordmark--md,
+.brand-wordmark--lg {
+  display: flex;
+  width: 100%;
+  justify-content: center;
 }
-.brand-wordmark--md .brand-wordmark__condensed { font-size: clamp(1.6rem, 6vw, 2.1rem); }
-.brand-wordmark--md .brand-wordmark__city { font-size: clamp(0.55rem, 2vw, 0.68rem); margin-top: 0.35em; }
-.brand-wordmark--lg .brand-wordmark__condensed {
-  font-size: clamp(2.75rem, 13vw, 4.75rem);
-  font-weight: 700;
-  letter-spacing: 0.05em;
-}
-.brand-wordmark--lg .brand-wordmark__city { font-size: clamp(0.85rem, 3.2vw, 1.3rem); margin-top: 0.4em; }
+.brand-wordmark--md .brand-wordmark__img { height: clamp(3.5rem, 12vw, 4.5rem); }
+.brand-wordmark--lg .brand-wordmark__img { height: clamp(6rem, 26vw, 10rem); }
 
-.brand-wordmark--neon.brand-wordmark--md .brand-wordmark__condensed,
-.brand-wordmark--neon.brand-wordmark--md .brand-wordmark__city,
-.brand-wordmark--neon.brand-wordmark--lg .brand-wordmark__condensed,
-.brand-wordmark--neon.brand-wordmark--lg .brand-wordmark__city {
-  text-shadow: 0 0 16px rgba(34, 211, 238, 0.4), 0 0 30px rgba(217, 70, 239, 0.16);
+.brand-wordmark--neon.brand-wordmark--md .brand-wordmark__img,
+.brand-wordmark--neon.brand-wordmark--lg .brand-wordmark__img {
+  filter: drop-shadow(0 0 14px rgba(34, 211, 238, 0.45)) drop-shadow(0 0 26px rgba(217, 70, 239, 0.2));
 }
 
 .brand-tagline {

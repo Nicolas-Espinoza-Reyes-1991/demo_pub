@@ -78,9 +78,9 @@ Five stylesheets loaded in a fixed order — later files override earlier ones, 
 
 `site-neon` body class + `--site-header-h`/`--site-section-nav-h`/`--site-sticky-top` custom properties (computed in `sitio.js`'s `initStickyOffsets()`) drive sticky offsetting. Bump the `?v=...` cache-busting query strings on `<link>`/`<script>` tags when editing CSS/JS by hand (not needed for `tailwind.css`, which gets a content-based rebuild instead).
 
-### Branding: text wordmark, not a logo image
+### Branding: image logo (again)
 
-The site used to show an image logo (cocktail-glass icon + "AFTER OFFICE" text, `imagenes_carta/logo-after-office.webp`) in the hero, the carta mini-header, and the admin panel. Per the client, it was replaced everywhere with a text-based wordmark — the same treatment the navbar always used — so there is no image logo anywhere in the current site. `.brand-wordmark` (base styles in `css/demos.css`) has three size modifiers: `--sm` (navbar/footer), `--md` (carta.html mini-header), `--lg` (index.html hero). The admin panel has its own separate implementation (`.admin-wordmark` in `admin.css`, since admin doesn't load the public site's CSS) with `--header` and `--login` modifiers. Don't reintroduce the image file — it's been deleted.
+The site briefly went through a text-only-wordmark phase (no logo image, `.brand-wordmark` rendered "After"/"Office"/"Futrono" as three stacked `<span>`s). The client later asked to bring back a real logo image — `imagenes_sitio/logo-after-office.webp` (white stacked "AFTER/OFFICE/FUTRONO" wordmark, transparent background, lossless WebP so the text edges stay crisp) — so `.brand-wordmark`/`.admin-wordmark` now render an `<img class="brand-wordmark__img">` / `<img class="admin-wordmark__img">` instead of text. Same size-modifier scheme as before: `--sm` (navbar/footer), `--md` (carta.html mini-header), `--lg` (index.html hero) in `css/demos.css`; `--header`/`--login` in the admin's own `admin.css`. `--neon` applies a `filter: drop-shadow(...)` glow instead of the old `text-shadow`. If the client ever wants the logo swapped again, replace that one WebP file (keep the same ~204:276 portrait aspect ratio, transparent background, white/light art so it reads on the site's dark theme) rather than touching the size-modifier CSS.
 
 ### Images
 

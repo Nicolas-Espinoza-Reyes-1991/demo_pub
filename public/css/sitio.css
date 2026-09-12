@@ -1461,7 +1461,7 @@ body.nav-open .site-section-nav-wrap { z-index: 30; }
 
 @media (max-width: 380px) {
   .site-section-nav a { font-size: 0.625rem; padding: 0.4rem 0.65rem; }
-  .site-neon .brand-wordmark--sm .brand-wordmark__condensed { font-size: 0.95rem !important; }
+  .site-neon .brand-wordmark--sm .brand-wordmark__img { height: 2.1rem !important; }
 }
 
 @media (hover: none) and (pointer: coarse) {
