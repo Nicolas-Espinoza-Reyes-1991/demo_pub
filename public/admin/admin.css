@@ -242,6 +242,18 @@ a { color: var(--cyan); }
 
 .card h2 { margin: 0 0 0.75rem; font-size: 1.05rem; font-weight: 700; }
 
+/* ---------- QR ---------- */
+.qr-canvas-wrap {
+  display: flex;
+  justify-content: center;
+  padding: 1rem;
+  margin: 1rem 0;
+  background: #fff;
+  border-radius: var(--radius);
+}
+.qr-canvas-wrap canvas { width: 100%; max-width: 15rem; height: auto; display: block; }
+.qr-target { text-align: center; word-break: break-all; margin-bottom: 1rem !important; }
+
 /* ---------- Fields ---------- */
 .field { margin-bottom: 0.9rem; }
 .field label { display: block; font-size: 0.78rem; font-weight: 600; color: var(--text-dim); margin-bottom: 0.35rem; }

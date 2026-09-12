@@ -813,6 +813,111 @@
       .catch(function (err) { toast(err.message, 'error'); });
   });
 
+  // ---------- QR ----------
+  var QR_TARGET_URL = 'https://afterofficefutrono.cl/carta';
+
+  function drawRoundedRect(ctx, x, y, w, h, r) {
+    ctx.beginPath();
+    ctx.moveTo(x + r, y);
+    ctx.arcTo(x + w, y, x + w, y + h, r);
+    ctx.arcTo(x + w, y + h, x, y + h, r);
+    ctx.arcTo(x, y + h, x, y, r);
+    ctx.arcTo(x, y, x + w, y, r);
+    ctx.closePath();
+  }
+
+  function renderQrCode() {
+    var canvas = document.getElementById('qr-canvas');
+    var ctx = canvas.getContext('2d');
+    var size = canvas.width;
+
+    var qr = qrcode(0, 'H');
+    qr.addData(QR_TARGET_URL);
+    qr.make();
+
+    var moduleCount = qr.getModuleCount();
+    var marginModules = 2;
+    var cell = size / (moduleCount + marginModules * 2);
+    var offset = marginModules * cell;
+
+    function inFinder(row, col) {
+      var last = moduleCount - 7;
+      return (row < 7 && col < 7) || (row < 7 && col >= last) || (row >= last && col < 7);
+    }
+
+    ctx.clearRect(0, 0, size, size);
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(0, 0, size, size);
+
+    // Data modules: rounded dots in the brand gradient.
+    var gradient = ctx.createLinearGradient(0, 0, size, size);
+    gradient.addColorStop(0, '#22d3ee');
+    gradient.addColorStop(1, '#d946ef');
+    ctx.fillStyle = gradient;
+    for (var r = 0; r < moduleCount; r += 1) {
+      for (var c = 0; c < moduleCount; c += 1) {
+        if (!qr.isDark(r, c) || inFinder(r, c)) continue;
+        var x = offset + c * cell;
+        var y = offset + r * cell;
+        var pad = cell * 0.14;
+        drawRoundedRect(ctx, x + pad, y + pad, cell - pad * 2, cell - pad * 2, (cell - pad * 2) / 2.4);
+        ctx.fill();
+      }
+    }
+
+    // Finder patterns (the 3 corner squares): solid dark, so scanners lock on reliably.
+    ctx.fillStyle = '#0a0a0f';
+    [[0, 0], [0, moduleCount - 7], [moduleCount - 7, 0]].forEach(function (pos) {
+      for (var r = 0; r < 7; r += 1) {
+        for (var c = 0; c < 7; c += 1) {
+          if (!qr.isDark(pos[0] + r, pos[1] + c)) continue;
+          ctx.fillRect(offset + (pos[1] + c) * cell, offset + (pos[0] + r) * cell, cell + 0.5, cell + 0.5);
+        }
+      }
+    });
+
+    // Center logo: same dark rounded square + "AO" gradient monogram as the site favicon.
+    // High error correction ('H') tolerates this without hurting scannability.
+    var logoSize = size * 0.22;
+    var padSize = logoSize * 1.18;
+    var padPos = (size - padSize) / 2;
+    var logoPos = (size - logoSize) / 2;
+
+    ctx.fillStyle = '#ffffff';
+    drawRoundedRect(ctx, padPos, padPos, padSize, padSize, padSize * 0.22);
+    ctx.fill();
+
+    ctx.fillStyle = '#0a0a0f';
+    drawRoundedRect(ctx, logoPos, logoPos, logoSize, logoSize, logoSize * 0.22);
+    ctx.fill();
+
+    var logoGradient = ctx.createLinearGradient(logoPos, logoPos, logoPos + logoSize, logoPos + logoSize);
+    logoGradient.addColorStop(0, '#22d3ee');
+    logoGradient.addColorStop(1, '#d946ef');
+    ctx.fillStyle = logoGradient;
+    ctx.font = '900 ' + Math.round(logoSize * 0.52) + 'px "Arial Black", Arial, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('AO', size / 2, size / 2 + logoSize * 0.03);
+
+    document.getElementById('qr-target').textContent = QR_TARGET_URL;
+  }
+
+  document.getElementById('btn-download-qr').addEventListener('click', function () {
+    document.getElementById('qr-canvas').toBlob(function (blob) {
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement('a');
+      a.href = url;
+      a.download = 'qr-carta-after-office.png';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+    }, 'image/png');
+  });
+
+  renderQrCode();
+
   // ---------- Boot ----------
   loadMe()
     .then(loadMenu)
