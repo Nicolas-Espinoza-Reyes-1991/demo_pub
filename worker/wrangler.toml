@@ -30,10 +30,8 @@ id = "6e3dfbbe9a234e64bfe1bcec503f33fd"
 # verified in Resend (see worker/src/email.js), otherwise Resend silently
 # refuses to deliver to anyone but the account's own signup address.
 EMAIL_FROM = "After Office Futrono <reservas@afterofficefutrono.cl>"
-# Where the "new reservation" notification goes. Replace with the real
-# address (or ask Claude to set it) before this feature can actually notify
-# anyone.
-OWNER_EMAIL = "CAMBIAR_ESTE_CORREO@ejemplo.com"
+# Where the "new reservation" notification goes — the venue's real inbox.
+OWNER_EMAIL = "braapshop88@gmail.com"
 
 [triggers]
 crons = ["0 6 * * *"]
