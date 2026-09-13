@@ -288,6 +288,33 @@
     });
   });
 
+  // ---------- Generic horizontal scroller (arrow buttons + edge fade) ----------
+  // Used for the category chip row; kept generic in case another
+  // horizontally-scrolling row needs the same treatment later.
+  function initHScroll(wrap, list) {
+    var prev = wrap.querySelector('[data-hscroll-btn="prev"]');
+    var next = wrap.querySelector('[data-hscroll-btn="next"]');
+    var step = function () { return Math.max(list.clientWidth * 0.72, 120); };
+
+    function update() {
+      var maxScroll = list.scrollWidth - list.clientWidth;
+      var canScroll = maxScroll > 4;
+      if (prev) prev.hidden = !canScroll;
+      if (next) next.hidden = !canScroll;
+      wrap.classList.toggle('is-scrollable', canScroll);
+      wrap.classList.toggle('is-scroll-start', list.scrollLeft <= 4);
+      wrap.classList.toggle('is-scroll-end', list.scrollLeft >= maxScroll - 4);
+    }
+
+    if (prev) prev.addEventListener('click', function () { list.scrollBy({ left: -step(), behavior: 'smooth' }); });
+    if (next) next.addEventListener('click', function () { list.scrollBy({ left: step(), behavior: 'smooth' }); });
+    list.addEventListener('scroll', update);
+    window.addEventListener('resize', update);
+    return update;
+  }
+
+  var updateCategoryScroll = initHScroll(document.querySelector('[data-hscroll]'), document.getElementById('category-list'));
+
   // ---------- Menu: categories ----------
   function loadMenu() {
     return api('/api/menu').then(function (data) {
@@ -319,6 +346,7 @@
     }).join('') || (
       '<p class="empty-hint">' + ICON.image + '<span>Todavía no hay categorías. Crea la primera abajo.</span></p>'
     );
+    updateCategoryScroll();
   }
 
   document.getElementById('category-list').addEventListener('click', function (e) {

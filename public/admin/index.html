@@ -71,7 +71,15 @@
               <p class="card__hint">Elige una categoría para ver y editar sus productos. Usa las flechas para ordenarlas como aparecen en la carta.</p>
             </div>
           </div>
-          <div class="category-list" id="category-list"></div>
+          <div class="hscroll" data-hscroll>
+            <button type="button" class="hscroll__btn hscroll__btn--prev" data-hscroll-btn="prev" hidden aria-label="Categorías anteriores">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+            </button>
+            <div class="category-list" id="category-list"></div>
+            <button type="button" class="hscroll__btn hscroll__btn--next" data-hscroll-btn="next" hidden aria-label="Más categorías">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
+          </div>
           <div class="new-category-form">
             <div class="field" style="margin-bottom:0;">
               <label for="new-cat-id">Id interno (sin espacios)</label>
