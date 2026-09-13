@@ -279,6 +279,7 @@
   function loadMe() {
     return api('/api/auth/me').then(function (data) {
       document.getElementById('current-username').textContent = data.username;
+      document.body.classList.remove('is-checking-session');
     });
   }
 

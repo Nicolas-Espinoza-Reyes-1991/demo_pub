@@ -21,6 +21,36 @@
 [hidden] { display: none !important; }
 svg { width: 1em; height: 1em; flex-shrink: 0; }
 
+/* ---------- Boot guard ---------- */
+/* /admin/index.html is a public static file (the auth boundary is the API,
+   not this HTML), so its shell renders immediately regardless of login
+   state -- without this, an unauthenticated visitor sees a flash of the
+   empty dashboard chrome before admin.js's session check redirects them to
+   login.html. No real data is ever in that flash (every list is empty
+   until its own authenticated API call fills it in), but it looks exactly
+   like a broken access check, so it's hidden behind a spinner until the
+   session is confirmed. */
+body.is-checking-session .admin-shell { visibility: hidden; }
+.admin-boot-guard {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg);
+}
+body.is-checking-session .admin-boot-guard { display: flex; }
+.admin-boot-guard__spinner {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  border: 3px solid var(--border-strong);
+  border-top-color: var(--cyan);
+  animation: adminBootSpin 0.8s linear infinite;
+}
+@keyframes adminBootSpin { to { transform: rotate(360deg); } }
+
 html, body {
   margin: 0;
   min-height: 100%;
