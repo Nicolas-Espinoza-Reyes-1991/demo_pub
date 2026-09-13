@@ -661,7 +661,14 @@
         r.party_size + ' personas',
         r.table_name ? 'Mesa: ' + r.table_name : 'Esperando confirmación del cliente',
       ].filter(Boolean);
-      var options = Object.keys(STATUS_LABEL).map(function (s) {
+      // "Confirmada" only makes sense once a table is assigned -- that only
+      // happens when the customer picks one from their own confirm-email
+      // link. Offering it here for a still-tableless reservation would let
+      // an admin silently break that link ("ya fue confirmada
+      // anteriormente") without ever actually assigning a table.
+      var options = Object.keys(STATUS_LABEL).filter(function (s) {
+        return s !== 'confirmada' || r.table_id;
+      }).map(function (s) {
         return '<option value="' + s + '"' + (s === r.status ? ' selected' : '') + '>' + STATUS_LABEL[s] + '</option>';
       }).join('');
       return (

@@ -317,6 +317,22 @@ async function handleUpdateReservationStatus(request, env, id) {
   const body = await request.json().catch(() => ({}));
   const status = cleanString(body.status, 20);
   if (!RESERVATION_STATUSES.has(status)) return json({ error: 'Estado inválido.' }, { status: 400 });
+
+  // "confirmada" is only meaningful once a table is assigned -- and the
+  // only place that assigns one is the customer's own confirm link
+  // (handleConfirmPost above, which sets table_id and status together in
+  // the same UPDATE). Allowing an admin to jump status to "confirmada" by
+  // itself leaves table_id NULL, which then makes that customer's own
+  // confirm link permanently fail ("ya fue confirmada anteriormente") even
+  // though they never actually picked a table.
+  if (status === 'confirmada') {
+    const current = await env.DB.prepare('SELECT table_id FROM reservations WHERE id = ?').bind(id).first();
+    if (!current) return json({ error: 'Reserva no encontrada.' }, { status: 404 });
+    if (current.table_id == null) {
+      return json({ error: 'No se puede confirmar sin una mesa asignada. El cliente debe elegirla desde el enlace de su correo.' }, { status: 409 });
+    }
+  }
+
   const result = await env.DB.prepare('UPDATE reservations SET status = ? WHERE id = ?').bind(status, id).run();
   if (!result.meta.changes) return json({ error: 'Reserva no encontrada.' }, { status: 404 });
   return json({ ok: true });
