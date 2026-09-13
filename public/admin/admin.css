@@ -173,6 +173,31 @@ a { color: var(--cyan); }
 .admin-panel.is-active { display: block; animation: adminFadeIn 0.25s ease; }
 @keyframes adminFadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
 
+/* ---------- Sub-tabs (second-level grouping inside a panel) ---------- */
+/* Pill-shaped on purpose, distinct from the underline .admin-tab above it,
+   so the two nesting levels read as a clear hierarchy at a glance. */
+.admin-subtabs { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.1rem; }
+.admin-subtab {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.55rem 1rem;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text-dim);
+  font-family: 'Lato', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
+}
+.admin-subtab svg { width: 0.95rem; height: 0.95rem; flex-shrink: 0; }
+.admin-subtab:hover { color: var(--text); border-color: var(--border-strong); }
+.admin-subtab.is-active { color: var(--bg); background: var(--gradient); border-color: transparent; }
+.admin-subpanel { display: none; }
+.admin-subpanel.is-active { display: block; animation: adminFadeIn 0.2s ease; }
+
 /* ---------- Toast ---------- */
 .admin-toast {
   position: fixed;

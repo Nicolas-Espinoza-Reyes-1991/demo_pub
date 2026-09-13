@@ -260,6 +260,21 @@
     });
   });
 
+  // ---------- Sub-tabs (e.g. Reservas / Mesas / Fechas bloqueadas) ----------
+  // Scoped to each .admin-subtabs group separately so switching a sub-tab in
+  // one panel never touches another panel's sub-tabs (harmless today since
+  // there's only one group, but wrong to assume that stays true).
+  document.querySelectorAll('.admin-subtabs').forEach(function (group) {
+    group.querySelectorAll('.admin-subtab').forEach(function (tab) {
+      tab.addEventListener('click', function () {
+        group.querySelectorAll('.admin-subtab').forEach(function (t) { t.classList.remove('is-active'); });
+        group.parentElement.querySelectorAll(':scope > .admin-subpanel').forEach(function (p) { p.classList.remove('is-active'); });
+        tab.classList.add('is-active');
+        document.getElementById(tab.getAttribute('data-subpanel')).classList.add('is-active');
+      });
+    });
+  });
+
   // ---------- Session ----------
   function loadMe() {
     return api('/api/auth/me').then(function (data) {
