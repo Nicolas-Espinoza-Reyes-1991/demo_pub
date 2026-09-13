@@ -1,3 +1,14 @@
 node_modules/
 .wrangler/
 .dev.vars
+
+# Local Claude Code state -- personal permission overrides and runtime
+# locks, not shared project config (that's .claude/settings.json /
+# .claude/launch.json, which stay tracked).
+.claude/settings.local.json
+.claude/scheduled_tasks.lock
+
+# OS/editor junk
+.DS_Store
+Thumbs.db
+*.swp
