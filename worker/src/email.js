@@ -37,29 +37,42 @@ function escapeHtml(str) {
     .replace(/"/g, '&quot;');
 }
 
-// Light background on purpose, not a stylistic choice: an all-dark design
-// (matching the site) got silently "fixed" by Gmail's app dark-mode
-// heuristics for recipients — it flattened our dark background to white but
-// left the (white-on-transparent) logo image un-recolored, so the logo went
-// invisible. A light card is immune to that class of client-side repaint
-// across every major mail client, so branding rides on the gradient-colored
-// logo and the CTA button instead of on a dark canvas. Full <html> document
-// (not a bare fragment) + explicit color-scheme metas are the other half of
-// the fix — without them some clients still guess at a dark variant to
-// generate on their own.
+// Dark, matching the site — but a first version of this (bare <div>
+// fragment, no <head> at all) got silently rewritten by Gmail's app: with no
+// color-scheme declared, it decided the recipient's device wanted a light
+// mail and flattened our dark background to white. It couldn't recolor the
+// logo image, though, so a white-on-transparent logo went invisible on the
+// new white background. The fix isn't switching to a light design — it's
+// telling clients up front, explicitly, "this is dark on purpose, don't
+// touch it": a full <html> document (not a fragment), `color-scheme` +
+// `supported-color-scheme` metas set to dark only, and every background
+// declared BOTH as a `bgcolor` attribute and inline CSS (some clients honor
+// one but not the other) so nothing is left for a client to "improve".
 function emailDocument(bodyHtml) {
   return `<!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="color-scheme" content="light">
-<meta name="supported-color-scheme" content="light">
+<meta name="color-scheme" content="dark">
+<meta name="supported-color-scheme" content="dark">
+<style>
+  body, .ao-bg { background-color:#0a0a0f !important; }
+  .ao-card { background-color:#141318 !important; }
+  .ao-text { color:#f5f5f4 !important; }
+  .ao-muted { color:#9c9aa5 !important; }
+  @media (prefers-color-scheme: light) {
+    body, .ao-bg { background-color:#0a0a0f !important; }
+    .ao-card { background-color:#141318 !important; }
+    .ao-text { color:#f5f5f4 !important; }
+    .ao-muted { color:#9c9aa5 !important; }
+  }
+</style>
 </head>
-<body style="margin:0; padding:0; background-color:#f2f1ee;">
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#f2f1ee" style="background-color:#f2f1ee;">
+<body style="margin:0; padding:0; background-color:#0a0a0f;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#0a0a0f" class="ao-bg" style="background-color:#0a0a0f;">
 <tr><td align="center" style="padding:32px 16px;">
-<table role="presentation" width="480" cellpadding="0" cellspacing="0" border="0" bgcolor="#ffffff" style="width:480px; max-width:100%; background-color:#ffffff; border:1px solid #e8e6e1; border-radius:16px;">
+<table role="presentation" width="480" cellpadding="0" cellspacing="0" border="0" bgcolor="#141318" class="ao-card" style="width:480px; max-width:100%; background-color:#141318; border:1px solid rgba(255,255,255,0.08); border-radius:16px;">
 <tr><td style="padding:32px 28px; font-family:Arial,Helvetica,sans-serif;">
 ${bodyHtml}
 </td></tr>
@@ -74,40 +87,40 @@ const EMAIL_LOGO = `<div style="text-align:center; margin:0 0 28px;">
   <img src="https://afterofficefutrono.cl/imagenes_sitio/logo-after-office-email-color.png" width="80" alt="After Office Futrono" style="display:inline-block; width:80px; height:auto; border:0;">
 </div>`;
 
-const EMAIL_FOOTER = `<div style="margin-top:28px; padding-top:20px; border-top:1px solid #ece9e4; text-align:center;">
-  <p style="font-size:12px; line-height:1.6; color:#8a8880; margin:0 0 6px;">Gaston Guarda Parades 54, Futrono, Los Ríos</p>
+const EMAIL_FOOTER = `<div style="margin-top:28px; padding-top:20px; border-top:1px solid rgba(255,255,255,0.08); text-align:center;">
+  <p class="ao-muted" style="font-size:12px; line-height:1.6; color:#9c9aa5; margin:0 0 6px;">Gaston Guarda Parades 54, Futrono, Los Ríos</p>
   <p style="font-size:12px; margin:0;">
-    <a href="https://wa.me/56993015918" style="color:#0e7a90; text-decoration:none; font-weight:bold;">WhatsApp</a>
-    <span style="color:#c9c6bf;"> &middot; </span>
-    <a href="https://www.instagram.com/afterofficefutrono" style="color:#a3268a; text-decoration:none; font-weight:bold;">Instagram</a>
+    <a href="https://wa.me/56993015918" style="color:#22d3ee; text-decoration:none; font-weight:bold;">WhatsApp</a>
+    <span class="ao-muted" style="color:#5b5a60;"> &middot; </span>
+    <a href="https://www.instagram.com/afterofficefutrono" style="color:#d946ef; text-decoration:none; font-weight:bold;">Instagram</a>
   </p>
 </div>`;
 
 export function customerConfirmationEmailHtml({ name, date, partySize, confirmUrl }) {
   return emailDocument(`${EMAIL_LOGO}
-    <h1 style="font-size:20px; margin:0 0 16px; color:#1a1a1a; text-align:center;">¡Hola, ${escapeHtml(name)}!</h1>
-    <p style="font-size:15px; line-height:1.6; color:#44423e; margin:0 0 8px;">Recibimos tu solicitud de reserva para <strong>${escapeHtml(String(partySize))} personas</strong> el <strong>${escapeHtml(date)}</strong>.</p>
-    <p style="font-size:15px; line-height:1.6; color:#44423e; margin:0 0 24px;">Para dejarla lista, confirma tu asistencia y elige tu mesa favorita en el siguiente enlace:</p>
+    <h1 class="ao-text" style="font-size:20px; margin:0 0 16px; color:#f5f5f4; text-align:center;">¡Hola, ${escapeHtml(name)}!</h1>
+    <p class="ao-text" style="font-size:15px; line-height:1.6; color:#f5f5f4; margin:0 0 8px;">Recibimos tu solicitud de reserva para <strong>${escapeHtml(String(partySize))} personas</strong> el <strong>${escapeHtml(date)}</strong>.</p>
+    <p class="ao-text" style="font-size:15px; line-height:1.6; color:#f5f5f4; margin:0 0 24px;">Para dejarla lista, confirma tu asistencia y elige tu mesa favorita en el siguiente enlace:</p>
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td align="center" style="padding:0 0 24px;">
       <a href="${confirmUrl}" style="display:inline-block; background-color:#22d3ee; background-image:linear-gradient(135deg,#22d3ee,#d946ef); color:#05050a; font-weight:bold; text-decoration:none; padding:14px 28px; border-radius:10px; font-size:15px;">Confirmar asistencia y elegir mesa</a>
     </td></tr></table>
-    <p style="font-size:13px; line-height:1.6; color:#8a8880; margin:0;">Este enlace es personal y expira en 48 horas. Si no confirmas dentro de ese plazo, la solicitud se cancela automáticamente para liberar el cupo.</p>
-    <p style="font-size:13px; line-height:1.6; color:#8a8880; margin:12px 0 0;">¿Dudas o cambios de última hora? Escríbenos por WhatsApp, abajo.</p>
+    <p class="ao-muted" style="font-size:13px; line-height:1.6; color:#9c9aa5; margin:0;">Este enlace es personal y expira en 48 horas. Si no confirmas dentro de ese plazo, la solicitud se cancela automáticamente para liberar el cupo.</p>
+    <p class="ao-muted" style="font-size:13px; line-height:1.6; color:#9c9aa5; margin:12px 0 0;">¿Dudas o cambios de última hora? Escríbenos por WhatsApp, abajo.</p>
     ${EMAIL_FOOTER}`);
 }
 
 export function ownerNotificationEmailHtml({ name, phone, email, date, partySize, notes }) {
   return emailDocument(`${EMAIL_LOGO}
-    <h1 style="font-size:18px; margin:0 0 16px; color:#1a1a1a; text-align:center;">Nueva solicitud de reserva</h1>
-    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="font-size:14px; color:#44423e;">
-      <tr><td style="padding:6px 0; color:#8a8880;">Nombre</td><td style="padding:6px 0; text-align:right;">${escapeHtml(name)}</td></tr>
-      <tr><td style="padding:6px 0; color:#8a8880;">Teléfono</td><td style="padding:6px 0; text-align:right;">${escapeHtml(phone)}</td></tr>
-      <tr><td style="padding:6px 0; color:#8a8880;">Correo</td><td style="padding:6px 0; text-align:right;">${escapeHtml(email)}</td></tr>
-      <tr><td style="padding:6px 0; color:#8a8880;">Fecha</td><td style="padding:6px 0; text-align:right;">${escapeHtml(date)}</td></tr>
-      <tr><td style="padding:6px 0; color:#8a8880;">Personas</td><td style="padding:6px 0; text-align:right;">${escapeHtml(String(partySize))}</td></tr>
-      ${notes ? `<tr><td style="padding:6px 0; color:#8a8880;">Notas</td><td style="padding:6px 0; text-align:right;">${escapeHtml(notes)}</td></tr>` : ''}
+    <h1 class="ao-text" style="font-size:18px; margin:0 0 16px; color:#f5f5f4; text-align:center;">Nueva solicitud de reserva</h1>
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" class="ao-text" style="font-size:14px; color:#f5f5f4;">
+      <tr><td class="ao-muted" style="padding:6px 0; color:#9c9aa5;">Nombre</td><td style="padding:6px 0; text-align:right;">${escapeHtml(name)}</td></tr>
+      <tr><td class="ao-muted" style="padding:6px 0; color:#9c9aa5;">Teléfono</td><td style="padding:6px 0; text-align:right;">${escapeHtml(phone)}</td></tr>
+      <tr><td class="ao-muted" style="padding:6px 0; color:#9c9aa5;">Correo</td><td style="padding:6px 0; text-align:right;">${escapeHtml(email)}</td></tr>
+      <tr><td class="ao-muted" style="padding:6px 0; color:#9c9aa5;">Fecha</td><td style="padding:6px 0; text-align:right;">${escapeHtml(date)}</td></tr>
+      <tr><td class="ao-muted" style="padding:6px 0; color:#9c9aa5;">Personas</td><td style="padding:6px 0; text-align:right;">${escapeHtml(String(partySize))}</td></tr>
+      ${notes ? `<tr><td class="ao-muted" style="padding:6px 0; color:#9c9aa5;">Notas</td><td style="padding:6px 0; text-align:right;">${escapeHtml(notes)}</td></tr>` : ''}
     </table>
-    <p style="font-size:13px; line-height:1.6; color:#8a8880; margin:20px 0 16px;">Le enviamos al cliente un enlace para confirmar asistencia y elegir su mesa. Vas a ver la mesa asignada en el panel admin apenas la confirme.</p>
+    <p class="ao-muted" style="font-size:13px; line-height:1.6; color:#9c9aa5; margin:20px 0 16px;">Le enviamos al cliente un enlace para confirmar asistencia y elegir su mesa. Vas a ver la mesa asignada en el panel admin apenas la confirme.</p>
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td align="center">
       <a href="https://afterofficefutrono.cl/admin/index.html" style="display:inline-block; background-color:#22d3ee; background-image:linear-gradient(135deg,#22d3ee,#d946ef); color:#05050a; font-weight:bold; text-decoration:none; padding:12px 24px; border-radius:10px; font-size:14px;">Ver en el panel admin</a>
     </td></tr></table>
