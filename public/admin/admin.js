@@ -807,6 +807,77 @@
       .catch(function (err) { toast(err.message, 'error'); });
   });
 
+  // ---------- Reservations: "new" notification bell ----------
+  // Tracked per-browser (localStorage), not per-account: the point is just
+  // "have I looked at this reservation on this device yet", not a synced
+  // read/unread state across every device the owner might use.
+  var NOTIF_SEEN_KEY = 'aoLastSeenReservationId';
+  var notifUnseenIds = [];
+
+  function getLastSeenReservationId() {
+    return Number(localStorage.getItem(NOTIF_SEEN_KEY) || 0);
+  }
+  function setLastSeenReservationId(id) {
+    try { localStorage.setItem(NOTIF_SEEN_KEY, String(id)); } catch (err) { /* private browsing, etc. */ }
+  }
+
+  function updateNotifBell(reservations) {
+    var lastSeen = getLastSeenReservationId();
+    var unseen = reservations.filter(function (r) { return r.id > lastSeen; });
+    notifUnseenIds = unseen.map(function (r) { return r.id; });
+    var bell = document.getElementById('btn-notif-bell');
+    var badge = document.getElementById('notif-badge');
+    if (unseen.length > 0) {
+      badge.textContent = unseen.length > 99 ? '99+' : String(unseen.length);
+      badge.hidden = false;
+      bell.classList.add('has-new');
+    } else {
+      badge.hidden = true;
+      bell.classList.remove('has-new');
+    }
+  }
+
+  // Unfiltered (no date param) so a new reservation on any date -- not just
+  // whatever date the admin currently has the list filtered to -- still
+  // shows up in the count.
+  function pollForNewReservations() {
+    return api('/api/reservations').then(function (data) {
+      updateNotifBell(data.reservations);
+    }).catch(function () { /* transient network hiccup: try again next tick */ });
+  }
+
+  document.getElementById('btn-notif-bell').addEventListener('click', function () {
+    document.querySelectorAll('.admin-tab').forEach(function (t) { t.classList.remove('is-active'); });
+    document.querySelectorAll('.admin-panel').forEach(function (p) { p.classList.remove('is-active'); });
+    document.querySelector('.admin-tab[data-panel="panel-reservas"]').classList.add('is-active');
+    document.getElementById('panel-reservas').classList.add('is-active');
+
+    document.querySelectorAll('#panel-reservas .admin-subtab').forEach(function (t) { t.classList.remove('is-active'); });
+    document.querySelectorAll('#panel-reservas .admin-subpanel').forEach(function (p) { p.classList.remove('is-active'); });
+    document.querySelector('#panel-reservas .admin-subtab[data-subpanel="subpanel-reservas-list"]').classList.add('is-active');
+    document.getElementById('subpanel-reservas-list').classList.add('is-active');
+
+    var dateInput = document.getElementById('reservations-date');
+    dateInput.value = '';
+    if (window.AODatePicker) window.AODatePicker.refresh(dateInput);
+
+    var idsToHighlight = notifUnseenIds;
+    loadReservations(null).then(function () {
+      var maxId = idsToHighlight.length ? Math.max.apply(null, idsToHighlight) : 0;
+      if (maxId) setLastSeenReservationId(maxId);
+      updateNotifBell(state.reservations);
+
+      idsToHighlight.forEach(function (id) {
+        var row = document.querySelector('.item-row[data-id="' + id + '"]');
+        if (!row) return;
+        row.classList.add('is-new-highlight');
+        setTimeout(function () { row.classList.remove('is-new-highlight'); }, 2500);
+      });
+      var topRow = maxId && document.querySelector('.item-row[data-id="' + maxId + '"]');
+      if (topRow) topRow.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }).catch(function (err) { toast(err.message, 'error'); });
+  });
+
   function loadReservationsTab() {
     var input = document.getElementById('reservations-date');
     input.value = todayStr();
@@ -1026,6 +1097,15 @@
     .then(loadPopup)
     .then(loadReservationsTab)
     .then(loadHours)
+    .then(function () {
+      pollForNewReservations();
+      setInterval(pollForNewReservations, 45000);
+      // Also refresh right away when the owner switches back to this tab,
+      // instead of waiting up to 45s for the next scheduled poll.
+      document.addEventListener('visibilitychange', function () {
+        if (document.visibilityState === 'visible') pollForNewReservations();
+      });
+    })
     .catch(function (err) {
       if (err.message !== 'No autenticado') toast(err.message, 'error');
     });
