@@ -57,6 +57,24 @@ function withHeaders(response, extra) {
   return new Response(response.body, { status: response.status, headers });
 }
 
+// Workers Static Assets' own default for HTML ("max-age=0, must-revalidate")
+// is a signal for *browsers* to always revalidate, but Cloudflare's edge
+// cache doesn't reliably treat that as "don't cache me" — we've seen it
+// serve a stale HTML page (cf-cache-status: HIT) to real navigations for
+// over an hour after a deploy, even with a fresh cache-busting query string,
+// while a plain fetch()/curl to the identical URL got the current version.
+// A page's text content editing shouldn't ever depend on a manual "Purge
+// Everything" to go live, so HTML documents get the unambiguous "never
+// cache this at the edge" directive; images/CSS/JS keep whatever
+// Cache-Control Static Assets/_headers already gives them.
+function withNoStoreForHtml(response, extra) {
+  const withCsp = withHeaders(response, extra);
+  if ((withCsp.headers.get('Content-Type') || '').includes('text/html')) {
+    withCsp.headers.set('Cache-Control', 'no-store');
+  }
+  return withCsp;
+}
+
 async function routeApi(request, env, url) {
   if (url.pathname.startsWith('/api/auth/')) return handleAuthRoute(request, env, url);
   if (url.pathname.startsWith('/api/menu')) return handleMenuRoute(request, env, url);
@@ -124,10 +142,10 @@ export default {
       }
 
       if (url.pathname.startsWith('/admin')) {
-        return withHeaders(await env.ASSETS.fetch(request), { 'Content-Security-Policy': ADMIN_CSP });
+        return withNoStoreForHtml(await env.ASSETS.fetch(request), { 'Content-Security-Policy': ADMIN_CSP });
       }
 
-      return withHeaders(await env.ASSETS.fetch(request), { 'Content-Security-Policy': PUBLIC_CSP });
+      return withNoStoreForHtml(await env.ASSETS.fetch(request), { 'Content-Security-Policy': PUBLIC_CSP });
     } catch (err) {
       console.error(err);
       return new Response('Error interno.', { status: 500 });
