@@ -167,6 +167,16 @@ a { color: var(--cyan); }
 .admin-tab:hover { color: var(--text); }
 .admin-tab.is-active { color: var(--cyan); border-bottom-color: var(--cyan); text-shadow: 0 0 12px rgba(34, 211, 238, 0.4); }
 
+/* On a phone-width screen the 5 tabs don't fit in one row, and a hidden
+   horizontal scroll (like the one on .admin-tabs above) means whichever
+   tab is scrolled out of view -- Reservas, Cuenta -- reads as if it
+   doesn't exist. Same reasoning as the category chips: wrap instead of
+   hiding, so every tab stays visible and tappable at all times. */
+@media (max-width: 640px) {
+  .admin-tabs { flex-wrap: wrap; overflow-x: visible; padding: 0.5rem 0.75rem 0.25rem; }
+  .admin-tab { padding: 0.5rem 0.6rem; font-size: 0.78rem; }
+}
+
 .admin-main { flex: 1; padding: 1.25rem; max-width: 1100px; width: 100%; margin: 0 auto; }
 
 .admin-panel { display: none; }
@@ -612,6 +622,28 @@ a { color: var(--cyan); }
   align-items: center;
 }
 @media (max-width: 560px) { .fact-row { grid-template-columns: 1fr; } }
+
+/* These reuse .field's dark input look by hand -- they're built by JS
+   (renderFacts/addHoursLine in admin.js) as bare classed <input>s, not
+   inside a .field wrapper, so without this they fall back to an unstyled
+   white browser default input that clashes with the rest of the panel. */
+.fact-icon, .fact-text, .hours-line {
+  width: 100%;
+  padding: 0.6rem 0.75rem;
+  min-height: 2.4rem;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-size: 0.85rem;
+  font-family: inherit;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.fact-icon:focus, .fact-text:focus, .hours-line:focus {
+  outline: none;
+  border-color: var(--cyan);
+  box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.15);
+}
 
 .hours-row {
   display: grid;
