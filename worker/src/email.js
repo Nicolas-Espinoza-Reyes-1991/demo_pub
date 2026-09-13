@@ -87,12 +87,15 @@ const EMAIL_LOGO = `<div style="text-align:center; margin:0 0 28px;">
   <img src="https://afterofficefutrono.cl/imagenes_sitio/logo-after-office-email-color.png" width="80" alt="After Office Futrono" style="display:inline-block; width:80px; height:auto; border:0;">
 </div>`;
 
+const EMAIL_SEP = `<span class="ao-muted" style="color:#5b5a60;"> &middot; </span>`;
+
 const EMAIL_FOOTER = `<div style="margin-top:28px; padding-top:20px; border-top:1px solid rgba(255,255,255,0.08); text-align:center;">
   <p class="ao-muted" style="font-size:12px; line-height:1.6; color:#9c9aa5; margin:0 0 6px;">Gaston Guarda Parades 54, Futrono, Los Ríos</p>
   <p style="font-size:12px; margin:0;">
-    <a href="https://wa.me/56993015918" style="color:#22d3ee; text-decoration:none; font-weight:bold;">WhatsApp</a>
-    <span class="ao-muted" style="color:#5b5a60;"> &middot; </span>
-    <a href="https://www.instagram.com/afterofficefutrono" style="color:#d946ef; text-decoration:none; font-weight:bold;">Instagram</a>
+    <a href="https://wa.me/56993015918" style="color:#22d3ee; text-decoration:none; font-weight:bold;">WhatsApp</a>${EMAIL_SEP}
+    <a href="https://www.instagram.com/afterofficefutrono" style="color:#d946ef; text-decoration:none; font-weight:bold;">Instagram</a>${EMAIL_SEP}
+    <a href="https://web.facebook.com/verano.futrono.2025" style="color:#22d3ee; text-decoration:none; font-weight:bold;">Facebook</a>${EMAIL_SEP}
+    <a href="https://www.tiktok.com/@after.office.rest" style="color:#d946ef; text-decoration:none; font-weight:bold;">TikTok</a>
   </p>
 </div>`;
 
