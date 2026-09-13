@@ -319,7 +319,34 @@
     }).join('') || (
       '<p class="empty-hint">' + ICON.image + '<span>Todavía no hay categorías. Crea la primera abajo.</span></p>'
     );
+    renderCategorySelect();
   }
+
+  // The dropdown lives in the Productos sub-tab so switching which
+  // category's products you're looking at doesn't require hopping over to
+  // the Categorías sub-tab -- that's only needed to create/reorder one.
+  function renderCategorySelect() {
+    var select = document.getElementById('category-select');
+    var hasCategories = state.categories.length > 0;
+    select.disabled = !hasCategories;
+    select.innerHTML = hasCategories
+      ? state.categories.map(function (cat) {
+          return '<option value="' + escapeHtml(cat.id) + '"' + (cat.id === state.activeCategoryId ? ' selected' : '') + '>' + escapeHtml(cat.label) + '</option>';
+        }).join('')
+      : '<option value="">Crea una categoría primero</option>';
+    document.getElementById('btn-add-item').disabled = !hasCategories;
+  }
+
+  document.getElementById('category-select').addEventListener('change', function (e) {
+    state.activeCategoryId = e.target.value || null;
+    state.editingItemId = null;
+    renderCategories();
+    renderItems();
+  });
+
+  document.getElementById('btn-goto-categories').addEventListener('click', function () {
+    document.querySelector('#panel-carta .admin-subtab[data-subpanel="subpanel-categorias"]').click();
+  });
 
   document.getElementById('category-list').addEventListener('click', function (e) {
     var btn = e.target.closest('[data-action]');
@@ -387,17 +414,12 @@
   }
 
   function renderItems() {
-    var card = document.getElementById('items-card');
-    var title = document.getElementById('items-card-title');
     var list = document.getElementById('item-list');
 
     if (!state.activeCategoryId) {
-      card.hidden = true;
+      list.innerHTML = '<p class="empty-hint">' + ICON.image + '<span>Crea una categoría para empezar a agregar productos.</span></p>';
       return;
     }
-    card.hidden = false;
-    var cat = state.categories.filter(function (c) { return c.id === state.activeCategoryId; })[0];
-    title.textContent = 'Productos · ' + (cat ? cat.label : '');
 
     var items = itemsForActiveCategory();
     list.innerHTML = items.map(function (it) {
@@ -456,9 +478,10 @@
     }
   });
 
+  var itemFormModal = document.getElementById('item-form-modal');
+
   function openItemForm(item) {
     state.editingItemId = item ? item.id : null;
-    document.getElementById('item-form-card').hidden = false;
     document.getElementById('item-form-title').textContent = item ? 'Editar producto' : 'Nuevo producto';
     document.getElementById('item-name').value = item ? item.name : '';
     document.getElementById('item-desc').value = item ? item.desc : '';
@@ -468,14 +491,25 @@
     document.getElementById('item-image').value = item ? item.img : '';
     setImagePreview('item-image-preview', 'item-image-hint', item ? item.img : '', './../imagenes_carta/');
     itemImageDropzone.setBaseline(item ? item.img : '');
-    document.getElementById('item-form-card').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    itemFormModal.hidden = false;
+    itemFormModal.removeAttribute('aria-hidden');
+    document.getElementById('item-name').focus();
+  }
+
+  function closeItemForm() {
+    itemFormModal.hidden = true;
+    itemFormModal.setAttribute('aria-hidden', 'true');
+    state.editingItemId = null;
+    itemImageDropzone.discardPending();
   }
 
   document.getElementById('btn-add-item').addEventListener('click', function () { openItemForm(null); });
-  document.getElementById('btn-cancel-item').addEventListener('click', function () {
-    document.getElementById('item-form-card').hidden = true;
-    state.editingItemId = null;
-    itemImageDropzone.discardPending();
+  document.getElementById('btn-cancel-item').addEventListener('click', closeItemForm);
+  itemFormModal.querySelectorAll('[data-modal-close]').forEach(function (el) {
+    el.addEventListener('click', closeItemForm);
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && !itemFormModal.hidden) closeItemForm();
   });
 
   document.getElementById('btn-save-item').addEventListener('click', function () {
@@ -496,7 +530,8 @@
     request
       .then(function () {
         toast('Producto guardado.');
-        document.getElementById('item-form-card').hidden = true;
+        itemFormModal.hidden = true;
+        itemFormModal.setAttribute('aria-hidden', 'true');
         state.editingItemId = null;
         itemImageDropzone.commit();
         loadMenu();
