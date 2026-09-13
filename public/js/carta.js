@@ -30,7 +30,7 @@
     var title = document.getElementById('carta-title');
     if (title) {
       title.className = 'font-outfit text-2xl sm:text-3xl font-bold carta-title mb-2';
-      title.innerHTML = '<span class="neon-text-cyan">Menú</span> <span class="text-fuchsia-400 neon-text-magenta">Nocturno</span>';
+      title.innerHTML = '<span class="neon-text-cyan">Menú</span>';
     }
 
     var sub = document.getElementById('carta-subtitle');
