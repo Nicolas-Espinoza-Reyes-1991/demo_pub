@@ -448,57 +448,12 @@ a { color: var(--cyan); }
 .aod-date__empty { visibility: hidden; }
 
 /* ---------- Category chips ---------- */
-/* ---------- Horizontal scroller (e.g. category chips) ---------- */
-/* Arrow buttons + edge fade instead of a bare native scrollbar, which reads
-   as a rough/unfinished "web page" element rather than part of the app --
-   same pattern already used for carta.html's category tabs on the public
-   site, just re-themed with the admin's own tokens. */
-.hscroll { position: relative; display: flex; align-items: stretch; gap: 0.35rem; margin-bottom: 1.1rem; }
-.hscroll.is-scrollable::before,
-.hscroll.is-scrollable::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  bottom: 0.25rem;
-  width: 1.5rem;
-  pointer-events: none;
-  z-index: 2;
-  transition: opacity 0.2s ease;
-}
-.hscroll.is-scrollable::before { left: 2rem; background: linear-gradient(90deg, var(--bg), transparent); }
-.hscroll.is-scrollable::after { right: 2rem; background: linear-gradient(270deg, var(--bg), transparent); }
-.hscroll.is-scroll-start::before { opacity: 0; }
-.hscroll.is-scroll-end::after { opacity: 0; }
-.hscroll__btn {
-  flex-shrink: 0;
-  align-self: center;
-  width: 1.75rem;
-  height: 1.75rem;
-  border-radius: 999px;
-  border: 1px solid rgba(34, 211, 238, 0.35);
-  background: var(--panel-solid);
-  color: var(--cyan);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.15s ease;
-}
-.hscroll__btn:hover { background: rgba(34, 211, 238, 0.12); box-shadow: 0 0 12px rgba(34, 211, 238, 0.25); }
-.hscroll__btn:active { transform: scale(0.94); }
-
 .category-list {
   display: flex;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
   gap: 0.5rem;
-  flex: 1;
-  min-width: 0;
-  overflow-x: auto;
-  padding-bottom: 0.25rem;
-  scrollbar-width: none;
-  -webkit-overflow-scrolling: touch;
+  margin-bottom: 1.1rem;
 }
-.category-list::-webkit-scrollbar { display: none; }
 .category-chip {
   display: flex;
   align-items: stretch;
