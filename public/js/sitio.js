@@ -269,6 +269,7 @@
         var minDate = new Date();
         minDate.setDate(minDate.getDate() + 1);
         dateInput.min = minDate.getFullYear() + '-' + String(minDate.getMonth() + 1).padStart(2, '0') + '-' + String(minDate.getDate()).padStart(2, '0');
+        if (window.AODatePicker) window.AODatePicker.attach(dateInput, { placeholder: 'Elige la fecha de tu reserva' });
       }
 
       form.addEventListener('submit', function (e) {

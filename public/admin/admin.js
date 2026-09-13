@@ -713,16 +713,20 @@
     return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
   }
 
+  if (window.AODatePicker) window.AODatePicker.attach(document.getElementById('reservations-date'));
   document.getElementById('reservations-date').addEventListener('change', function (e) {
     loadReservations(e.target.value || null).catch(function (err) { toast(err.message, 'error'); });
   });
   document.getElementById('btn-reservations-today').addEventListener('click', function () {
     var input = document.getElementById('reservations-date');
     input.value = todayStr();
+    if (window.AODatePicker) window.AODatePicker.refresh(input);
     loadReservations(input.value).catch(function (err) { toast(err.message, 'error'); });
   });
   document.getElementById('btn-reservations-all').addEventListener('click', function () {
-    document.getElementById('reservations-date').value = '';
+    var input = document.getElementById('reservations-date');
+    input.value = '';
+    if (window.AODatePicker) window.AODatePicker.refresh(input);
     loadReservations(null).catch(function (err) { toast(err.message, 'error'); });
   });
 
@@ -764,6 +768,7 @@
       .catch(function (err) { toast(err.message, 'error'); });
   });
 
+  if (window.AODatePicker) window.AODatePicker.attach(document.getElementById('new-block-date'));
   document.getElementById('btn-add-block').addEventListener('click', function () {
     var dateInput = document.getElementById('new-block-date');
     var reasonInput = document.getElementById('new-block-reason');
@@ -772,6 +777,7 @@
     api('/api/reservations/blocks', { method: 'POST', body: { date: dateInput.value, reason: reasonInput.value.trim() } })
       .then(function () {
         dateInput.value = '';
+        if (window.AODatePicker) window.AODatePicker.refresh(dateInput);
         reasonInput.value = '';
         toast('Fecha bloqueada.');
         loadBlocks();
@@ -780,7 +786,9 @@
   });
 
   function loadReservationsTab() {
-    document.getElementById('reservations-date').value = todayStr();
+    var input = document.getElementById('reservations-date');
+    input.value = todayStr();
+    if (window.AODatePicker) window.AODatePicker.refresh(input);
     return Promise.all([loadTables(), loadReservations(todayStr()), loadBlocks()]);
   }
 
