@@ -168,7 +168,7 @@ async function handleCreateReservation(request, env) {
     id,
     emailSent: customerEmailOk,
     message: customerEmailOk
-      ? 'Solicitud recibida. Revisa tu correo para confirmar tu asistencia y elegir tu mesa.'
+      ? 'Solicitud recibida. Revisa tu correo (incluida la carpeta de spam/no deseado) para confirmar tu asistencia y elegir tu mesa.'
       : 'Solicitud recibida, pero no pudimos enviarte el correo de confirmación. Escríbenos por WhatsApp para coordinar tu mesa.',
   });
 }

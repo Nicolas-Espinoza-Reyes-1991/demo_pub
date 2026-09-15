@@ -292,7 +292,7 @@
           .then(function (res) { return res.json().then(function (body) { return { ok: res.ok, body: body }; }); })
           .then(function (result) {
             if (result.ok) {
-              showSiteAlert(result.body.message || 'Solicitud recibida. Revisa tu correo para confirmar tu asistencia.', false);
+              showSiteAlert(result.body.message || 'Solicitud recibida. Revisa tu correo (incluida la carpeta de spam/no deseado) para confirmar tu asistencia.', false);
               if (waLink) {
                 waLink.href = buildWhatsappHref(
                   'Hola, soy ' + name + '. Acabo de reservar para ' + partySize + ' personas el ' + date + '. ¡Gracias!'
