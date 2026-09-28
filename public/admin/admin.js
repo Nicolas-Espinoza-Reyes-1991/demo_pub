@@ -1023,7 +1023,7 @@
   });
 
   // ---------- QR ----------
-  var QR_TARGET_URL = 'https://afterofficefutrono.cl/carta';
+  var QR_TARGET_URL = 'https://www.afterofficefutrono.cl/carta';
 
   function drawRoundedRect(ctx, x, y, w, h, r) {
     ctx.beginPath();
