@@ -104,15 +104,16 @@ export default {
     const url = new URL(request.url);
 
     // Both afterofficefutrono.cl and www.afterofficefutrono.cl are added as
-    // Custom Domains for this Worker (so www still resolves instead of
-    // erroring), but without this they'd serve byte-identical content at
-    // two different URLs -- Google can index both as separate pages and
-    // split ranking signals between them instead of one canonical version
-    // (the <link rel="canonical"> tag already points at the bare domain,
-    // but a real redirect is the more robust fix rather than relying on
-    // Google to always respect it).
-    if (url.hostname === 'www.afterofficefutrono.cl') {
-      url.hostname = 'afterofficefutrono.cl';
+    // Custom Domains for this Worker (so the bare domain still resolves
+    // instead of erroring), but without this they'd serve byte-identical
+    // content at two different URLs -- Google can index both as separate
+    // pages and split ranking signals between them instead of one
+    // canonical version. www is the one used in the client's branding, so
+    // it's the canonical version here (matches <link rel="canonical"> on
+    // every page, which is a hint Google can ignore -- this redirect is
+    // the actual enforcement).
+    if (url.hostname === 'afterofficefutrono.cl') {
+      url.hostname = 'www.afterofficefutrono.cl';
       return Response.redirect(url.toString(), 301);
     }
 

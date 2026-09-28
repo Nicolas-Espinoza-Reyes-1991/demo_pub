@@ -84,7 +84,7 @@ ${bodyHtml}
 }
 
 const EMAIL_LOGO = `<div style="text-align:center; margin:0 0 28px;">
-  <img src="https://afterofficefutrono.cl/imagenes_sitio/logo-after-office-email-color.png" width="80" alt="After Office Futrono" style="display:inline-block; width:80px; height:auto; border:0;">
+  <img src="https://www.afterofficefutrono.cl/imagenes_sitio/logo-after-office-email-color.png" width="80" alt="After Office Futrono" style="display:inline-block; width:80px; height:auto; border:0;">
 </div>`;
 
 const EMAIL_SEP = `<span class="ao-muted" style="color:#5b5a60;"> &middot; </span>`;
@@ -125,7 +125,7 @@ export function ownerNotificationEmailHtml({ name, phone, email, date, partySize
     </table>
     <p class="ao-muted" style="font-size:13px; line-height:1.6; color:#9c9aa5; margin:20px 0 16px;">Le enviamos al cliente un enlace para confirmar asistencia y elegir su mesa. Vas a ver la mesa asignada en el panel admin apenas la confirme.</p>
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td align="center">
-      <a href="https://afterofficefutrono.cl/admin/index.html" style="display:inline-block; background-color:#22d3ee; background-image:linear-gradient(135deg,#22d3ee,#d946ef); color:#05050a; font-weight:bold; text-decoration:none; padding:12px 24px; border-radius:10px; font-size:14px;">Ver en el panel admin</a>
+      <a href="https://www.afterofficefutrono.cl/admin/index.html" style="display:inline-block; background-color:#22d3ee; background-image:linear-gradient(135deg,#22d3ee,#d946ef); color:#05050a; font-weight:bold; text-decoration:none; padding:12px 24px; border-radius:10px; font-size:14px;">Ver en el panel admin</a>
     </td></tr></table>
     ${EMAIL_FOOTER}`);
 }

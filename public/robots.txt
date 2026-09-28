@@ -5,4 +5,4 @@ Disallow: /api/
 Disallow: /confirmar.html
 Disallow: /confirmar
 
-Sitemap: https://afterofficefutrono.cl/sitemap.xml
+Sitemap: https://www.afterofficefutrono.cl/sitemap.xml
