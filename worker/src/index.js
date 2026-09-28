@@ -103,6 +103,19 @@ export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
 
+    // Both afterofficefutrono.cl and www.afterofficefutrono.cl are added as
+    // Custom Domains for this Worker (so www still resolves instead of
+    // erroring), but without this they'd serve byte-identical content at
+    // two different URLs -- Google can index both as separate pages and
+    // split ranking signals between them instead of one canonical version
+    // (the <link rel="canonical"> tag already points at the bare domain,
+    // but a real redirect is the more robust fix rather than relying on
+    // Google to always respect it).
+    if (url.hostname === 'www.afterofficefutrono.cl') {
+      url.hostname = 'afterofficefutrono.cl';
+      return Response.redirect(url.toString(), 301);
+    }
+
     try {
       if (url.pathname === '/js/menu-data.js') {
         const menu = await getMenu(env.DB);
