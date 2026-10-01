@@ -133,7 +133,12 @@ export default {
       url.pathname === '/js/hours-data.js';
     if (url.hostname === 'afterofficefutrono.cl' && !isDataEndpoint) {
       url.hostname = 'www.afterofficefutrono.cl';
-      return Response.redirect(url.toString(), 301);
+      // no-store: a 301 is heuristically cacheable by browsers/CDNs even
+      // without this header -- that's exactly what let the stale /api/
+      // redirect above linger at Cloudflare's edge for a bit right after
+      // this fix first deployed, even though the new Worker code was
+      // already live and correct.
+      return new Response(null, { status: 301, headers: { Location: url.toString(), 'Cache-Control': 'no-store' } });
     }
 
     try {
