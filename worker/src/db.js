@@ -14,7 +14,7 @@ export async function getMenu(db) {
     .prepare('SELECT id, label, sort_order FROM menu_categories ORDER BY sort_order, id')
     .all();
   const { results: items } = await db
-    .prepare('SELECT id, category_id, name, description, price, image, tags, sort_order FROM menu_items ORDER BY category_id, sort_order, id')
+    .prepare('SELECT id, category_id, name, description, price, image, tags, sort_order FROM menu_items WHERE active = 1 ORDER BY category_id, sort_order, id')
     .all();
 
   const itemsByCategory = {};
@@ -34,7 +34,7 @@ export async function getMenuForAdmin(db) {
     .prepare('SELECT id, label, sort_order FROM menu_categories ORDER BY sort_order, id')
     .all();
   const { results: items } = await db
-    .prepare('SELECT id, category_id, name, description, price, image, tags, sort_order, featured_group FROM menu_items ORDER BY category_id, sort_order, id')
+    .prepare('SELECT id, category_id, name, description, price, image, tags, sort_order, featured_group, active FROM menu_items ORDER BY category_id, sort_order, id')
     .all();
   return {
     categories,
@@ -43,6 +43,7 @@ export async function getMenuForAdmin(db) {
       categoryId: row.category_id,
       sortOrder: row.sort_order,
       featuredGroup: row.featured_group,
+      active: !!row.active,
     })),
   };
 }
@@ -56,7 +57,7 @@ export async function getFeaturedItems(db) {
       `SELECT mi.id, mi.name, mi.description, mi.price, mi.image, mi.featured_group, mc.label AS category_label
        FROM menu_items mi
        JOIN menu_categories mc ON mc.id = mi.category_id
-       WHERE mi.featured_group IN ('comida', 'trago')
+       WHERE mi.featured_group IN ('comida', 'trago') AND mi.active = 1
        ORDER BY mi.featured_group, mi.id`
     )
     .all();

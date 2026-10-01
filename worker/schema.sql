@@ -25,7 +25,12 @@ CREATE TABLE menu_items (
   -- "Comida & tragos" preview. Capped at 3 per group by the API, enforced
   -- with a COUNT check rather than a DB constraint (SQLite can't easily
   -- express "at most 3 rows with this value").
-  featured_group TEXT NOT NULL DEFAULT ''
+  featured_group TEXT NOT NULL DEFAULT '',
+  -- Lets the admin hide an out-of-stock item from the public carta (and the
+  -- featured preview) with one click, without deleting it -- it stays fully
+  -- editable in /admin, just filtered out of what getMenu()/getFeaturedItems()
+  -- return.
+  active INTEGER NOT NULL DEFAULT 1
 );
 
 CREATE TABLE popup_config (

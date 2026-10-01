@@ -145,10 +145,16 @@ async function createItem(request, env) {
 
   const sortOrder = await nextItemSortOrder(env.DB, categoryId);
   const result = await env.DB
-    .prepare('INSERT INTO menu_items (category_id, name, description, price, image, tags, sort_order, featured_group) VALUES (?, ?, ?, ?, ?, ?, ?, ?)')
+    .prepare('INSERT INTO menu_items (category_id, name, description, price, image, tags, sort_order, featured_group, active) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 1)')
     .bind(categoryId, name, description, price, image, JSON.stringify(tags), sortOrder, featuredGroup)
     .run();
   return json({ ok: true, id: result.meta.last_row_id });
+}
+
+async function setItemActive(env, id, active) {
+  const result = await env.DB.prepare('UPDATE menu_items SET active = ? WHERE id = ?').bind(active ? 1 : 0, id).run();
+  if (!result.meta.changes) return json({ error: 'Producto no encontrado.' }, { status: 404 });
+  return json({ ok: true });
 }
 
 async function updateItem(request, env, id) {
@@ -234,6 +240,10 @@ export async function handleMenuRoute(request, env, url) {
     if (id && parts[4] === 'move' && request.method === 'POST') {
       const body = await request.json().catch(() => ({}));
       return moveItem(env, Number(id), body.direction === 'up' ? 'up' : 'down');
+    }
+    if (id && parts[4] === 'active' && request.method === 'POST') {
+      const body = await request.json().catch(() => ({}));
+      return setItemActive(env, Number(id), !!body.active);
     }
     if (id && request.method === 'PUT') return updateItem(request, env, Number(id));
     if (id && request.method === 'DELETE') return deleteItem(env, Number(id));

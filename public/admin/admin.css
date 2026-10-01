@@ -589,6 +589,15 @@ a { color: var(--cyan); }
   transition: border-color 0.15s ease;
 }
 .item-row:hover { border-color: var(--border-strong); }
+
+/* Below phone width the 3-column grid left too little room for the actions
+   column (toggle + up/down/edit/delete), so icon buttons wrapped onto their
+   own orphan lines one at a time. Stacking thumb+title on top and giving
+   actions the full row below keeps every button together and tappable. */
+@media (max-width: 480px) {
+  .item-row { grid-template-columns: 3.75rem 1fr; }
+  .item-row__actions { grid-column: 1 / -1; justify-content: flex-start; }
+}
 .item-row__thumb {
   width: 3.75rem;
   height: 3.75rem;
@@ -606,6 +615,88 @@ a { color: var(--cyan); }
 .item-row__title { font-weight: 700; font-size: 0.9rem; }
 .item-row__meta { font-size: 0.78rem; color: var(--text-dim); margin-top: 0.1rem; }
 .item-row__actions { display: flex; gap: 0.3rem; flex-wrap: wrap; justify-content: flex-end; }
+
+/* Dim everything except the actions row so the stock toggle/edit/delete
+   buttons stay at full contrast and easy to tap on mobile -- the one thing
+   you actually need to interact with on a row you just marked out of stock. */
+.item-row.is-inactive { border-style: dashed; }
+.item-row.is-inactive .item-row__thumb,
+.item-row.is-inactive .item-row__title,
+.item-row.is-inactive .item-row__meta { opacity: 0.5; }
+
+/* ---------- Stock filter (Carta > Productos) ---------- */
+.stock-filter-bar { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.75rem; }
+.stock-filter {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.4rem 0.4rem 0.85rem;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text-dim);
+  font-family: 'Lato', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
+}
+.stock-filter:hover { color: var(--text); border-color: var(--border-strong); }
+.stock-filter__count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.3rem;
+  height: 1.3rem;
+  padding: 0 0.35rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  font-size: 0.7rem;
+}
+.stock-filter.is-active { color: var(--bg); background: var(--gradient); border-color: transparent; }
+.stock-filter.is-active .stock-filter__count { background: rgba(5, 5, 8, 0.25); color: var(--bg); }
+.stock-filter--active:not(.is-active) .stock-filter__count { color: var(--ok); }
+.stock-filter--inactive:not(.is-active) .stock-filter__count { color: var(--text-faint); }
+
+/* ---------- Stock toggle (per product row) ---------- */
+.stock-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.65rem 0.3rem 0.35rem;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text-faint);
+  font-family: 'Lato', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+.stock-toggle:hover { border-color: var(--border-strong); }
+.stock-toggle__track {
+  position: relative;
+  width: 1.85rem;
+  height: 1.05rem;
+  border-radius: 999px;
+  background: var(--text-faint);
+  flex-shrink: 0;
+  transition: background 0.15s ease;
+}
+.stock-toggle__knob {
+  position: absolute;
+  top: 0.15rem;
+  left: 0.15rem;
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 50%;
+  background: #fff;
+  transition: transform 0.15s ease;
+}
+.stock-toggle[data-active="1"] .stock-toggle__track { background: var(--ok); }
+.stock-toggle[data-active="1"] .stock-toggle__knob { transform: translateX(0.8rem); }
+.stock-toggle[data-active="1"] { color: var(--ok); }
 
 /* ---------- Reservations / tables / blocks ---------- */
 .status-pill {

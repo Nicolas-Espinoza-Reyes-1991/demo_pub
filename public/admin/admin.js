@@ -6,6 +6,7 @@
     items: [],
     activeCategoryId: null,
     editingItemId: null,
+    stockFilter: 'all', // 'all' | 'active' | 'inactive'
     popup: null,
   };
 
@@ -341,6 +342,7 @@
   document.getElementById('category-select').addEventListener('change', function (e) {
     state.activeCategoryId = e.target.value || null;
     state.editingItemId = null;
+    state.stockFilter = 'all';
     renderCategories();
     renderItems();
   });
@@ -359,6 +361,7 @@
     if (action === 'select') {
       state.activeCategoryId = id;
       state.editingItemId = null;
+      state.stockFilter = 'all';
       renderCategories();
       renderItems();
       return;
@@ -414,19 +417,56 @@
       .sort(function (a, b) { return a.sortOrder - b.sortOrder; });
   }
 
+  // Counts always reflect every product in the active category, regardless
+  // of which filter chip is selected -- otherwise picking "Activos" would
+  // make the "Inactivos (N)" count disappear along with the rows, which
+  // defeats the point of showing it.
+  function renderStockFilterBar() {
+    var bar = document.getElementById('stock-filter-bar');
+    if (!state.activeCategoryId) { bar.innerHTML = ''; return; }
+    var items = itemsForActiveCategory();
+    var activeCount = items.filter(function (it) { return it.active !== false; }).length;
+    var inactiveCount = items.length - activeCount;
+    var filters = [
+      { key: 'all', label: 'Todos', count: items.length },
+      { key: 'active', label: 'Activos', count: activeCount },
+      { key: 'inactive', label: 'Inactivos', count: inactiveCount },
+    ];
+    bar.innerHTML = filters.map(function (f) {
+      return (
+        '<button type="button" class="stock-filter stock-filter--' + f.key + (state.stockFilter === f.key ? ' is-active' : '') + '" data-filter="' + f.key + '">' +
+          f.label + ' <span class="stock-filter__count">' + f.count + '</span>' +
+        '</button>'
+      );
+    }).join('');
+  }
+
+  document.getElementById('stock-filter-bar').addEventListener('click', function (e) {
+    var btn = e.target.closest('[data-filter]');
+    if (!btn) return;
+    state.stockFilter = btn.getAttribute('data-filter');
+    renderItems();
+  });
+
   function renderItems() {
     var list = document.getElementById('item-list');
+    renderStockFilterBar();
 
     if (!state.activeCategoryId) {
       list.innerHTML = '<p class="empty-hint">' + ICON.image + '<span>Crea una categoría para empezar a agregar productos.</span></p>';
       return;
     }
 
-    var items = itemsForActiveCategory();
+    var items = itemsForActiveCategory().filter(function (it) {
+      if (state.stockFilter === 'active') return it.active !== false;
+      if (state.stockFilter === 'inactive') return it.active === false;
+      return true;
+    });
     list.innerHTML = items.map(function (it) {
       var img = resolveImageUrl(it.img, './../imagenes_carta/');
+      var isActive = it.active !== false;
       return (
-        '<div class="item-row" data-id="' + it.id + '">' +
+        '<div class="item-row' + (isActive ? '' : ' is-inactive') + '" data-id="' + it.id + '">' +
           '<span class="item-row__thumb">' + (img ? '<img src="' + img + '" alt="">' : ICON.image) + '</span>' +
           '<div>' +
             '<div class="item-row__title">' + escapeHtml(it.name) +
@@ -435,6 +475,10 @@
             '<div class="item-row__meta">' + escapeHtml(it.price || 'Solicitar al garzón') + '</div>' +
           '</div>' +
           '<div class="item-row__actions">' +
+            '<button type="button" class="stock-toggle" data-action="toggle-active" data-active="' + (isActive ? '1' : '0') + '" aria-pressed="' + (isActive ? 'true' : 'false') + '" title="' + (isActive ? 'Marcar sin stock (se oculta de la carta)' : 'Marcar con stock (vuelve a mostrarse en la carta)') + '">' +
+              '<span class="stock-toggle__track"><span class="stock-toggle__knob"></span></span>' +
+              '<span class="stock-toggle__label">' + (isActive ? 'Activo' : 'Inactivo') + '</span>' +
+            '</button>' +
             '<button type="button" class="btn btn--small btn--icon btn--ghost" data-action="up" title="Subir">' + ICON.up + '</button>' +
             '<button type="button" class="btn btn--small btn--icon btn--ghost" data-action="down" title="Bajar">' + ICON.down + '</button>' +
             '<button type="button" class="btn btn--small" data-action="edit">' + ICON.edit + ' Editar</button>' +
@@ -443,7 +487,7 @@
         '</div>'
       );
     }).join('') || (
-      '<p class="empty-hint">' + ICON.image + '<span>Sin productos en esta categoría todavía.</span></p>'
+      '<p class="empty-hint">' + ICON.image + '<span>' + (state.stockFilter === 'all' ? 'Sin productos en esta categoría todavía.' : 'Ningún producto coincide con este filtro.') + '</span></p>'
     );
 
     list.querySelectorAll('.item-row__thumb img').forEach(function (img) {
@@ -460,6 +504,16 @@
     var id = Number(row.getAttribute('data-id'));
     var action = btn.getAttribute('data-action');
 
+    if (action === 'toggle-active') {
+      var nextActive = btn.getAttribute('data-active') !== '1';
+      api('/api/menu/items/' + id + '/active', { method: 'POST', body: { active: nextActive } })
+        .then(function () {
+          toast(nextActive ? 'Producto marcado como activo.' : 'Producto marcado sin stock, oculto de la carta.');
+          loadMenu();
+        })
+        .catch(function (err) { toast(err.message, 'error'); });
+      return;
+    }
     if (action === 'up' || action === 'down') {
       api('/api/menu/items/' + id + '/move', { method: 'POST', body: { direction: action } })
         .then(loadMenu)
