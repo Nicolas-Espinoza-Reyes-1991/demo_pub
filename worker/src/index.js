@@ -112,7 +112,26 @@ export default {
     // it's the canonical version here (matches <link rel="canonical"> on
     // every page, which is a hint Google can ignore -- this redirect is
     // the actual enforcement).
-    if (url.hostname === 'afterofficefutrono.cl') {
+    //
+    // This must NOT apply to /api/*, /media/*, or the *-data.js endpoints:
+    // admin.js's fetch() calls are relative, same-origin, with
+    // credentials:'same-origin'. If someone has the admin panel open on the
+    // bare domain (an old bookmark, say) and this redirect fired for an
+    // /api/ call too, the browser would follow it across origins, and since
+    // these JSON responses carry no CORS headers (never needed them, being
+    // same-origin), the browser blocks reading the response -- fetch()
+    // throws "Failed to fetch" and the admin panel looks broken. Caught this
+    // in production: Reservas failed to load for a tab sitting on the bare
+    // domain. Pages/assets still get canonicalized; data endpoints just
+    // answer directly on whichever host asked.
+    const isDataEndpoint =
+      url.pathname.startsWith('/api/') ||
+      url.pathname.startsWith('/media/') ||
+      url.pathname === '/js/menu-data.js' ||
+      url.pathname === '/js/popup-data.js' ||
+      url.pathname === '/js/featured-data.js' ||
+      url.pathname === '/js/hours-data.js';
+    if (url.hostname === 'afterofficefutrono.cl' && !isDataEndpoint) {
       url.hostname = 'www.afterofficefutrono.cl';
       return Response.redirect(url.toString(), 301);
     }
