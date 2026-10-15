@@ -25,6 +25,13 @@ function cleanString(value, maxLen) {
   return String(value == null ? '' : value).trim().slice(0, maxLen);
 }
 
+// Rejected attempts allowed per IP per 15 minutes. Only *rejections* count
+// (no table, blocked date, bad confirm link), never accepted bookings, and a
+// real customer legitimately retries: another date, a smaller group, a
+// mistyped step. Far looser than the admin login's 5, which guards passwords.
+const RESERVATION_MAX_REJECTIONS = 20;
+const CONFIRM_MAX_REJECTIONS = 15;
+
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 const TIME_RE = /^([01]\d|2[0-3]):[0-5]\d$/;
 const PHONE_RE = /^[0-9+\s()-]{6,20}$/;
@@ -141,7 +148,7 @@ function describeNoTables(partySize, freeTables, activeTables) {
 async function handleCreateReservation(request, env) {
   const ip = request.headers.get('CF-Connecting-IP') || 'unknown';
   const rateLimitKey = `resv:${ip}`;
-  const allowed = await checkRateLimit(env, rateLimitKey);
+  const allowed = await checkRateLimit(env, rateLimitKey, RESERVATION_MAX_REJECTIONS);
   if (!allowed) {
     return json({ error: 'Demasiadas solicitudes. Intenta de nuevo en unos minutos, o escríbenos directamente.', fallbackWhatsapp: true }, { status: 429 });
   }
@@ -264,7 +271,7 @@ async function handleConfirmGet(env, token) {
 async function handleConfirmPost(env, token, rawTableId, request) {
   const ip = request.headers.get('CF-Connecting-IP') || 'unknown';
   const rateLimitKey = `resvconfirm:${ip}`;
-  if (!(await checkRateLimit(env, rateLimitKey))) {
+  if (!(await checkRateLimit(env, rateLimitKey, CONFIRM_MAX_REJECTIONS))) {
     return json({ error: 'Demasiados intentos. Espera unos minutos e intenta de nuevo.' }, { status: 429 });
   }
 

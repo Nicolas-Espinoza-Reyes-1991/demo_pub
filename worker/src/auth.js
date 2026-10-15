@@ -147,10 +147,14 @@ export function hasAdminHeader(request) {
 const RATE_LIMIT_MAX_ATTEMPTS = 5;
 const RATE_LIMIT_WINDOW_SECONDS = 15 * 60;
 
-export async function checkRateLimit(env, key) {
+// The default (5) is the strict one meant for password guessing -- the admin
+// login relies on it. Callers whose "failures" are honest customer mistakes
+// (the public reservation form) pass a looser `maxAttempts` instead of
+// weakening the login.
+export async function checkRateLimit(env, key, maxAttempts = RATE_LIMIT_MAX_ATTEMPTS) {
   const raw = await env.RATE_LIMIT.get(key);
   const count = raw ? parseInt(raw, 10) : 0;
-  return count < RATE_LIMIT_MAX_ATTEMPTS;
+  return count < maxAttempts;
 }
 
 export async function recordLoginAttempt(env, key) {
