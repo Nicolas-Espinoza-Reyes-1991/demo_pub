@@ -156,6 +156,12 @@ export async function isDateBlocked(db, date) {
 // Smallest active table that both fits the party and is free on that date.
 // Picking the smallest sufficient table (not the biggest) leaves the larger
 // tables free for larger groups that come along later.
+//
+// The `table_id IS NOT NULL` is load-bearing: a pendiente reservation has
+// table_id NULL until the customer confirms and picks a table, and
+// `x NOT IN (list containing NULL)` is never true in SQL -- so a single
+// unconfirmed reservation used to make the whole date report "no tables
+// available" to everyone else.
 export async function findAvailableTable(db, date, partySize) {
   return db
     .prepare(
@@ -164,6 +170,7 @@ export async function findAvailableTable(db, date, partySize) {
          AND id NOT IN (
            SELECT table_id FROM reservations
            WHERE reservation_date = ? AND status IN ('pendiente', 'confirmada')
+             AND table_id IS NOT NULL
          )
        ORDER BY capacity ASC, id ASC
        LIMIT 1`
