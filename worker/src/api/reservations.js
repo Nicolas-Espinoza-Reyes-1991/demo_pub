@@ -188,6 +188,9 @@ async function handleConfirmGet(env, token) {
     }, { status: 409 });
   }
 
+  if (reservation.reservation_date < todayInSantiago()) {
+    return json({ error: 'Esa fecha ya pasó. Escríbenos por WhatsApp si quieres reservar otra.', fallbackWhatsapp: true }, { status: 409 });
+  }
   if (await isDateBlocked(env.DB, reservation.reservation_date)) {
     return json({ error: 'Esa fecha ya no está disponible. Escríbenos por WhatsApp y vemos otra fecha.', fallbackWhatsapp: true }, { status: 409 });
   }
@@ -219,6 +222,11 @@ async function handleConfirmPost(env, token, rawTableId, request) {
   if (reservation.status !== 'pendiente' || reservation.table_id != null) {
     await recordLoginAttempt(env, rateLimitKey);
     return json({ error: 'Esta reserva ya fue confirmada o cancelada.' }, { status: 409 });
+  }
+  // The link outlives the lead time (48h vs. 1-day-ahead booking), so
+  // someone could otherwise lock a table for a night that already happened.
+  if (reservation.reservation_date < todayInSantiago()) {
+    return json({ error: 'Esa fecha ya pasó. Escríbenos por WhatsApp si quieres reservar otra.', fallbackWhatsapp: true }, { status: 409 });
   }
   if (await isDateBlocked(env.DB, reservation.reservation_date)) {
     return json({ error: 'Esa fecha ya no está disponible. Escríbenos por WhatsApp y vemos otra fecha.', fallbackWhatsapp: true }, { status: 409 });
@@ -333,7 +341,19 @@ async function handleUpdateReservationStatus(request, env, id) {
     }
   }
 
-  const result = await env.DB.prepare('UPDATE reservations SET status = ? WHERE id = ?').bind(status, id).run();
+  // A cancelled / no-show row keeps its table_id, and the table may have been
+  // handed to someone else since. Re-activating it then collides with the
+  // partial UNIQUE index (which is what keeps a table from being
+  // double-booked) -- surface that as a clear message instead of a bare 500.
+  let result;
+  try {
+    result = await env.DB.prepare('UPDATE reservations SET status = ? WHERE id = ?').bind(status, id).run();
+  } catch (err) {
+    if (String(err && err.message).includes('UNIQUE')) {
+      return json({ error: 'No se puede reactivar: esa mesa ya está ocupada por otra reserva ese día.' }, { status: 409 });
+    }
+    throw err;
+  }
   if (!result.meta.changes) return json({ error: 'Reserva no encontrada.' }, { status: 404 });
   return json({ ok: true });
 }
