@@ -110,22 +110,9 @@ function joinEs(items) {
 // stops being useful on a phone, so they're summarised by size instead.
 const NAME_TABLES_UP_TO = 4;
 
-// Turns "no table fits this group" into something the customer can act on:
-//  - the group is bigger than any table the venue has -> coordinate directly
-//  - the date is completely full                      -> try another date
-//  - smaller tables are still free                    -> say what's left
-// `error` is the headline; `detail` is the second, lighter line.
-function describeNoTables(partySize, freeTables, activeTables) {
-  const maxCapacity = activeTables.reduce((m, t) => Math.max(m, t.capacity), 0);
-
-  if (maxCapacity > 0 && partySize > maxCapacity) {
-    return { error: `Para grupos de más de ${maxCapacity} personas coordinamos la reserva directamente con nosotros.`, detail: '' };
-  }
-  if (freeTables.length === 0) {
-    return { error: 'Ese día ya no tenemos mesas disponibles.', detail: 'Prueba con otra fecha.' };
-  }
-
-  const error = `No tenemos mesas disponibles para ${personas(partySize)} ese día.`;
+// What is still free on the date, from the real free-table rows: named when
+// few remain, summarised by size ("6 mesas para 4 personas") otherwise.
+function listFreeTables(freeTables) {
   if (freeTables.length <= NAME_TABLES_UP_TO) {
     // Keep "Mesa 9 (4 personas)" on one line when it's short enough; a very
     // long custom name is left breakable so it can't overflow the card.
@@ -134,7 +121,7 @@ function describeNoTables(partySize, freeTables, activeTables) {
       const glued = label.length <= 16 ? label.replace(/ /g, NBSP) : label;
       return `${glued}${NBSP}(${personas(t.capacity)})`;
     });
-    return { error, detail: `Solo nos quedan: ${joinEs(named)}.` };
+    return { named: true, text: joinEs(named) };
   }
 
   const bySize = new Map();
@@ -142,7 +129,34 @@ function describeNoTables(partySize, freeTables, activeTables) {
   const groups = [...bySize.entries()]
     .sort((a, b) => b[0] - a[0])
     .map(([capacity, count]) => `${count}${NBSP}${count === 1 ? 'mesa' : 'mesas'} para ${personas(capacity)}`);
-  return { error, detail: `Nos quedan ${joinEs(groups)}.` };
+  return { named: false, text: joinEs(groups) };
+}
+
+// Turns "no table fits this group" into something the customer can act on:
+//  - the group is bigger than any table the venue has -> coordinate directly,
+//                                                        and still say what is free
+//  - the date is completely full                      -> try another date
+//  - smaller tables are still free                    -> say what's left
+// `error` is the headline; `detail` is the second, lighter line. Every count
+// comes from `freeTables` (queried for that date), never from fixed text.
+function describeNoTables(partySize, freeTables, activeTables) {
+  const maxCapacity = activeTables.reduce((m, t) => Math.max(m, t.capacity), 0);
+
+  if (maxCapacity > 0 && partySize > maxCapacity) {
+    const error = `Para grupos de más de ${maxCapacity} personas coordinamos la reserva directamente con nosotros.`;
+    if (freeTables.length === 0) {
+      return { error, detail: 'Ese día ya no quedan mesas libres. Prueba con otra fecha.' };
+    }
+    const free = listFreeTables(freeTables);
+    return { error, detail: free.named ? `Ese día solo nos quedan: ${free.text}.` : `Ese día nos quedan ${free.text}.` };
+  }
+  if (freeTables.length === 0) {
+    return { error: 'Ese día ya no tenemos mesas disponibles.', detail: 'Prueba con otra fecha.' };
+  }
+
+  const error = `No tenemos mesas disponibles para ${personas(partySize)} ese día.`;
+  const free = listFreeTables(freeTables);
+  return { error, detail: free.named ? `Solo nos quedan: ${free.text}.` : `Nos quedan ${free.text}.` };
 }
 
 async function handleCreateReservation(request, env) {
