@@ -245,10 +245,34 @@
     alertEl.setAttribute('aria-hidden', 'true');
   }
 
-  function showSiteAlert(message, isError) {
+  // "2026-10-17" -> "17/10/2026" for the pre-filled WhatsApp text; anything
+  // that isn't a plain ISO date is passed through untouched.
+  function formatDateEs(iso) {
+    var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso || '');
+    return m ? m[3] + '/' + m[2] + '/' + m[1] : (iso || '');
+  }
+
+  // opts.detail: lighter second line under the message.
+  // opts.whatsappHref: when set, shows the "¿Tienes alguna duda?" block with
+  // a WhatsApp button inside the alert (the in-form link sits behind it).
+  function showSiteAlert(message, isError, opts) {
     var alertEl = document.getElementById('site-alert');
     if (!alertEl) return;
+    opts = opts || {};
     document.getElementById('site-alert-message').textContent = message;
+
+    var detailEl = document.getElementById('site-alert-detail');
+    if (detailEl) {
+      detailEl.textContent = opts.detail || '';
+      detailEl.hidden = !opts.detail;
+    }
+    var helpEl = document.getElementById('site-alert-help');
+    var waEl = document.getElementById('site-alert-wa');
+    if (helpEl && waEl) {
+      if (opts.whatsappHref) waEl.href = opts.whatsappHref;
+      helpEl.hidden = !opts.whatsappHref;
+    }
+
     var icon = document.getElementById('site-alert-icon');
     icon.className = 'site-alert__icon site-alert__icon--' + (isError ? 'error' : 'ok');
     icon.innerHTML = isError ? ALERT_ICON_ERROR : ALERT_ICON_OK;
@@ -295,25 +319,33 @@
               showSiteAlert(result.body.message || 'Solicitud recibida. Revisa tu correo (incluida la carpeta de spam/no deseado) para confirmar tu asistencia.', false);
               if (waLink) {
                 waLink.href = buildWhatsappHref(
-                  'Hola, soy ' + name + '. Acabo de reservar para ' + partySize + ' personas el ' + date + '. ¡Gracias!'
+                  'Hola, soy ' + name + '. Acabo de reservar para ' + partySize + ' personas el ' + formatDateEs(date) + '. ¡Gracias!'
                 );
                 waLink.style.display = 'flex';
               }
               form.reset();
             } else {
-              showSiteAlert(result.body.error || 'No pudimos procesar tu reserva.', true);
-              if (result.body.fallbackWhatsapp && waLink) {
-                waLink.href = buildWhatsappHref(
-                  'Hola, quiero reservar para ' + (partySize || '') + ' personas el ' + date + '. ¿Me ayudan a coordinar?'
+              var helpHref = '';
+              if (result.body.fallbackWhatsapp) {
+                helpHref = buildWhatsappHref(
+                  'Hola, quiero reservar para ' + (partySize || '') + ' personas el ' + formatDateEs(date) + '. ¿Me ayudan a coordinar?'
                 );
-                waLink.style.display = 'flex';
+                if (waLink) {
+                  waLink.href = helpHref;
+                  waLink.style.display = 'flex';
+                }
               }
+              showSiteAlert(result.body.error || 'No pudimos procesar tu reserva.', true, {
+                detail: result.body.detail,
+                whatsappHref: helpHref,
+              });
             }
           })
           .catch(function () {
-            showSiteAlert('Error de conexión. Intenta de nuevo o escríbenos por WhatsApp.', true);
+            var offlineHref = buildWhatsappHref('Hola, quiero reservar una mesa en After Office.');
+            showSiteAlert('Error de conexión. Intenta de nuevo o escríbenos por WhatsApp.', true, { whatsappHref: offlineHref });
             if (waLink) {
-              waLink.href = buildWhatsappHref('Hola, quiero reservar una mesa en After Office.');
+              waLink.href = offlineHref;
               waLink.style.display = 'flex';
             }
           })

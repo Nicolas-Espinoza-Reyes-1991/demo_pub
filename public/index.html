@@ -111,7 +111,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./css/demos.css">
+  <link rel="stylesheet" href="./css/demos.css?v=alert-wa">
   <link rel="stylesheet" href="./css/ux.css?v=hero-no-copa">
   <link rel="stylesheet" href="./css/mobile.css">
   <link rel="preload" href="./imagenes_sitio/hero-banner-02.webp" as="image" fetchpriority="high">
@@ -662,6 +662,13 @@
       </button>
       <span class="site-alert__icon" id="site-alert-icon" aria-hidden="true"></span>
       <p id="site-alert-message" class="site-alert__message"></p>
+      <p id="site-alert-detail" class="site-alert__detail" hidden></p>
+      <div id="site-alert-help" class="site-alert__help" hidden>
+        <p class="site-alert__help-text">¿Tienes alguna duda? Comunícate con After Office.</p>
+        <a id="site-alert-wa" class="site-alert__wa" href="#" target="_blank" rel="noopener noreferrer">
+          <i data-lucide="message-circle" class="w-4 h-4"></i> Escribir por WhatsApp
+        </a>
+      </div>
     </div>
   </div>
 
@@ -672,6 +679,6 @@
   <script defer src="./js/featured-data.js"></script>
   <script defer src="./js/hours-data.js"></script>
   <script defer src="./js/datepicker.js"></script>
-  <script defer src="./js/sitio.js?v=perf-hero"></script>
+  <script defer src="./js/sitio.js?v=alert-wa"></script>
 </body>
 </html>

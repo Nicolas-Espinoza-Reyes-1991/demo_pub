@@ -29,7 +29,10 @@ body { overflow-x: clip; }
 .site-alert {
   position: fixed;
   inset: 0;
-  z-index: 80;
+  /* Above the mobile bottom bar (.site-mobile-bar, z-index 90) so it can't
+     cover the alert's WhatsApp button on short screens; still below the
+     event flyer popup (110). */
+  z-index: 100;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -57,6 +60,12 @@ body { overflow-x: clip; }
   box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
   text-align: center;
   animation: siteAlertIn 0.2s ease;
+  /* With the availability detail + WhatsApp block the card can outgrow a
+     short phone screen (landscape, small devices): scroll inside the card
+     instead of cutting the button off. */
+  max-height: calc(100vh - 2.5rem);
+  max-height: calc(100dvh - 2.5rem);
+  overflow-y: auto;
 }
 @keyframes siteAlertIn { from { opacity: 0; transform: translateY(6px) scale(0.97); } to { opacity: 1; transform: none; } }
 .site-alert__close {
@@ -86,6 +95,51 @@ body { overflow-x: clip; }
   color: #f5f5f4;
   margin: 0;
 }
+.site-alert__detail {
+  font-family: 'Lato', system-ui, sans-serif;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: #b4b2bd;
+  margin: 0;
+}
+.site-alert__detail[hidden] { display: none; }
+.site-alert__help {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  margin-top: 0.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+.site-alert__help[hidden] { display: none; }
+.site-alert__help-text {
+  font-family: 'Lato', system-ui, sans-serif;
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  color: #9c9aa5;
+  margin: 0;
+}
+.site-alert__wa {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  min-height: 2.75rem;
+  padding: 0.7rem 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid rgba(34, 211, 238, 0.4);
+  color: #67e8f9;
+  font-family: 'Lato', system-ui, sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+.site-alert__wa:hover { background: rgba(34, 211, 238, 0.1); border-color: rgba(34, 211, 238, 0.7); }
+.site-alert__wa svg { width: 1rem; height: 1rem; flex-shrink: 0; }
 
 .card-hover {
   transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;

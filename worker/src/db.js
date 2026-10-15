@@ -179,6 +179,27 @@ export async function findAvailableTable(db, date, partySize) {
     .first();
 }
 
+// Every active table still free on that date, biggest first. Only used to
+// tell a rejected customer what IS still available; same "free" rule as
+// findAvailableTable (including the NULL-safe subquery), minus the party-size
+// filter.
+export async function getFreeTables(db, date) {
+  const { results } = await db
+    .prepare(
+      `SELECT id, name, capacity FROM venue_tables
+       WHERE active = 1
+         AND id NOT IN (
+           SELECT table_id FROM reservations
+           WHERE reservation_date = ? AND status IN ('pendiente', 'confirmada')
+             AND table_id IS NOT NULL
+         )
+       ORDER BY capacity DESC, sort_order ASC, id ASC`
+    )
+    .bind(date)
+    .all();
+  return results;
+}
+
 // table_id starts NULL: the customer picks it themselves after confirming
 // attendance by email (see api/reservations.js handleConfirmPost). Two rows
 // with table_id NULL never collide with the (table_id, reservation_date)

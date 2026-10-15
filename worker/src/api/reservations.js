@@ -4,6 +4,7 @@ import {
   getTablesForAdmin,
   isDateBlocked,
   findAvailableTable,
+  getFreeTables,
   insertReservation,
   getReservationById,
   getTablesWithAvailability,
@@ -80,6 +81,63 @@ function addDays(dateStr, days) {
   return d.toISOString().slice(0, 10);
 }
 
+// "MESA 9" -> "Mesa 9". Only touches names typed entirely in capitals (how
+// the venue's tables are stored), so a deliberately mixed-case name is left
+// exactly as the owner wrote it.
+function prettyTableName(name) {
+  if (name !== name.toUpperCase()) return name;
+  return name.toLowerCase().replace(/(^|\s)(\S)/g, (_, sp, ch) => sp + ch.toUpperCase());
+}
+
+// Non-breaking space between the number and its noun so a narrow phone screen
+// never wraps "1" and "persona" onto different lines.
+const NBSP = ' ';
+const personas = (n) => `${n}${NBSP}${n === 1 ? 'persona' : 'personas'}`;
+
+function joinEs(items) {
+  if (items.length <= 1) return items.join('');
+  return items.slice(0, -1).join(', ') + ' y ' + items[items.length - 1];
+}
+
+// How many free tables is "few enough to just name them". Past this the list
+// stops being useful on a phone, so they're summarised by size instead.
+const NAME_TABLES_UP_TO = 4;
+
+// Turns "no table fits this group" into something the customer can act on:
+//  - the group is bigger than any table the venue has -> coordinate directly
+//  - the date is completely full                      -> try another date
+//  - smaller tables are still free                    -> say what's left
+// `error` is the headline; `detail` is the second, lighter line.
+function describeNoTables(partySize, freeTables, activeTables) {
+  const maxCapacity = activeTables.reduce((m, t) => Math.max(m, t.capacity), 0);
+
+  if (maxCapacity > 0 && partySize > maxCapacity) {
+    return { error: `Para grupos de más de ${maxCapacity} personas coordinamos la reserva directamente con nosotros.`, detail: '' };
+  }
+  if (freeTables.length === 0) {
+    return { error: 'Ese día ya no tenemos mesas disponibles.', detail: 'Prueba con otra fecha.' };
+  }
+
+  const error = `No tenemos mesas disponibles para ${personas(partySize)} ese día.`;
+  if (freeTables.length <= NAME_TABLES_UP_TO) {
+    // Keep "Mesa 9 (4 personas)" on one line when it's short enough; a very
+    // long custom name is left breakable so it can't overflow the card.
+    const named = freeTables.map((t) => {
+      const label = prettyTableName(t.name);
+      const glued = label.length <= 16 ? label.replace(/ /g, NBSP) : label;
+      return `${glued}${NBSP}(${personas(t.capacity)})`;
+    });
+    return { error, detail: `Solo nos quedan: ${joinEs(named)}.` };
+  }
+
+  const bySize = new Map();
+  for (const t of freeTables) bySize.set(t.capacity, (bySize.get(t.capacity) || 0) + 1);
+  const groups = [...bySize.entries()]
+    .sort((a, b) => b[0] - a[0])
+    .map(([capacity, count]) => `${count}${NBSP}${count === 1 ? 'mesa' : 'mesas'} para ${personas(capacity)}`);
+  return { error, detail: `Nos quedan ${joinEs(groups)}.` };
+}
+
 async function handleCreateReservation(request, env) {
   const ip = request.headers.get('CF-Connecting-IP') || 'unknown';
   const rateLimitKey = `resv:${ip}`;
@@ -139,10 +197,9 @@ async function handleCreateReservation(request, env) {
   const someTableFits = await findAvailableTable(env.DB, date, partySize);
   if (!someTableFits) {
     await recordLoginAttempt(env, rateLimitKey);
-    return json({
-      error: 'No tenemos mesas disponibles para esa fecha y ese grupo. Escríbenos y te ayudamos a coordinar.',
-      fallbackWhatsapp: true,
-    }, { status: 409 });
+    const [freeTables, activeTables] = await Promise.all([getFreeTables(env.DB, date), getActiveTables(env.DB)]);
+    const { error, detail } = describeNoTables(partySize, freeTables, activeTables);
+    return json({ error, detail, fallbackWhatsapp: true }, { status: 409 });
   }
 
   const id = await insertReservation(env.DB, { name, phone, email, partySize, date, arrivalTime, notes });
