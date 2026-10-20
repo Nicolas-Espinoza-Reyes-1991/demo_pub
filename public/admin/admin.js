@@ -131,6 +131,52 @@
     }).catch(function () { /* best-effort; the daily sweep will catch it anyway */ });
   }
 
+  // Flyers and photos straight from a phone or a design tool are routinely
+  // several MB (the live event flyer was a 3.1 MB PNG), and the public site
+  // has to download them on a mobile connection. Before uploading, shrink to
+  // at most IMAGE_MAX_SIDE px on the long side and re-encode as WebP. It
+  // never makes things worse: anything small enough, not a JPEG/PNG/WebP,
+  // undecodable, or that wouldn't come out smaller is uploaded untouched.
+  var IMAGE_MAX_SIDE = 1600;
+  var IMAGE_SKIP_BELOW_BYTES = 250 * 1024;
+  var IMAGE_WEBP_QUALITY = 0.88;
+
+  function loadBitmap(file) {
+    if (window.createImageBitmap) return createImageBitmap(file);
+    return new Promise(function (resolve, reject) {
+      var url = URL.createObjectURL(file);
+      var img = new Image();
+      img.onload = function () { URL.revokeObjectURL(url); resolve(img); };
+      img.onerror = function () { URL.revokeObjectURL(url); reject(new Error('decode')); };
+      img.src = url;
+    });
+  }
+
+  function optimizeImage(file) {
+    if (!/^image\/(jpeg|png|webp)$/.test(file.type)) return Promise.resolve(file);
+    return loadBitmap(file).then(function (bmp) {
+      var scale = Math.min(1, IMAGE_MAX_SIDE / Math.max(bmp.width, bmp.height));
+      if (scale === 1 && file.size <= IMAGE_SKIP_BELOW_BYTES) {
+        if (bmp.close) bmp.close();
+        return file;
+      }
+      var canvas = document.createElement('canvas');
+      canvas.width = Math.round(bmp.width * scale);
+      canvas.height = Math.round(bmp.height * scale);
+      var ctx = canvas.getContext('2d');
+      ctx.imageSmoothingQuality = 'high';
+      ctx.drawImage(bmp, 0, 0, canvas.width, canvas.height);
+      if (bmp.close) bmp.close();
+      return new Promise(function (resolve) {
+        canvas.toBlob(function (blob) {
+          // A browser that can't encode WebP hands back a PNG instead: keep the original then.
+          if (!blob || blob.type !== 'image/webp' || blob.size >= file.size) { resolve(file); return; }
+          resolve(new File([blob], file.name.replace(/\.[^.]+$/, '') + '.webp', { type: 'image/webp' }));
+        }, 'image/webp', IMAGE_WEBP_QUALITY);
+      });
+    }).catch(function () { return file; });
+  }
+
   // Tracks uploads made while a form is open but not yet saved, so an
   // abandoned or superseded photo is deleted right away instead of waiting
   // for the daily server-side sweep.
@@ -156,15 +202,17 @@
       if (icon) icon.hidden = true;
       if (subhint) subhint.hidden = true;
 
-      var formData = new FormData();
-      formData.append('file', file);
-
-      fetch('/api/images/upload', {
-        method: 'POST',
-        headers: { 'X-Admin-Request': '1' },
-        body: formData,
-        credentials: 'same-origin',
-      })
+      optimizeImage(file)
+        .then(function (prepared) {
+          var formData = new FormData();
+          formData.append('file', prepared);
+          return fetch('/api/images/upload', {
+            method: 'POST',
+            headers: { 'X-Admin-Request': '1' },
+            body: formData,
+            credentials: 'same-origin',
+          });
+        })
         .then(function (res) {
           if (res.status === 401) {
             window.location.href = './login.html';

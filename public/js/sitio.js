@@ -383,16 +383,19 @@
       dialog.style.maxWidth = widthCap;
     }
 
-    if (img.complete) syncFlyerLayout();
-    else img.addEventListener('load', syncFlyerLayout, { once: true });
+    // The flyer's src is assigned later (see loadFlyerImage), so listen for
+    // every load rather than a first one that may have already passed.
+    img.addEventListener('load', syncFlyerLayout);
+    syncFlyerLayout();
 
     window.addEventListener('resize', syncFlyerLayout, { passive: true });
   }
 
   function populatePopupFromData(popup) {
     var data = window.POPUP;
-    if (!data) return true;
-    if (!data.enabled) return false;
+    // No data means no popup. The markup carries no event of its own on
+    // purpose: falling back to it used to put an old event on screen.
+    if (!data || !data.enabled) return false;
 
     var badge = popup.querySelector('#event-popup-badge');
     var eyebrow = popup.querySelector('#event-popup-eyebrow');
@@ -405,7 +408,9 @@
     if (badge && data.badge) badge.textContent = data.badge;
     if (eyebrow && data.eyebrow) eyebrow.textContent = data.eyebrow;
     if (title && data.title) title.textContent = data.title;
-    if (img && data.image) { img.src = data.image; img.alt = data.title || ''; }
+    // The image src is set by loadFlyerImage, once the popup knows it can
+    // wait for it; only the alt text goes here.
+    if (img) img.alt = data.title || '';
     if (ctaPrimary) {
       if (data.ctaPrimaryLabel) ctaPrimary.textContent = data.ctaPrimaryLabel;
       if (data.ctaPrimaryHref) ctaPrimary.setAttribute('href', data.ctaPrimaryHref);
@@ -477,6 +482,31 @@
     var data = window.HOURS;
     if (!el || !data || !data.lines || !data.lines.length) return;
     el.innerHTML = data.lines.map(function (line) { return escapeHtml(line); }).join('<br>');
+  }
+
+  // Longest the popup waits for the event flyer before skipping this visit.
+  // Generous on purpose: a flyer uploaded before admin uploads were
+  // compressed is ~3 MB, which took 6-7s on an ordinary connection --
+  // a tighter limit would silently drop the popup for those visitors.
+  var FLYER_MAX_WAIT_MS = 10000;
+
+  // Resolves true once the flyer is loaded, false if it errors or takes
+  // longer than maxMs.
+  function loadFlyerImage(img, src, maxMs) {
+    return new Promise(function (resolve) {
+      var settled = false;
+      var timer = setTimeout(function () { settle(false); }, maxMs);
+      function settle(ok) {
+        if (settled) return;
+        settled = true;
+        clearTimeout(timer);
+        resolve(ok);
+      }
+      img.addEventListener('load', function () { settle(true); }, { once: true });
+      img.addEventListener('error', function () { settle(false); }, { once: true });
+      img.src = src;
+      if (img.complete && img.naturalWidth) settle(true);
+    });
   }
 
   function initEventPopup() {
@@ -555,7 +585,28 @@
 
     var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     var delay = reducedMotion ? 400 : 900;
-    setTimeout(openPopup, delay);
+
+    // Start downloading the flyer now, in parallel with the opening delay,
+    // and only open once it is really there. Opening first and swapping the
+    // image in afterwards is what let an old flyer flash on first visits
+    // (the new one is a big download that nothing has cached yet). If it
+    // doesn't arrive in time, skip the popup for this visit rather than show
+    // something wrong -- this returns before here for anyone who already
+    // dismissed it today, so they never download the flyer at all.
+    var flyerImg = popup.querySelector('#event-popup-img');
+    var flyerBox = popup.querySelector('.event-popup__flyer');
+    var flyerSrc = window.POPUP && window.POPUP.image;
+    var startedAt = Date.now();
+
+    if (!flyerSrc && flyerBox) flyerBox.style.display = 'none';
+    var flyerReady = flyerSrc && flyerImg
+      ? loadFlyerImage(flyerImg, flyerSrc, FLYER_MAX_WAIT_MS)
+      : Promise.resolve(true);
+
+    flyerReady.then(function (ok) {
+      if (!ok) return;
+      setTimeout(openPopup, Math.max(0, delay - (Date.now() - startedAt)));
+    });
   }
 
   function ensureHeroSlideImage(slide) {
